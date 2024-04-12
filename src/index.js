@@ -15,9 +15,14 @@ async function login(){
         }
         else{
             alert.textContent="loging in...";
-            let role=getRole(input1Value);
+            let role=await getRole(input1Value);
             console.log(role);
             //direct to staff,manager,hr page
+            // Set the data in localStorage
+            localStorage.setItem('data',input1Value );
+            localStorage.setItem('role',role );
+            // Navigate to the second page
+            window.location.href = 'temp.html';
         }
     } else {
     console.log("Please fill in both input fields.");
