@@ -15,8 +15,10 @@ async function login(){
         }
         else{
             alert.textContent="loging in...";
+            let role=getRole(input1Value);
+            console.log(role);
+            //direct to staff,manager,hr page
         }
-        //if check is 1 0 or -1
     } else {
     console.log("Please fill in both input fields.");
     }
@@ -39,4 +41,12 @@ async function checkLogin(username,password){
       }
 
     return -1 //username not found
+}
+
+async function getRole(user){
+    const endpoint = `/data-api/rest/Users/username`;
+    const response = await fetch(`${endpoint}/${user}`);
+    const result = await response.json();
+    const data=result.value[0].role;
+    return data;
 }
