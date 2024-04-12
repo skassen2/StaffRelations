@@ -29,8 +29,8 @@
     }
   },
   "entities": {
-    "Person": {
-      "source": "dbo.MyTestPersonTable",
+    "Users": {
+      "source": "dbo.Users",
       "permissions": [
         {
           "actions": ["*"],
