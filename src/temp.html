@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Welcome Page</title>
 </head>
 <body>
-    <h1 id="username"></h1>
-    <h1 id="role"></h1>
-    <script>
-        // Retrieve the data from localStorage
-        let data = localStorage.getItem('data');
-        const a=document.getElementById("username");
-        a.textContent=data;
+    <h1>Welcome to the Application</h1>
+    <div>
+        <p>Username: <span id="username"></span></p>
+        <p>Role: <span id="role"></span></p>
+    </div>
 
-        data = localStorage.getItem('role');
-        const b=document.getElementById("role");
-        b.textContent=data;
-      </script>
+    <script>
+        // Retrieve data from localStorage
+        const username = localStorage.getItem('data');
+        const role = localStorage.getItem('role');
+        document.getElementById('username').textContent = username;
+        document.getElementById('role').textContent = role;
+    </script>
 </body>
 </html>
