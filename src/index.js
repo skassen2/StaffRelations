@@ -57,3 +57,5 @@ async function getRole(user){
     const data=result.value[0].role;
     return data;
 }
+
+module.exports = {login, checkLogin, getRole};
