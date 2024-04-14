@@ -57,3 +57,6 @@ async function getRole(user){
     const data=result.value[0].role;
     return data;
 }
+
+//required for testing --> need to export functions in order to access them
+module.exports = {login, checkLogin, getRole};
