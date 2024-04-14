@@ -1,8 +1,11 @@
 
-const gR = require('../src/index');
+const checkLogin = require('../src/coverage-test');
 
-test('testing that checkLogin returns 1, test need not work for sprint 1, this is to test if code coverage report tool is working', async () => {
-    const data = await gR.checkLogin('skassen2', 'ekse');
-    expect(data).toBe(1);
+test('testing that coverage report tool works using mock function, expect 1', () => {
+    expect(checkLogin("skassen2", "ekse")).toBe(1);
+});
+
+test('testing that coverage report tool works using mock function, expect 0', () => {
+    expect(checkLogin("skassen2", "eks")).toBe(0);
 });
   

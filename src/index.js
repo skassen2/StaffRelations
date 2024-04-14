@@ -58,4 +58,5 @@ async function getRole(user){
     return data;
 }
 
+//required for testing --> need to export functions in order to access them
 module.exports = {login, checkLogin, getRole};
