@@ -1,3 +1,5 @@
+const CALLBACK_URL = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/temp.html';
+
 async function login(){
     //calls checkLog to check if username and password is correct
     const input1Value = document.getElementById('username').value.trim();
@@ -22,7 +24,7 @@ async function login(){
             localStorage.setItem('data',input1Value );
             localStorage.setItem('role',role );
             // Navigate to the second page
-            window.location.href = 'temp.html';
+            window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&response_mode=query&scope=openid profile email`;
         }
     } else {
     console.log("Please fill in both input fields.");
