@@ -55,9 +55,10 @@ staffList.addEventListener('click', event => {
     }
 });
 
-function renderStaffList() {
+async function renderStaffList() {
+    const data=await getStaff();
     staffList.innerHTML = '';
-    staffs.forEach((staff, index) => {
+    data.forEach((staff, index) => {
         const staffMember = document.createElement('block');
         staffMember.classList.add('staff-card');
         staffMember.innerHTML = `
@@ -67,4 +68,18 @@ function renderStaffList() {
         `;
         staffList.appendChild(staffMember);
     });
+}
+
+async function getStaff(){
+    const data=[]
+    const endpoint = `/data-api/rest/Users`;
+    const response = await fetch(`${endpoint}`);
+    const result = await response.json();
+    const toadd=result.value;
+    toadd.forEach((person)=>{
+        if(person.role=="Staff"){
+            data.push(person);
+        }
+    })
+    return data;
 }
