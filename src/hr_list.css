@@ -19,6 +19,7 @@ body {
 
 header {
     display: flex;
+    margin: 0;
     background-color: #009579;
     color: black;
     padding: 20px 0;
@@ -38,6 +39,7 @@ header h2 {
 }
 
 #logo{
+    padding-top: none;
     align-items:center;
 }
 main {
