@@ -30,9 +30,20 @@
                 <input type="text" id="task" placeholder="Task" required>
                 <!-- input field ensures only int>=1 can be entered -->
                 <input type="number" id="est_time"  placeholder="Estimated time in minutes" required min="1">
-                <textarea id="description" placeholder="Description" rows="6" required></textarea>
+                <textarea id="description" placeholder="Descr iption" rows="6" required></textarea>
                 <br>
                 <button id="addtask">Add task</button>
+            </form>
+            <form id="assignment">
+                <select id="taskdrop" class="dropdown" required>
+                    <option value="" disabled selected>Select task</option>
+                </select><br>
+                <!-- input field ensures only int>=1 can be entered -->
+                <select id="staffdrop"  class="dropdown" required>
+                    <option value="" disabled selected>Select a staff member</option>
+                </select>
+                <br>
+                <button id="adsk">Add assignment</button>
             </form>
         </section>
     </main> 

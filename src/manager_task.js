@@ -66,6 +66,31 @@ async function renderTasks(manager){
         `;
         staffList.appendChild(task);
     });
+
+    //adds tasks dropdown options
+    const dropdownTask=document.getElementById("taskdrop");
+    const managersTasks=getManagersTasks(data,manager);
+    managersTasks.forEach(function(optionText,index) {
+        let option = document.createElement("option");
+        option.text=optionText;
+        option.value = managersTasks[index];
+        dropdownTask.add(option);
+      });
+
+    //add staff dropdown options
+    const dropdownStaff=document.getElementById("staffdrop");
+    const end1 = `/data-api/rest/Users`;
+    const res1 = await fetch(end1);
+    const result1=await res1.json();
+    let d1=result1.value;
+    const staffmembers=getStaff(d1);
+    staffmembers.forEach(function(optionText, index) {
+        var option = document.createElement("option");
+        option.text = optionText;
+        option.value = staffmembers[index];
+        dropdownStaff.add(option);
+      });
+
 }
 
 //takes in the arr of data,manager and outputs an arr of tasks that the manager has created
@@ -91,6 +116,83 @@ function taskNameValid(json,task){
     }
     return 1; //task doesnt exist
 }
+
+//get all staff, returns arrary of staff
+function getStaff(json){
+    const data=[];
+    for(const obj of json){
+        if(obj.role=="Staff"){
+            data.push(obj.username);
+        }
+    }
+    return data;
+}
+//get a list of tasks the manager has created
+function getManagersTasks(json,manager){
+    const data=[];
+    for(const obj of json){
+        if(obj.manager==manager){
+            data.push(obj.task);
+        }
+    }
+    return data;
+}
+//checks if assignment doesnt already exist
+function existsAssignment(json,task,staff){
+    for(const obj of json){
+        if(obj.task==task && obj.staff==staff){
+            return 0; //already exists
+        }
+    }
+    return 1; //doesnt exist
+}
+//adds assignment
+const b=document.getElementById("adsk")
+assignment.addEventListener('submit', async event => {
+    event.preventDefault();
+    const task=document.getElementById("taskdrop").value;
+    const staff=document.getElementById("staffdrop").value;
+    //checks if valid
+   const end = `/data-api/rest/Assignment`;
+    const res = await fetch(end);
+    const result=await res.json();
+    let d=result.value;
+    const check=existsAssignment(d,task,staff);
+    if(check==1){
+        const data={
+            task:task,
+            staff:staff
+        }
+    
+            const endpoint = `/data-api/rest/Assignment`;
+            const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+            });
+
+        const data1={
+            task:task,
+            staff:staff,
+            total_time:0
+        } 
+            const end = `/data-api/rest/Time`;
+            const res = await fetch(end, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data1)
+            });   
+        window.location.reload();
+    }
+    else{
+        alert("The asssignment already exists");
+    }
+    
+    
+
+    //add entry in time table with 0 minutes
+});
+
 
 /*test taskNameValid, getTasks will use[
     {

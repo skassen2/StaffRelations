@@ -46,6 +46,24 @@
           "role": "anonymous"
         }
       ]
+    },
+    "Assignment": {
+      "source": "dbo.assignment",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "Time": {
+      "source": "dbo.time",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

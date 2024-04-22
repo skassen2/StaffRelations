@@ -12,7 +12,9 @@ body {
 }
 
 .container {
-    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 85%; 
     margin: 0 auto;
     margin-bottom: 20px;
     text-wrap: wrap;
@@ -109,7 +111,7 @@ button {
 }
 
 input[type="text"] {
-    width: 50%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -124,7 +126,7 @@ input[type="text"]:focus {
 }
 
 input[type="number"] {
-    width: 50%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -139,7 +141,7 @@ input[type="number"]:focus {
 }
 
 textarea{
-    width: 50%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -152,5 +154,19 @@ textarea{
 }
 
 textarea:focus {
+    border-color: var(--color-primary);
+}
+
+.dropdown{
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+.dropdown:focus {
     border-color: var(--color-primary);
 }
