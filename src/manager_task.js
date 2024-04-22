@@ -51,21 +51,20 @@ async function renderTasks(manager){
 
     //renders here
     data.forEach((entry, index) => {
-        const task = document.createElement('block');
+        const task = document.createElement('section');
         task.classList.add('staff-card');
         task.innerHTML = `
             <h2>Task: ${entry.task}</h2>
             <p><strong>Discription:</strong> ${entry.description} </p>
             <p><strong>Estimated Time:</strong> ${entry.est_time} minutes </p>
             <hr width="90%" align="center"/>
-            <section>
-                <section id="${entry.task}">Shaneel: 0 minutes <section/>
-            <section/> 
+            <p id="${entry.task}"><p/>
             <hr width="90%" align="center"/>
             <h3>Total Time: 0 minutes<h3/>
         `;
         staffList.appendChild(task);
     });
+
 
     //adds tasks dropdown options
     const dropdownTask=document.getElementById("taskdrop");
@@ -91,6 +90,23 @@ async function renderTasks(manager){
         dropdownStaff.add(option);
       });
 
+     //add each staff to the right task with num minutes worked
+     const endpoint12 = `/data-api/rest/Time`;
+     const response12 = await fetch(endpoint12);
+     const result12=await response12.json();
+     let data12=result12.value;
+     console.log(data12);
+     for(i=0;i<data12.length;i++){
+         if(managersTasks.includes(data12[i].task)){
+            const container=document.getElementById(data12[i].task);
+            const toadd=document.createElement("p");
+            toadd.innerHTML=`
+            <strong>${data12[i].staff}</strong>: ${data12[i].total_time} minutes
+            `
+            container.appendChild(toadd);
+         }
+     }
+
 }
 
 //takes in the arr of data,manager and outputs an arr of tasks that the manager has created
@@ -105,6 +121,7 @@ function getTasks(manager,json){
 }
 
 renderTasks(manager);
+
 
 //function makes sure that task doesnt already exist
 //takes in arr of objects and a task
@@ -147,7 +164,6 @@ function existsAssignment(json,task,staff){
     return 1; //doesnt exist
 }
 //adds assignment
-const b=document.getElementById("adsk")
 assignment.addEventListener('submit', async event => {
     event.preventDefault();
     const task=document.getElementById("taskdrop").value;
