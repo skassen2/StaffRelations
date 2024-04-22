@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="manager_task.css">
+    <script src="manager_task.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <section class="container">
+            <h1>Staff Relations</h1>
+            <br>
+            <h2>Manager - Task List</h2>
+        </section>
+        <img src="logo/logo1.png" id="logo" alt="Logo Image" width="135" height="130">
+    </header>
+
+    <main>
+        <section class="grid-container">
+            <article id="staffList" class="grid-container">
+            </article>
+        </section>
+
+        
+        <section class="container">
+            <form id="taskform">
+                <input type="text" id="task" placeholder="Task" required>
+                <!-- input field ensures only int>=1 can be entered -->
+                <input type="number" id="est_time"  placeholder="Estimated time in minutes" required min="1">
+                <textarea id="description" placeholder="Descr iption" rows="6" required></textarea>
+                <br>
+                <button id="addtask">Add task</button>
+            </form>
+            <form id="assignment">
+                <select id="taskdrop" class="dropdown" required>
+                    <option value="" disabled selected>Select task</option>
+                </select><br>
+                <!-- input field ensures only int>=1 can be entered -->
+                <select id="staffdrop"  class="dropdown" required>
+                    <option value="" disabled selected>Select a staff member</option>
+                </select>
+                <br>
+                <button id="adsk">Add assignment</button>
+            </form>
+        </section>
+    </main> 
+
+    <footer>
+        <p>&copy; 2024 Staff Relations Management. All rights reserved.</p>
+    </footer>
+
+
+    
+</body>
+</html>

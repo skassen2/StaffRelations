@@ -29,8 +29,35 @@
     }
   },
   "entities": {
+    "Tasks": {
+      "source": "dbo.tasks",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
     "Users": {
       "source": "dbo.Users",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "Assignment": {
+      "source": "dbo.assignment",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "Time": {
+      "source": "dbo.time",
       "permissions": [
         {
           "actions": ["*"],
