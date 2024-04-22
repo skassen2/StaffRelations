@@ -29,6 +29,15 @@
     }
   },
   "entities": {
+    "Tasks": {
+      "source": "dbo.tasks",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
     "Users": {
       "source": "dbo.Users",
       "permissions": [
