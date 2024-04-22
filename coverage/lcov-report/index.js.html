@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.76% </span>
+                <span class="strong">13.95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/34</span>
+                <span class='fraction'>6/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.76% </span>
+                <span class="strong">13.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/34</span>
+                <span class='fraction'>6/43</span>
             </div>
         
             
@@ -123,7 +123,28 @@
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -144,15 +165,31 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,9 +218,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const CALLBACK_URL = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/temp.html';
+const CALLBACK_URL1 = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/manager_list.html';
+const CALLBACK_URL2 = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/hr_list.html';
 &nbsp;
 async function <span class="fstat-no" title="function not covered" >login(</span>){
     //calls checkLog to check if username and password is correct
@@ -202,22 +242,38 @@ async function <span class="fstat-no" title="function not covered" >login(</span
         }
         else{
 <span class="cstat-no" title="statement not covered" >            alert.textContent="loging in...";</span>
-            let role=<span class="cstat-no" title="statement not covered" >await getRole(input1Value);</span>
+            let data=<span class="cstat-no" title="statement not covered" >await getUserInfo(input1Value);</span>
+            let role=<span class="cstat-no" title="statement not covered" >data.role;</span>
 <span class="cstat-no" title="statement not covered" >            console.log(role);</span>
             //direct to staff,manager,hr page
             // Set the data in localStorage
-<span class="cstat-no" title="statement not covered" >            localStorage.setItem('data',input1Value );</span>
-<span class="cstat-no" title="statement not covered" >            localStorage.setItem('role',role );</span>
+<span class="cstat-no" title="statement not covered" >            localStorage.setItem('username',data.username );</span>
+<span class="cstat-no" title="statement not covered" >            localStorage.setItem('role',data.role );</span>
+<span class="cstat-no" title="statement not covered" >            localStorage.setItem('name',data.name );</span>
+<span class="cstat-no" title="statement not covered" >            localStorage.setItem('surname',data.surname );</span>
+<span class="cstat-no" title="statement not covered" >            if(role=="Staff"){</span>
+                //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&amp;response_type=code&amp;redirect_uri=${encodeURIComponent(CALLBACK_URL)}&amp;response_mode=query&amp;scope=openid profile email`;
+<span class="cstat-no" title="statement not covered" >                window.location.href = "temp.html";</span>
+            }
+            else <span class="cstat-no" title="statement not covered" >if(role=="Manager"){</span>
+               //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&amp;response_type=code&amp;redirect_uri=${encodeURIComponent(CALLBACK_URL1)}&amp;response_mode=query&amp;scope=openid profile email`;
+<span class="cstat-no" title="statement not covered" >                window.location.href = "manager_list.html";</span>
+            }
+            else{
+                //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&amp;response_type=code&amp;redirect_uri=${encodeURIComponent(CALLBACK_URL2)}&amp;response_mode=query&amp;scope=openid profile email`;
+<span class="cstat-no" title="statement not covered" >                window.location.href = "hr_list.html";</span>
+            }
             // Navigate to the second page
-<span class="cstat-no" title="statement not covered" >            window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&amp;response_type=code&amp;redirect_uri=${encodeURIComponent(CALLBACK_URL)}&amp;response_mode=query&amp;scope=openid profile email`;</span>
+            //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&amp;response_type=code&amp;redirect_uri=${encodeURIComponent(CALLBACK_URL)}&amp;response_mode=query&amp;scope=openid profile email`;
         }
     } else {
-<span class="cstat-no" title="statement not covered" >    console.log("Please fill in both input fields.");</span>
+<span class="cstat-no" title="statement not covered" >        alert.textContent="Please fill in both input fields.";</span>
+        //console.log("Please fill in both input fields.");
     }
 }
 &nbsp;
 async function checkLogin(username,password){
-    const endpoint = `/data-api/rest/Users`;
+    const endpoint = `../data-api/rest/Users`;
     const response = await fetch(endpoint);
     const result = <span class="cstat-no" title="statement not covered" >await response.json();</span>
     const data=<span class="cstat-no" title="statement not covered" >result.value;</span>
@@ -235,22 +291,23 @@ async function checkLogin(username,password){
 <span class="cstat-no" title="statement not covered" >    return -1 </span>//username not found
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >getRole(</span>user){
+async function <span class="fstat-no" title="function not covered" >getUserInfo(</span>user){
     const endpoint = <span class="cstat-no" title="statement not covered" >`/data-api/rest/Users/username`;</span>
     const response = <span class="cstat-no" title="statement not covered" >await fetch(`${endpoint}/${user}`);</span>
     const result = <span class="cstat-no" title="statement not covered" >await response.json();</span>
-    const data=<span class="cstat-no" title="statement not covered" >result.value[0].role;</span>
+    const data=<span class="cstat-no" title="statement not covered" >result.value[0];</span>
 <span class="cstat-no" title="statement not covered" >    return data;</span>
 }
 &nbsp;
-module.exports = {login, checkLogin, getRole};</pre></td></tr></table></pre>
+//required for testing --&gt; need to export functions in order to access them
+module.exports = {login, checkLogin, getUserInfo};</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-14T13:33:51.212Z
+                at 2024-04-22T10:28:44.738Z
             </div>
         <script src="prettify.js"></script>
         <script>

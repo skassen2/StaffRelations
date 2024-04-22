@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "start": "sirv ./src public --cors --single --no-clear --port 8000",
-    "test": "jest --coverage --passWithNoTests" 
+    "test": "jest --coverage --passWithNoTests"
   },
   "dependencies": {
     "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
