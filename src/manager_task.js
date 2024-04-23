@@ -60,7 +60,7 @@ async function renderTasks(manager){
             <hr width="90%" align="center"/>
             <p id="${entry.task}"><p/>
             <hr width="90%" align="center"/>
-            <h3>Total Time: 0 minutes<h3/>
+            <p id="${entry.task}time" sum="0"><p/>
         `;
         staffList.appendChild(task);
     });
@@ -103,7 +103,13 @@ async function renderTasks(manager){
             toadd.innerHTML=`
             <strong>${data12[i].staff}</strong>: ${data12[i].total_time} minutes
             `
+            //updates the time to give total time on each tile
             container.appendChild(toadd);
+            const e=document.getElementById(data12[i].task+"time");
+            const c=document.getElementById(data12[i].task+"time").getAttribute("sum");
+            let sum=parseInt(c)+data12[i].total_time;
+            const a=e.setAttribute("sum",sum);
+            e.innerHTML=`<bold>Total Time:<bold/> ${sum} minutes`;
          }
      }
 
@@ -210,7 +216,7 @@ assignment.addEventListener('submit', async event => {
 });
 
 
-/*test taskNameValid, getTasks will use[
+/*test existsAssignment,getManagersTasks,getStaff,taskNameValid,getTasks will use[
     {
         "task_id": 1,
         "manager": "keren",
