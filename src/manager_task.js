@@ -215,7 +215,8 @@ assignment.addEventListener('submit', async event => {
     //add entry in time table with 0 minutes
 });
 
-
+//exports functions to be used for testing
+module.exports = {renderTasks, existsAssignment, taskNameValid, getManagersTasks, getStaff, getTasks};
 /*test existsAssignment,getManagersTasks,getStaff,taskNameValid,getTasks will use[
     {
         "task_id": 1,

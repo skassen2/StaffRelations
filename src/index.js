@@ -10,7 +10,7 @@ async function login(){
 
     if (input1Value !== '' && input2Value !== '') {
         let check=await checkLogin(input1Value,input2Value);
-        console.log(check);
+        //console.log(check);
         if(check==-1){
             alert.textContent="Invalid username";
         }
