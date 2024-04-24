@@ -1,6 +1,9 @@
 body {
     --color-primary: #009579;
     --color-primary-dark: #007f67;
+    --color-secondary: #252c6a;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
     --border-raduis: 4px;
     
     font-family: Arial, sans-serif;
@@ -9,9 +12,7 @@ body {
 }
 
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 85%; 
+    width: 80%;
     margin: 0 auto;
     margin-bottom: 20px;
     text-wrap: wrap;
@@ -37,53 +38,83 @@ header h2 {
     font-size: 24px;
 }
 
+#logo {
+    align-items: center;
+}
+
 main {
     padding: 20px 0;
 }
 
-footer{
+footer {
     display: flex;
     background-color: var(--color-primary);
     color: black;
     position: fixed;
     padding: 0px 0px 0px 0px;
-    width:100%;
+    width: 100%;
     height: 30px;
     bottom: 0;
     justify-content: center;
     align-items: center;
 }
 
+button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: var(--border-raduis);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.2);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
     margin-bottom: 15px;
     padding: 0 30px;
 }
 
-#tasksList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.staff-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-#tasksList li {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
+.staff-card h2 {
+    margin-top: 0;
+}
+
+.staff-card p {
     margin-bottom: 10px;
 }
 
-#tasksList li:last-child {
-    margin-bottom: 0;
+.staff-details {
+    font-size: 14px; /* Adjust font size */
+    color: #666; /* Adjust color */
+    margin-top: 10px; /* Add margin top */
+}
+.staff-details p {
+    margin: 5px 0; /* Adjust margin */
 }
 
-#tasksList li:hover {
-    background-color: #e0e0e0;
-    cursor: pointer;
+.staff-details p span {
+    font-weight: bold;
 }
 
-#tasksList li p {
-    margin: 0;
-}
+
