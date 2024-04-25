@@ -81,10 +81,10 @@ async function renderTasks() {
             taskDetails.appendChild(assignedBy);
             
             const estimatedTime = document.createElement('p');
-            estimatedTime.innerHTML = `<span>Estimated Time:</span> ${task.est_time} hours`;
+            estimatedTime.innerHTML = `<span>Estimated Time:</span> ${task.est_time} minutes`;
             taskDetails.appendChild(estimatedTime);
             
-            const timeSpentText = timeSpent ? `<span>Time Spent:</span> ${timeSpent.total_time} hours` : '<span>Time Spent:</span> 0.00 hours';
+            const timeSpentText = timeSpent ? `<span>Time Spent:</span> ${timeSpent.total_time} minutes` : '<span>Time Spent:</span> 0.00 minutes';
             const timeSpentElement = document.createElement('p');
             timeSpentElement.innerHTML = timeSpentText;
             taskDetails.appendChild(timeSpentElement);
@@ -92,6 +92,49 @@ async function renderTasks() {
 
             // Add the task card to the tasks list
             tasksList.appendChild(taskCard);
+
+            //add tasks to dropdown
+            const dropdownTask1=document.getElementById("taskdrop");
+            var option = document.createElement("option");
+            option.text = task.task;
+            option.value = task.task;
+            dropdownTask1.add(option);
+            
+        }
+    }
+}
+
+//function to submit all manual time
+manualtime.addEventListener('submit', async event=>{
+    event.preventDefault();
+    const task=document.getElementById("taskdrop").value;
+    const time=document.getElementById("time").value;
+    console.log(task);
+
+    const staff = localStorage.getItem('username');
+    const data=await fetchTimeSpent();
+    const id_and_time=getIDTotalTimeFromTaskStaff(data,task,staff);
+    
+    //update time in db
+    const total_time=id_and_time[1]+parseFloat(time);
+    const toadd={
+        task:task,
+        staff:staff,
+        total_time:total_time,
+    }
+    const endpoint = '/data-api/rest/Time/id';
+    const response = await fetch(`${endpoint}/${id_and_time[0]}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(toadd)
+    });
+    window.location.reload(); 
+});
+//function that takes a json of time table and task and staff and returns id that needs to be updated
+function getIDTotalTimeFromTaskStaff(json,task,staff){
+    for(const obj of json){
+        if(obj.staff==staff && obj.task==task){
+            return [obj.id,obj.total_time];
         }
     }
 }
