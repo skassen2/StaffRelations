@@ -1,4 +1,4 @@
-const staffList = document.getElementById('staffList');
+
 
 let staffs = [
     {
@@ -23,10 +23,10 @@ let staffs = [
         "role": "Staff"
     }
 ]
-
+const staffList = document.getElementById('staffList');
 staffList.innerHTML = '';
 renderStaffList();
-
+const staffForm = document.getElementById('staffForm');
 staffForm.addEventListener('submit', event => {
     event.preventDefault();
     const name = document.getElementById('name').value;
@@ -93,3 +93,6 @@ async function getStaffManager(){
     })
     return data;
 }
+
+//expor fucntions for testing
+module.exports = {getStaffManager, renderStaffList};

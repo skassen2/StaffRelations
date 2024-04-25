@@ -21,7 +21,7 @@ async function login(){
             alert.textContent="loging in...";
             let data=await getUserInfo(input1Value);
             let role=data.role;
-            console.log(role);
+            //console.log(role);
             //direct to staff,manager,hr page
             // Set the data in localStorage
             localStorage.setItem('username',data.username );

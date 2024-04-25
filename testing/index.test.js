@@ -7,7 +7,6 @@ beforeEach(() => {
     //reseting fetch mocks before each new fetch
     fetch.resetMocks();
     //setting up innerHTML before each test so that DOM can be tested.
-    //note: try test this with only needed HTML elements 
     document.body.innerHTML = '<section class="container">'+
     '<form class="form" id="login">'+
         '<h1 class="form__title">Login</h1>'+
@@ -27,6 +26,7 @@ beforeEach(() => {
 });
 
 test ('Test VALID login using checkLogin()', async () => {
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -37,12 +37,13 @@ test ('Test VALID login using checkLogin()', async () => {
     const user = "skassen2";
     const pass = "ekse";
     const loginCred = await login.checkLogin(user, pass);
-    expect(loginCred).toBe(1);
+    expect(loginCred).toBe(1); //correct user login recieves code 1
 
 
 });
 
 test ('Test INVALID login, wrong password using checkLogin()', async () => {
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -53,12 +54,13 @@ test ('Test INVALID login, wrong password using checkLogin()', async () => {
     const user = "skassen2";
     const pass = "ek";
     const loginCred = await login.checkLogin(user, pass);
-    expect(loginCred).toBe(0);
+    expect(loginCred).toBe(0); //incorrect password recieves code 0
 
 
 });
 
 test ('Test INVALID login, wrong username using checkLogin()', async () => {
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -69,12 +71,32 @@ test ('Test INVALID login, wrong username using checkLogin()', async () => {
     const user = "skassen";
     const pass = "ekse";
     const loginCred = await login.checkLogin(user, pass);
-    expect(loginCred).toBe(-1);
+    expect(loginCred).toBe(-1);  //incorrect username recieves code -1
 
 
 });
 
+test ('Test INVALID login, wrong username and password using checkLogin()', async () => {
+    //mock fetch response
+    fetch.mockResponseOnce(JSON.stringify({
+        value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
+        {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
+        {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
+        {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'},
+        {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
+    }));
+    const user = "skassen";
+    const pass = "ek";
+    const loginCred = await login.checkLogin(user, pass);
+    expect(loginCred).toBe(-1); //incorrect username recieves code -1
+
+
+
+});
+
+
 test ('Test whether getUserInfo() returns the correct data', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({ value : [{ 
             "username": "skassen2", 
             "name": "Shaneel",
@@ -86,6 +108,7 @@ test ('Test whether getUserInfo() returns the correct data', async () =>{
         }));
     const user = "skassen2";
     const userInfo = await login.getUserInfo(user);
+    //expect correct details to be returned for a user
     expect(userInfo).toEqual({
     "username": "skassen2",
     "name": "Shaneel",
@@ -93,12 +116,9 @@ test ('Test whether getUserInfo() returns the correct data', async () =>{
     "password": "ekse",
     "role": "Staff",
     "email": "2539340@students.wits.ac.za"
-    });
+    }); 
 
 });
-
-//test null?
-//test right url fetched?
 
 test('Test Login() where no user input is given, expect to be alerted to fill in user details', async () =>{
 
@@ -108,7 +128,7 @@ test('Test Login() where no user input is given, expect to be alerted to fill in
     input2Value.value = '';
     login.login();
     const alert=document.getElementById('alert');
-    expect(alert.textContent).toBe('Please fill in both input fields.');
+    expect(alert.textContent).toBe('Please fill in both input fields.'); //alert should have this text
 
 });
 
@@ -120,7 +140,7 @@ test('Test Login() where only username is given, expect to be alerted to fill in
     input2Value.value = '';
     login.login();
     const alert=document.getElementById('alert');
-    expect(alert.textContent).toBe('Please fill in both input fields.');
+    expect(alert.textContent).toBe('Please fill in both input fields.'); //alert should have this text
 
 });
 
@@ -132,11 +152,12 @@ test('Test Login() where only password is given, expect to be alerted to fill in
     input2Value.value = 'ekse';
     login.login();
     const alert=document.getElementById('alert');
-    expect(alert.textContent).toBe('Please fill in both input fields.');
+    expect(alert.textContent).toBe('Please fill in both input fields.'); //alert should have this text
 
 });
 
 test('Test Login() where incorrect username is given, expect to be alerted that username is invalid', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -150,12 +171,13 @@ test('Test Login() where incorrect username is given, expect to be alerted that 
     input2Value.value = 'ekse';
     return login.login().then(data => {
         const alert=document.getElementById('alert');
-        expect(alert.textContent).toBe('Invalid username');
+        expect(alert.textContent).toBe('Invalid username'); //alert should have this text
     });
     
 });
 
 test('Test Login() where incorrect password is given, expect to be alerted that password is incorrect', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -169,12 +191,13 @@ test('Test Login() where incorrect password is given, expect to be alerted that 
     input2Value.value = 'ek';
     return login.login().then(data => {
         const alert=document.getElementById('alert');
-        expect(alert.textContent).toBe('Incorrect password');
+        expect(alert.textContent).toBe('Incorrect password'); //alert should have this text
     });
     
 });
 
 test('Test Login() where VALID login is given for staff, expect to be alerted that you are logging in', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -189,19 +212,26 @@ test('Test Login() where VALID login is given for staff, expect to be alerted th
         "role": "Staff",
         "email": "2539340@students.wits.ac.za"
     }]}));
+
+    Object.defineProperty(window, 'location', {
+        value: {
+          href: 'staff_task.html' 
+        }
+      });
     const input1Value = document.getElementById('username');
     const input2Value = document.getElementById('password');
     input1Value.value = 'skassen2';
     input2Value.value = 'ekse';
     return login.login().then(data => {
         const alert=document.getElementById('alert');
-        expect(alert.textContent).toBe('loging in...'); 
-        
+        expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        expect(window.location.href).toBe('staff_task.html');
     });
     
 });
 
 test('Test Login() where VALID login is given for manager, expect to be alerted that you are logging in', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -216,19 +246,25 @@ test('Test Login() where VALID login is given for manager, expect to be alerted 
         "role": "Manager",
         "email": "2539340@students.wits.ac.za"
     }]}));
+    Object.defineProperty(window, 'location', {
+        value: {
+          href: 'manager_list.html' 
+        }
+      });
     const input1Value = document.getElementById('username');
     const input2Value = document.getElementById('password');
     input1Value.value = 'skassen2';
     input2Value.value = 'ekse';
     return login.login().then(data => {
         const alert=document.getElementById('alert');
-        expect(alert.textContent).toBe('loging in...'); 
-        
+        expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        expect(window.location.href).toBe('manager_list.html');
     });
     
 });
 
 test('Test Login() where VALID login is given for HR, expect to be alerted that you are logging in', async () =>{
+    //mock fetch response
     fetch.mockResponseOnce(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -243,14 +279,19 @@ test('Test Login() where VALID login is given for HR, expect to be alerted that 
         "role": "HR",
         "email": "2539340@students.wits.ac.za"
     }]}));
+    Object.defineProperty(window, 'location', {
+        value: {
+          href: 'hr_list.html' 
+        }
+      });
     const input1Value = document.getElementById('username');
     const input2Value = document.getElementById('password');
     input1Value.value = 'skassen2';
     input2Value.value = 'ekse';
     return login.login().then(data => {
         const alert=document.getElementById('alert');
-        expect(alert.textContent).toBe('loging in...'); 
-        
+        expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        expect(window.location.href).toBe('hr_list.html');
     });
     
 });

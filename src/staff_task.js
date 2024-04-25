@@ -108,3 +108,6 @@ function stopStopwatch(stopwatchElement) {
 
 // Call renderTasks function when the page loads
 renderTasks();
+
+//export functions for testing
+
