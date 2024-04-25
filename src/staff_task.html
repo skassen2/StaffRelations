@@ -19,6 +19,18 @@
     <main>
         <section class="grid-container" id="tasksList"> <!-- Updated class name -->
         </section>
+
+        <section class="container">
+            <form id="manualtime">
+                <select id="taskdrop" class="dropdown" required>
+                    <option value="" disabled selected>Select task</option>
+                </select><br>
+                <!-- input field ensures only int>=1 can be entered -->
+                <input type="number" id="time"  placeholder="Time spent on task in minutes" required min="1">
+                <br>
+                <button id="addManualTime">Add time</button>
+            </form>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 Staff Relations Management. All rights reserved.</p>

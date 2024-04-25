@@ -91,10 +91,10 @@ async function renderTasks(manager){
       });
 
      //add each staff to the right task with num minutes worked
-     const endpoint12 = `/data-api/rest/Time`;
-     const response12 = await fetch(endpoint12);
-     const result12=await response12.json();
-     let data12=result12.value;
+    const endpoint12 = `/data-api/rest/Time`;
+    const response12 = await fetch(endpoint12);
+    const result12=await response12.json();
+    let data12=result12.value;
      console.log(data12);
      for(i=0;i<data12.length;i++){
          if(managersTasks.includes(data12[i].task)){
@@ -109,7 +109,7 @@ async function renderTasks(manager){
             const c=document.getElementById(data12[i].task+"time").getAttribute("sum");
             let sum=parseInt(c)+data12[i].total_time;
             const a=e.setAttribute("sum",sum);
-            e.innerHTML=`<bold>Total Time:<bold/> ${sum} minutes`;
+            e.textContent=`Total Time: ${sum} minutes`;
          }
      }
 

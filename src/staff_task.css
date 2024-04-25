@@ -117,4 +117,56 @@ button:active {
     font-weight: bold;
 }
 
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 85%; 
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-wrap: wrap;
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+
+input[type="text"]:focus {
+    border-color: var(--color-primary);
+}
+
+input[type="number"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+
+input[type="number"]:focus {
+    border-color: var(--color-primary);
+}
+
+.dropdown{
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+.dropdown:focus {
+    border-color: var(--color-primary);
+}
 
