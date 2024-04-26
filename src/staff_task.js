@@ -9,6 +9,7 @@ async function fetchAssignments() {
     const response = await fetch(endpoint);
     const assignments = await response.json();
     return assignments.value;
+
 }
 
 // Fetch all tasks
@@ -109,7 +110,7 @@ manualtime.addEventListener('submit', async event=>{
     event.preventDefault();
     const task=document.getElementById("taskdrop").value;
     const time=document.getElementById("time").value;
-    console.log(task);
+    //console.log(task);
 
     const staff = localStorage.getItem('username');
     const data=await fetchTimeSpent();
@@ -140,7 +141,7 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
 }
 
 // Function to start the stopwatch (if needed)
-function startStopwatch(stopwatchElement) {
+/*function startStopwatch(stopwatchElement) {
     // Implement if needed
 }
 
@@ -149,8 +150,8 @@ function stopStopwatch(stopwatchElement) {
     // Implement if needed
 }
 
-// Call renderTasks function when the page loads
+// Call renderTasks function when the page loads*/
 renderTasks();
 
 //export functions for testing
-
+module.exports = {renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};

@@ -46,7 +46,7 @@ async function renderTasks(manager){
     const response = await fetch(endpoint);
     const result=await response.json();
     let data=result.value;
-    console.log(data);
+    //console.log(data);
     data= getTasks(manager,data);
 
     //renders here
@@ -179,6 +179,7 @@ assignment.addEventListener('submit', async event => {
     const res = await fetch(end);
     const result=await res.json();
     let d=result.value;
+    console.log(d);
     const check=existsAssignment(d,task,staff);
     if(check==1){
         const data={
@@ -210,8 +211,6 @@ assignment.addEventListener('submit', async event => {
         alert("The asssignment already exists");
     }
     
-    
-
     //add entry in time table with 0 minutes
 });
 

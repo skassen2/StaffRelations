@@ -83,3 +83,6 @@ async function getStaff(){
     })
     return data;
 }
+
+//export functions for testing
+module.exports = {getStaff, renderStaffList};

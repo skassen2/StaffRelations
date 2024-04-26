@@ -1,5 +1,3 @@
-
-
 let staffs = [
     {
         "name": "Jaedon",
@@ -83,7 +81,7 @@ async function renderStaffList() {
 async function getStaffManager(){
     const data=[]
     const endpoint = `/data-api/rest/Users`;
-    const response = await fetch(`${endpoint}`);
+    const response = await fetch(endpoint);
     const result = await response.json();
     const toadd=result.value;
     toadd.forEach((person)=>{
@@ -94,5 +92,5 @@ async function getStaffManager(){
     return data;
 }
 
-//expor fucntions for testing
+//export fucntions for testing
 module.exports = {getStaffManager, renderStaffList};
