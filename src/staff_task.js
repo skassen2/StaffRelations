@@ -130,6 +130,11 @@ async function renderTasks() {
 
 // Function to start the stopwatch
 function startStopwatch(stopwatchElement) {
+    if (stopwatchElement.dataset.intervalId) {
+        alert("Only one stopwatch can run at a time.");
+        return;
+    }
+
     let seconds = 0;
     const interval = setInterval(() => {
         seconds++;
@@ -145,13 +150,29 @@ function startStopwatch(stopwatchElement) {
 
 // Function to stop the stopwatch
 function stopStopwatch(stopwatchElement) {
+    if (!stopwatchElement.dataset.intervalId) {
+        alert("Timer must be started before being stopped.");
+        return;
+    }
+
     const intervalId = stopwatchElement.dataset.intervalId;
     clearInterval(intervalId);
+    delete stopwatchElement.dataset.intervalId;
 }
 
 // Function to log time recorded on stopwatch rounded up to the minute
 async function logStopwatchTime(stopwatchElement) {
+    if (stopwatchElement.dataset.intervalId) {
+        alert("Timer must be stopped before being logged.");
+        return;
+    }
+
     const time = stopwatchElement.textContent;
+    if (time === '00:00:00') {
+        alert("Nothing to log.");
+        return;
+    }
+
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
 
@@ -180,7 +201,6 @@ async function logStopwatchTime(stopwatchElement) {
 
     window.location.reload();
 }
-
 
 // Call renderTasks function when the page loads
 renderTasks();
