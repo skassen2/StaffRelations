@@ -4,7 +4,7 @@ body {
     --color-secondary: #252c6a;
     --color-error: #cc3333;
     --color-success: #4bb544;
-    --border-raduis: 4px;
+    --border-radius: 4px;
     
     font-family: Arial, sans-serif;
     margin: 0;
@@ -68,7 +68,7 @@ button {
     margin-bottom: 1%;
     margin-left: 0.5%;
     margin-right: 0.5%;
-    border-radius: var(--border-raduis);
+    border-radius: var(--border-radius);
     cursor: pointer;
 }
 
@@ -170,3 +170,11 @@ input[type="number"]:focus {
     border-color: var(--color-primary);
 }
 
+.stopwatch {
+    font-size: 24px; /* Adjust font size */
+    margin-top: 10px; /* Add margin top */
+    text-align: center; /* Center align the stopwatch */
+    border: 2px solid #009579; /* Add border */
+    padding: 10px; /* Add padding */
+    border-radius: 5px; /* Add border radius */
+}
