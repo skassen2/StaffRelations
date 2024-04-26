@@ -90,6 +90,30 @@ async function renderTasks() {
             taskDetails.appendChild(timeSpentElement);
             taskCard.appendChild(taskDetails);
 
+            // Create stopwatch element
+            const stopwatch = document.createElement('div');
+            stopwatch.classList.add('stopwatch');
+            stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+            taskCard.appendChild(stopwatch);
+
+            // Start button for stopwatch
+            const startButton = document.createElement('button');
+            startButton.textContent = 'Start';
+            startButton.addEventListener('click', () => startStopwatch(stopwatch));
+            taskCard.appendChild(startButton);
+
+            // Stop button for stopwatch
+            const stopButton = document.createElement('button');
+            stopButton.textContent = 'Stop';
+            stopButton.addEventListener('click', () => stopStopwatch(stopwatch));
+            taskCard.appendChild(stopButton);
+
+            // Button to log time recorded on stopwatch rounded up to the minute
+            const logTimeButton = document.createElement('button');
+            logTimeButton.textContent = 'Log Time';
+            logTimeButton.addEventListener('click', () => logStopwatchTime(stopwatch));
+            taskCard.appendChild(logTimeButton);
+
             // Add the task card to the tasks list
             tasksList.appendChild(taskCard);
 
@@ -103,6 +127,38 @@ async function renderTasks() {
         }
     }
 }
+
+// Function to start the stopwatch
+function startStopwatch(stopwatchElement) {
+    let seconds = 0;
+    const interval = setInterval(() => {
+        seconds++;
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secondsDisplay = seconds % 60;
+        stopwatchElement.textContent = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${secondsDisplay < 10 ? '0' : ''}${secondsDisplay}`;
+    }, 1000);
+
+    // Store interval ID to stop it later
+    stopwatchElement.dataset.intervalId = interval;
+}
+
+// Function to stop the stopwatch
+function stopStopwatch(stopwatchElement) {
+    const intervalId = stopwatchElement.dataset.intervalId;
+    clearInterval(intervalId);
+}
+
+// Function to log time recorded on stopwatch rounded up to the minute
+function logStopwatchTime(stopwatchElement) {
+    const time = stopwatchElement.textContent;
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
+    console.log(`Time recorded: ${totalMinutes} minutes`);
+}
+
+// Call renderTasks function when the page loads
+renderTasks();
 
 //function to submit all manual time
 manualtime.addEventListener('submit', async event=>{
@@ -138,16 +194,3 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
         }
     }
 }
-
-// Function to start the stopwatch (if needed)
-function startStopwatch(stopwatchElement) {
-    // Implement if needed
-}
-
-// Function to stop the stopwatch (if needed)
-function stopStopwatch(stopwatchElement) {
-    // Implement if needed
-}
-
-// Call renderTasks function when the page loads
-renderTasks();
