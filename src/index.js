@@ -22,7 +22,7 @@ async function login(){
             let data=await getUserInfo(input1Value);
             let role=data.role;
             console.log(role);
-            //direct to staff,manager,hr page
+            //direct to staff,manager,hr dashboard page
             // Set the data in localStorage
             localStorage.setItem('username',data.username );
             localStorage.setItem('role',data.role );
@@ -30,15 +30,15 @@ async function login(){
             localStorage.setItem('surname',data.surname );
             if(role=="Staff"){
                 //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&response_mode=query&scope=openid profile email`;
-                window.location.href = "temp.html";
+                window.location.href = "staff_dash.html";
             }
             else if(role=="Manager"){
                 //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL1)}&response_mode=query&scope=openid profile email`;
-                window.location.href = "manager_list.html";
+                window.location.href = "manager_dash.html";
             }
             else{
                 //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL2)}&response_mode=query&scope=openid profile email`;
-                window.location.href = "hr_list.html";
+                window.location.href = "hr_dash.html";
             }
             // Navigate to the second page
             //window.location.href = `https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&response_mode=query&scope=openid profile email`;
