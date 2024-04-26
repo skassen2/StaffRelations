@@ -150,12 +150,37 @@ function stopStopwatch(stopwatchElement) {
 }
 
 // Function to log time recorded on stopwatch rounded up to the minute
-function logStopwatchTime(stopwatchElement) {
+async function logStopwatchTime(stopwatchElement) {
     const time = stopwatchElement.textContent;
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
-    console.log(`Time recorded: ${totalMinutes} minutes`);
+
+    const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
+    const staff = localStorage.getItem('username');
+    
+    const data = await fetchTimeSpent();
+    const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
+
+    // Calculate new total time
+    const newTotalTime = currentTotalTime + totalMinutes;
+
+    // Update time in database
+    const newData = {
+        task: taskName,
+        staff: staff,
+        total_time: newTotalTime,
+    };
+
+    const endpoint = '/data-api/rest/Time/id';
+    const response = await fetch(`${endpoint}/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+    });
+
+    window.location.reload();
 }
+
 
 // Call renderTasks function when the page loads
 renderTasks();
