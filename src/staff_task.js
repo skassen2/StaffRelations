@@ -91,6 +91,30 @@ async function renderTasks() {
             taskDetails.appendChild(timeSpentElement);
             taskCard.appendChild(taskDetails);
 
+            // Create stopwatch element
+            const stopwatch = document.createElement('div');
+            stopwatch.classList.add('stopwatch');
+            stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+            taskCard.appendChild(stopwatch);
+
+            // Start button for stopwatch
+            const startButton = document.createElement('button');
+            startButton.textContent = 'Start';
+            startButton.addEventListener('click', () => startStopwatch(stopwatch));
+            taskCard.appendChild(startButton);
+
+            // Stop button for stopwatch
+            const stopButton = document.createElement('button');
+            stopButton.textContent = 'Stop';
+            stopButton.addEventListener('click', () => stopStopwatch(stopwatch));
+            taskCard.appendChild(stopButton);
+
+            // Button to log time recorded on stopwatch rounded up to the minute
+            const logTimeButton = document.createElement('button');
+            logTimeButton.textContent = 'Log Time';
+            logTimeButton.addEventListener('click', () => logStopwatchTime(stopwatch));
+            taskCard.appendChild(logTimeButton);
+
             // Add the task card to the tasks list
             tasksList.appendChild(taskCard);
 
@@ -104,6 +128,83 @@ async function renderTasks() {
         }
     }
 }
+
+// Function to start the stopwatch
+function startStopwatch(stopwatchElement) {
+    if (stopwatchElement.dataset.intervalId) {
+        alert("Only one stopwatch can run at a time.");
+        return;
+    }
+
+    let seconds = 0;
+    const interval = setInterval(() => {
+        seconds++;
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secondsDisplay = seconds % 60;
+        stopwatchElement.textContent = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${secondsDisplay < 10 ? '0' : ''}${secondsDisplay}`;
+    }, 1000);
+
+    // Store interval ID to stop it later
+    stopwatchElement.dataset.intervalId = interval;
+}
+
+// Function to stop the stopwatch
+function stopStopwatch(stopwatchElement) {
+    if (!stopwatchElement.dataset.intervalId) {
+        alert("Timer must be started before being stopped.");
+        return;
+    }
+
+    const intervalId = stopwatchElement.dataset.intervalId;
+    clearInterval(intervalId);
+    delete stopwatchElement.dataset.intervalId;
+}
+
+// Function to log time recorded on stopwatch rounded up to the minute
+async function logStopwatchTime(stopwatchElement) {
+    if (stopwatchElement.dataset.intervalId) {
+        alert("Timer must be stopped before being logged.");
+        return;
+    }
+
+    const time = stopwatchElement.textContent;
+    if (time === '00:00:00') {
+        alert("Nothing to log.");
+        return;
+    }
+
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
+
+    const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
+    const staff = localStorage.getItem('username');
+    
+    const data = await fetchTimeSpent();
+    const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
+
+    // Calculate new total time
+    const newTotalTime = currentTotalTime + totalMinutes;
+
+    // Update time in database
+    const newData = {
+        task: taskName,
+        staff: staff,
+        total_time: newTotalTime,
+    };
+
+    const endpoint = '/data-api/rest/Time/id';
+    const response = await fetch(`${endpoint}/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+    });
+
+    window.location.reload();
+}
+
+// Call renderTasks function when the page loads
+renderTasks();
 
 //function to submit all manual time
 manualtime.addEventListener('submit', async event=>{
@@ -150,8 +251,8 @@ function stopStopwatch(stopwatchElement) {
     // Implement if needed
 }
 
-// Call renderTasks function when the page loads*/
-renderTasks();
+// Call renderTasks function when the page loads
+renderTasks();*/
 
 //export functions for testing
-module.exports = {renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};
+module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};

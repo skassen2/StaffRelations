@@ -64,6 +64,15 @@
           "role": "anonymous"
         }
       ]
+    },
+    "Feedback": {
+      "source": "dbo.feedback",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

@@ -5,7 +5,7 @@ body {
     --color-error: #cc3333;
     --color-success: #4bb544;
     --border-radius: 4px;
-    
+
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -15,11 +15,11 @@ body {
     width: 80%;
     margin: 0 auto;
     margin-bottom: 20px;
-    text-wrap: wrap;
 }
 
 header {
     display: flex;
+    margin: 0;
     background-color: #009579;
     color: black;
     padding: 20px 0;
@@ -38,21 +38,22 @@ header h2 {
     font-size: 24px;
 }
 
-#logo {
-    align-items: center;
+#logo{
+    padding-top: none;
+    align-items:center;
 }
-
 main {
     padding: 20px 0;
 }
 
-footer {
+footer{
     display: flex;
+    font: 500 1rem 'Quicksand',sans-serif;
     background-color: var(--color-primary);
     color: black;
     position: fixed;
     padding: 0px 0px 0px 0px;
-    width: 100%;
+    width:100%;
     height: 30px;
     bottom: 0;
     justify-content: center;
@@ -70,16 +71,39 @@ button {
     margin-right: 0.5%;
     border-radius: var(--border-radius);
     cursor: pointer;
+  }
+
+.btn-staff{
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: black solid 1px;
+    padding: 5px 5px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+.btn-staff:hover {
+    background-color: #ffffff;
+    transform: scale(1.2);
+  }
+
+.btn-staff:active {
+        transform: scale(0.98);
 }
 
-button:hover {
+  button:hover {
     background-color: var(--color-primary-dark);
     transform: scale(1.2);
-}
+  }
 
-button:active {
+  button:active {
     transform: scale(0.98);
-}
+  }
+
 
 .grid-container {
     display: grid;
@@ -89,92 +113,52 @@ button:active {
     padding: 0 30px;
 }
 
-.staff-card {
+.feedback-card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.staff-card h2 {
+.feedback-card h2 {
     margin-top: 0;
 }
 
-.staff-card p {
+.feedback-card p {
     margin-bottom: 10px;
 }
 
-.staff-details {
-    font-size: 14px; /* Adjust font size */
-    color: #666; /* Adjust color */
-    margin-top: 10px; /* Add margin top */
-}
-.staff-details p {
-    margin: 5px 0; /* Adjust margin */
-}
-
-.staff-details p span {
-    font-weight: bold;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 85%; 
-    margin: 0 auto;
-    margin-bottom: 20px;
-    text-wrap: wrap;
-}
-
-input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
+textarea {
+    width: 100%;
+    min-height: 150px; 
+    margin-bottom: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 15px;
     outline: none;
+    resize: none; /* Prevent resizing by dragging */
     background: #eeeeee;
 }
 
-input[type="text"]:focus {
+textarea:focus {
     border-color: var(--color-primary);
 }
 
-input[type="number"] {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 15px;
-    outline: none;
-    background: #eeeeee;
+#taskList {
+    display: block; 
 }
 
-input[type="number"]:focus {
-    border-color: var(--color-primary);
+#staffList {
+    display: block; 
 }
 
-.dropdown{
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 15px;
-    outline: none;
-    background: #eeeeee;
-}
-.dropdown:focus {
-    border-color: var(--color-primary);
+#buttonArea {
+    display: flex;
+    justify-content: right;
 }
 
-.stopwatch {
-    font-size: 24px; /* Adjust font size */
-    margin-top: 10px; /* Add margin top */
-    text-align: center; /* Center align the stopwatch */
-    border: 2px solid #009579; /* Add border */
-    padding: 10px; /* Add padding */
-    border-radius: 5px; /* Add border radius */
+#commentArea {
+    display: flex;
+    width: auto;
+    justify-content: right;
 }
