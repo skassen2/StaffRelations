@@ -61,7 +61,7 @@ async function renderTasks() {
             const timeSpent = filterTimeByTaskAndStaff(allTimeData, assignment.task, username);
 
             // Create task card element
-            const taskCard = document.createElement('div');
+            const taskCard = document.createElement('article');
             taskCard.classList.add('staff-card'); // Updated class name
 
             // Create header for task name
@@ -70,29 +70,29 @@ async function renderTasks() {
             taskCard.appendChild(taskNameHeader);
 
             // Create div for task details
-            const taskDetails = document.createElement('div');
+            const taskDetails = document.createElement('section');
             taskDetails.classList.add('staff-details');
             
             const description = document.createElement('p');
-            description.innerHTML = `<span>Description:</span> ${task.description}`;
+            description.innerHTML = `<b>Description:</b> ${task.description}`;
             taskDetails.appendChild(description);
             
             const assignedBy = document.createElement('p');
-            assignedBy.innerHTML = `<span>Assigned by:</span> ${task.manager}`;
+            assignedBy.innerHTML = `<b>Assigned by:</b> ${task.manager}`;
             taskDetails.appendChild(assignedBy);
             
             const estimatedTime = document.createElement('p');
-            estimatedTime.innerHTML = `<span>Estimated Time:</span> ${task.est_time} minutes`;
+            estimatedTime.innerHTML = `<b>Estimated Time:</b> ${task.est_time} minutes`;
             taskDetails.appendChild(estimatedTime);
             
-            const timeSpentText = timeSpent ? `<span>Time Spent:</span> ${timeSpent.total_time} minutes` : '<span>Time Spent:</span> 0.00 minutes';
+            const timeSpentText = timeSpent ? `<b>Time Spent:</b> ${timeSpent.total_time} minutes` : '<span>Time Spent:</span> 0.00 minutes';
             const timeSpentElement = document.createElement('p');
             timeSpentElement.innerHTML = timeSpentText;
             taskDetails.appendChild(timeSpentElement);
             taskCard.appendChild(taskDetails);
 
             // Create stopwatch element
-            const stopwatch = document.createElement('div');
+            const stopwatch = document.createElement('section');
             stopwatch.classList.add('stopwatch');
             stopwatch.textContent = '00:00:00'; // Initial stopwatch time
             taskCard.appendChild(stopwatch);
@@ -240,19 +240,6 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
         }
     }
 }
-
-// Function to start the stopwatch (if needed)
-/*function startStopwatch(stopwatchElement) {
-    // Implement if needed
-}
-
-// Function to stop the stopwatch (if needed)
-function stopStopwatch(stopwatchElement) {
-    // Implement if needed
-}
-
-// Call renderTasks function when the page loads
-renderTasks();*/
 
 //export functions for testing
 module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};
