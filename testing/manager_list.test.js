@@ -36,5 +36,20 @@ describe('Functions from manager_list', () => {
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
 
-    //note can test same as hr_list for renderStaffList
+    //error recieved because of appendchild test removed for now
+    /*test('Test renderStaffList(): document.createElement() has been called', async () =>{
+        const M = require('../src/manager_list.js');
+        document.createElement = jest.fn().mockReturnValue({
+            classList: {
+                add: jest.fn()
+            }
+        });
+        return M.renderStaffList().then(data => {
+            expect(document.createElement).toHaveBeenCalledWith('block');
+            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
+            // Clean up
+            document.createElement.mockRestore();
+        });
+     
+    });*/
 });

@@ -314,3 +314,4 @@ buttonArea.addEventListener('click', event => {
         // Handle errors in the main scope if needed
     }
 })();
+

@@ -53,11 +53,18 @@ describe('Functions from hr_list', () => {
                 add: jest.fn()
             }
         });
-        HR.renderStaffList();
-        expect(document.createElement).toHaveBeenCalledWith('block');
-        expect(element.classList.add).toHaveBeenCalledWith('staff-card');
-
-        // Clean up
-        document.createElement.mockRestore();
+        fetch.mockResponseOnce(JSON.stringify({
+            value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
+            {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
+            {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
+            {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'},
+            {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
+        }));
+        return HR.renderStaffList().then(data => {
+            expect(document.createElement).toHaveBeenCalledWith('block');
+            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
+            // Clean up
+            document.createElement.mockRestore();
+        });
     });*/
 });
