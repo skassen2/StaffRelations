@@ -1,4 +1,4 @@
-const CALLBACK_URL = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/temp.html';
+const CALLBACK_URL = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/staff_task.html';
 const CALLBACK_URL1 = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/manager_list.html';
 const CALLBACK_URL2 = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/hr_list.html';
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="staff_task.css">
+    <script src="staff_task.js" defer></script>
+</head>
+<body>
+    <header>
+        <section class="container">
+            <h1>Welcome, <span id="username"></span></h1>
+        </section>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Logout</a></li>
+                <li><a href="staff_dash.html">Dashboard</a></li>
+            </ul>
+        </nav>
+        <img src="images/logo1.png" id="logo" alt="Logo Image" width="125" height="120">
+    </header>
+    <main>
+        <section class="grid-container" id="tasksList"> <!-- Updated class name -->
+        </section>
+
+        <section class="container">
+            <form id="manualtime">
+                <select id="taskdrop" class="dropdown" required>
+                    <option value="" disabled selected>Select task</option>
+                </select><br>
+                <!-- input field ensures only int>=1 can be entered -->
+                <input type="number" id="time"  placeholder="Time spent on task in minutes" required min="1">
+                <br>
+                <button id="addManualTime">Add time</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Staff Relations Management. All rights reserved.</p>
+    </footer>
+</body>
+</html>

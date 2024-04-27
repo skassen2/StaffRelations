@@ -97,6 +97,11 @@ table, td{
 .popUp:hover{
     transform: scale(1.05);
 }
+p:hover{
+    transform: scale(1.2);
+    text-align: center;
+    margin: none;
+}
 footer{
     display: flex;
     background-color: var(--color-primary);
