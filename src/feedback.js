@@ -4,6 +4,7 @@ async function fetchFeedback() {
     const response = await fetch(endpoint);
     const tasks = await response.json();
     return tasks.value;
+    
 }
 async function fetchAssignment() {
     const endpoint = `/data-api/rest/Assignment`;
@@ -169,3 +170,5 @@ async function addCommentToDatabase(task,sender,receiver,comment){
 
     window.location.reload();
 }
+
+module.exports = {addCommentToDatabase, getStaffByTask, getUserFeedback, loadStaffForDropDown, renderFeedback, renderTaskDropdown, fetchAssignment, fetchFeedback};

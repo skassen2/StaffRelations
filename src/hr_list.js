@@ -1,5 +1,3 @@
-const staffList = document.getElementById('staffList');
-
 let staffs = [
     {
         "name": "Jaedon",
@@ -23,10 +21,10 @@ let staffs = [
         "role": "Staff"
     }
 ]
-
+const staffList = document.getElementById('staffList');
 staffList.innerHTML = '';
 renderStaffList();
-
+const staffForm = document.getElementById('staffForm');
 staffForm.addEventListener('submit', event => {
     event.preventDefault();
     const name = document.getElementById('name').value;
@@ -83,7 +81,7 @@ async function renderStaffList() {
 async function getStaffManager(){
     const data=[]
     const endpoint = `/data-api/rest/Users`;
-    const response = await fetch(`${endpoint}`);
+    const response = await fetch(endpoint);
     const result = await response.json();
     const toadd=result.value;
     toadd.forEach((person)=>{
@@ -93,3 +91,6 @@ async function getStaffManager(){
     })
     return data;
 }
+
+//export fucntions for testing
+module.exports = {getStaffManager, renderStaffList};
