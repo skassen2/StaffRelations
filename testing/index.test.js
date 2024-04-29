@@ -4,8 +4,6 @@ require('jest-fetch-mock').enableMocks();
 const login = require('../src/index.js');
 
 beforeEach(() => {
-    //reseting fetch mocks before each new fetch
-    //fetch.resetMocks();
     //setting up innerHTML before each test so that DOM can be tested.
     document.body.innerHTML = '<section class="container">'+
     '<form class="form" id="login">'+

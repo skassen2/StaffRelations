@@ -16,13 +16,11 @@ jobs:
         - name: Install Dependencies
           run: npm install
       
-        - name: Grant write permission to Jest
+        - name: Give jest write permission
           run: chmod +x node_modules/.bin/jest
-        
-        - name: Code Coverage Report with Jest
-          run: npm test
-
-        - name: Jest Coverage Report
-          uses: ArtiomTr/jest-coverage-report-action@v2
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+        - name: Give jest-coverage-badges write permission
+          run: chmod +x node_modules/.bin/jest-coverage-badges
+  
+        - name: Run tests and generate badges
+          run: npm run badge
