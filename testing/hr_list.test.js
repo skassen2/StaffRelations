@@ -1,5 +1,5 @@
 require('jest-fetch-mock').enableFetchMocks();
-
+//move into describe
 beforeEach(() => {
     fetch.mockResponse(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},

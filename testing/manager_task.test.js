@@ -1,7 +1,45 @@
-const func = require('./non_fetch_manager_task.js');
-
+require('jest-fetch-mock').enableFetchMocks();
 //Tests functions: getTasks, taskNameValid, getStaff, getManagersTasks, existsAssignment
 describe('Functions from manager_task.js', () => {
+    localStorage.setItem('username', 'keren' ); 
+    localStorage.setItem('role', 'Manager' );
+    localStorage.setItem('name', 'Keren' );
+    localStorage.setItem('surname', 'Chetty');
+    document.body.innerHTML = '<main>'+
+    '<section class="grid-container">'+
+        '<article id="staffList" class="grid-container">'+
+        '</article>'+
+    '</section>'+
+    '<section class="container">'+
+        '<form id="taskform">'+
+            '<input type="text" id="task" placeholder="Task" required>'+
+            '<input type="number" id="est_time"  placeholder="Estimated time in minutes" required min="1">'+
+            '<textarea id="description" placeholder="Description" rows="6" required></textarea>'+
+            '<br>'+
+            '<button id="addtask">Add task</button>'+
+        '</form>'+
+        '<form id="assignment">'+
+            '<select id="taskdrop" class="dropdown" required>'+
+                '<option value="" disabled selected>Select task</option>'+
+            '</select><br>'+
+            '<select id="staffdrop"  class="dropdown" required>'+
+                '<option value="" disabled selected>Select a staff member</option>'+
+            '</select>'+
+            '<br>'+
+           '<button id="adsk">Add assignment</button>'+
+        '</form>'+
+    '</section>'+
+    '</main> ';
+    
+    let assignments = [{assignment_id: 92, task: 'test', staff: 'jaedon'},
+    {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
+    {assignment_id: 94, task: 'test', staff: 'skassen2'}];
+    
+    let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
+        {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
+        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}
+        /*{task: 'test', staff: 'jaedon', total_time: 0, id: 60}*/];
+   //check if jSON is correct
     let json = [
         {
             "task_id": 1,
@@ -38,7 +76,15 @@ describe('Functions from manager_task.js', () => {
             "description": "tgg",
             "est_time": 4
         }];
-   
+    
+    fetch.mockResponseOnce(JSON.stringify({value: json})).mockResponseOnce(JSON.stringify({
+        value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
+        {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
+        {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
+        {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'},
+        {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
+    })).mockResponseOnce(JSON.stringify({value: times}));
+    const func = require('../src/manager_task.js');
     test('Test that getTasks return the right arr of tasks', () => {
     const manager = "keren";
     const list = func.getTasks(manager, json);

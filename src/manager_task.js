@@ -95,7 +95,7 @@ async function renderTasks(manager){
     const response12 = await fetch(endpoint12);
     const result12=await response12.json();
     let data12=result12.value;
-     console.log(data12);
+     //console.log(data12);
      for(i=0;i<data12.length;i++){
          if(managersTasks.includes(data12[i].task)){
             const container=document.getElementById(data12[i].task);
