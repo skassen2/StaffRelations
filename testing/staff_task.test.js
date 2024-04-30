@@ -1,5 +1,8 @@
 require('jest-fetch-mock').enableFetchMocks();
 
+beforeEach(() =>{
+    global.alert = jest.fn();
+});
 describe('Fetch Functions from staff_task.js', () => {
     localStorage.setItem('username', 'skassen2' ); 
     localStorage.setItem('role', 'Staff' );
@@ -27,8 +30,7 @@ describe('Fetch Functions from staff_task.js', () => {
     
     let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
         {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
-        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}
-        /*{task: 'test', staff: 'jaedon', total_time: 0, id: 60}*/];
+        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}];
 
     let tasks = [{task_id: 16, manager: 'keren', task: 'test', description: 'ello', est_time: 400},
     {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}];
@@ -48,12 +50,54 @@ describe('Fetch Functions from staff_task.js', () => {
         expect(tasksL).toStrictEqual(tasks);
     });
 
-    test('Test that fetchAlltasks() returns the right data', async () => {
+    test('Test that fetchTimeSpent() returns the right data', async () => {
         fetch.mockResponseOnce(JSON.stringify({ value: times}));
         const timesL = await func.fetchTimeSpent();
         expect(timesL).toStrictEqual(times);
     });
 
+    /*test('Test logStopWatchTime() posts correct data to database ', () => {
+        //set up elements needed for logStopWatch()
+        const taskCard = document.createElement('article');
+        taskCard.classList.add('staff-card');
+        
+        const taskNameHeader = document.createElement('h2'); 
+        taskNameHeader.textContent = 'test';
+        taskCard.appendChild(taskNameHeader);
+        
+        const stopwatch = document.createElement('section');
+        stopwatch.classList.add('stopwatch');
+        stopwatch.textContent = '01:00:00'; //making sure there is data to log
+        taskCard.appendChild(stopwatch);
+        document.body.appendChild(taskCard);
+        stopwatch.parentElement.querySelector('h2').textContent = 'test';
+        fetch.mockClear();
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify({ value: times })).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        const data =  {
+            task: 'test',
+            staff: 'skassen2',
+            total_time: '60',
+        };
+
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
+            },
+        });
+
+        return func.logStopwatchTime(stopwatch).then(response =>{
+            expect(fetch).toHaveBeenCalledWith('/data-api/rest/Time/id/59', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            expect(window.location.reload).toHaveBeenCalled();
+        });
+        
+    });*/
     /*test('Test that renderTasks() returns the right data', async () => {
         fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}));
         
@@ -75,6 +119,11 @@ describe('Fetch Functions from staff_task.js', () => {
 });
 
 describe('Functions from staff_task.js', () => {
+    localStorage.setItem('username', 'skassen2' ); 
+    localStorage.setItem('role', 'Staff' );
+    localStorage.setItem('name', 'Shaneel' );
+    localStorage.setItem('surname', 'Kassen' );
+    
     let assignments = [{assignment_id: 92, task: 'test', staff: 'jaedon'},
     {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
     {assignment_id: 94, task: 'test', staff: 'skassen2'}];
@@ -102,7 +151,6 @@ describe('Functions from staff_task.js', () => {
     '</section>'+
     '</main>';
 
-    global.alert = jest.fn();
     fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}))
     const func = require('../src/staff_task.js');
 
@@ -148,7 +196,7 @@ describe('Functions from staff_task.js', () => {
         taskCard.appendChild(stopwatch);
         func.startStopwatch(stopwatch);
         expect(global.alert).toHaveBeenCalledWith("Only one stopwatch can run at a time.");
-        //expect(stopwatch.dataset.intervalId).toBeDefined();
+        global.alert.mockClear();
     });
 
     test('Test startStopWatch() interval is started', () => {
@@ -160,6 +208,54 @@ describe('Functions from staff_task.js', () => {
         stopwatch.textContent = '00:00:00'; // Initial stopwatch time
         taskCard.appendChild(stopwatch);
         func.startStopwatch(stopwatch);
-        expect(stopwatch.dataset.intervalId).toBe('20');
+        expect(stopwatch.dataset.intervalId).toBeDefined();
     });
+
+    test('Test stopStopWatch() alerts when it should', () => {
+        const taskCard = document.createElement('article');
+        taskCard.classList.add('staff-card');
+        const stopwatch = document.createElement('section');
+        stopwatch.classList.add('stopwatch');
+        stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+        taskCard.appendChild(stopwatch);
+        func.stopStopwatch(stopwatch);
+        expect(global.alert).toHaveBeenCalledWith("Timer must be started before being stopped.");
+    });
+
+    test('Test stopStopWatch() interval is deleted', () => {
+        const taskCard = document.createElement('article');
+        taskCard.classList.add('staff-card');
+        const stopwatch = document.createElement('section');
+        stopwatch.classList.add('stopwatch');
+        stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+        stopwatch.dataset.intervalId = '20';
+        taskCard.appendChild(stopwatch);
+        func.stopStopwatch(stopwatch);
+        expect(stopwatch.dataset.intervalId).toBeUndefined();
+    });
+
+    test('Test logStopWatchTime() returns the right alert when interval has iD ', () => {
+        const taskCard = document.createElement('article');
+        taskCard.classList.add('staff-card');
+        const stopwatch = document.createElement('section');
+        stopwatch.classList.add('stopwatch');
+        stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+        stopwatch.dataset.intervalId = '20';
+        taskCard.appendChild(stopwatch);
+        func.logStopwatchTime(stopwatch);
+        expect(global.alert).toHaveBeenCalledWith("Timer must be stopped before being logged.");
+    });
+
+    test('Test logStopWatchTime() returns the right alert when there is no time to log ', () => {
+        const taskCard = document.createElement('article');
+        taskCard.classList.add('staff-card');
+        const stopwatch = document.createElement('section');
+        stopwatch.classList.add('stopwatch');
+        stopwatch.textContent = '00:00:00'; // Initial stopwatch time
+        taskCard.appendChild(stopwatch);
+        func.logStopwatchTime(stopwatch);
+        expect(global.alert).toHaveBeenCalledWith("Nothing to log.");
+    });
+
+    
 });

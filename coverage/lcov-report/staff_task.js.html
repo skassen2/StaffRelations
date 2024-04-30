@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">76.15% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>86/129</span>
+                <span class='fraction'>99/130</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/24</span>
+                <span class='fraction'>14/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.15% </span>
+                <span class="strong">73.68% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>12/19</span>
+                <span class='fraction'>14/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.47% </span>
+                <span class="strong">77.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>83/123</span>
+                <span class='fraction'>96/124</span>
             </div>
         
             
@@ -461,35 +461,35 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -705,28 +705,28 @@ function startStopwatch(stopwatchElement) {
 }
 &nbsp;
 // Function to stop the stopwatch
-function <span class="fstat-no" title="function not covered" >stopStopwatch(</span>stopwatchElement) {
-<span class="cstat-no" title="statement not covered" >    if (!stopwatchElement.dataset.intervalId) {</span>
-<span class="cstat-no" title="statement not covered" >        alert("Timer must be started before being stopped.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
+function stopStopwatch(stopwatchElement) {
+    if (!stopwatchElement.dataset.intervalId) {
+        alert("Timer must be started before being stopped.");
+        return;
     }
 &nbsp;
-    const intervalId = <span class="cstat-no" title="statement not covered" >stopwatchElement.dataset.intervalId;</span>
-<span class="cstat-no" title="statement not covered" >    clearInterval(intervalId);</span>
-<span class="cstat-no" title="statement not covered" >    delete stopwatchElement.dataset.intervalId;</span>
+    const intervalId = stopwatchElement.dataset.intervalId;
+    clearInterval(intervalId);
+    delete stopwatchElement.dataset.intervalId;
 }
 &nbsp;
 // Function to log time recorded on stopwatch rounded up to the minute
-async function <span class="fstat-no" title="function not covered" >logStopwatchTime(</span>stopwatchElement) {
-<span class="cstat-no" title="statement not covered" >    if (stopwatchElement.dataset.intervalId) {</span>
-<span class="cstat-no" title="statement not covered" >        alert("Timer must be stopped before being logged.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
+async function logStopwatchTime(stopwatchElement) {
+    if (stopwatchElement.dataset.intervalId) {
+        alert("Timer must be stopped before being logged.");
+        return;
     }
 &nbsp;
-    const time = <span class="cstat-no" title="statement not covered" >stopwatchElement.textContent;</span>
-<span class="cstat-no" title="statement not covered" >    if (time === '00:00:00') {</span>
-<span class="cstat-no" title="statement not covered" >        alert("Nothing to log.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
+    const time = stopwatchElement.textContent;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (time === '00:00:00') {
+        alert("Nothing to log.");
+        return;
     }
 &nbsp;
     const [hours, minutes, seconds] = <span class="cstat-no" title="statement not covered" >time.split(':').map(Number);</span>
@@ -734,13 +734,13 @@ async function <span class="fstat-no" title="function not covered" >logStopwatch
 &nbsp;
     const taskName = <span class="cstat-no" title="statement not covered" >stopwatchElement.parentElement.querySelector('h2').textContent;</span>
     const staff = <span class="cstat-no" title="statement not covered" >localStorage.getItem('username');</span>
-    
     const data = <span class="cstat-no" title="statement not covered" >await fetchTimeSpent();</span>
+<span class="cstat-no" title="statement not covered" >    console.group(data);</span>
     const [taskId, currentTotalTime] = <span class="cstat-no" title="statement not covered" >getIDTotalTimeFromTaskStaff(data, taskName, staff);</span>
-&nbsp;
+    
     // Calculate new total time
     const newTotalTime = <span class="cstat-no" title="statement not covered" >currentTotalTime + totalMinutes;</span>
-&nbsp;
+    
     // Update time in database
     const newData = <span class="cstat-no" title="statement not covered" >{</span>
         task: taskName,
@@ -805,7 +805,7 @@ module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-29T22:16:17.180Z
+                at 2024-04-30T11:48:40.405Z
             </div>
         <script src="prettify.js"></script>
         <script>
