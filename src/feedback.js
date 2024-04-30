@@ -167,7 +167,6 @@ async function addCommentToDatabase(task,sender,receiver,comment){
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
     });
-
     window.location.reload();
 }
 

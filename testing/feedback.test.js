@@ -1,9 +1,5 @@
 require('jest-fetch-mock').enableFetchMocks();
 
-beforeEach(() =>{
-    window.location.reload = jest.fn();
-});
-
 describe('Describe function from feedback.js', () => {
     localStorage.setItem('username', 'prashant' ); 
     localStorage.setItem('role', 'Staff' );
@@ -67,34 +63,29 @@ describe('Describe function from feedback.js', () => {
     test('Test addCommentToDatabase()', async () => {
         // Mock a response expected from server
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
-        fetchMock.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data={
             task: 'Task1',
             sender:'prashant',
-            receiver:'skassen2',
+            receiver:'skassen',
             comment:'comment'
         }
         const endpoint = '/data-api/rest/Feedback'; 
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
             },
-            body: JSON.stringify(data)
         });
-        //func.addCommentToDatabase('Task1', 'prashant', 'skassen', 'comment');
-        expect(fetchMock).toHaveBeenCalledWith(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        expect(response.status).toBe(200);
-        const responseBody = await response.json();
-        //expect(responseBody.message).toBe('Data posted successfully');
-        //expect(window.location.reload).toHaveBeenCalled();
-        
-    });
 
+        return func.addCommentToDatabase('Task1', 'prashant', 'skassen', 'comment').then(response => {
+            expect(fetch).toHaveBeenCalledWith(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            expect(window.location.reload).toHaveBeenCalled();
+        });
+    });
 });

@@ -179,13 +179,13 @@ async function logStopwatchTime(stopwatchElement) {
 
     const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
     const staff = localStorage.getItem('username');
-    
     const data = await fetchTimeSpent();
+    console.log(data);
     const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
-
+    
     // Calculate new total time
     const newTotalTime = currentTotalTime + totalMinutes;
-
+    
     // Update time in database
     const newData = {
         task: taskName,
