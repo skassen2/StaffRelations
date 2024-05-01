@@ -1,5 +1,6 @@
 const form = document.getElementById("mealForm");
 
+// Function to handle form submission for creating a new meal
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -32,11 +33,92 @@ form.addEventListener("submit", async (e) => {
             alert("Meal created successfully!");
             // Clear the form fields after successful submission
             form.reset();
+            // Refresh meal list
+            const meals = await getAllMeals();
+            renderMeals(meals);
         } else {
             throw new Error('Failed to create meal.');
         }
     } catch (error) {
         console.error('Error creating meal:', error);
         alert("An error occurred while creating the meal. Please try again later.");
+    }
+});
+
+// Function to fetch all meals from the database
+async function getAllMeals() {
+    try {
+        const response = await fetch('/data-api/rest/Meal_menu');
+        if (!response.ok) {
+            throw new Error('Error fetching meals: ' + response.statusText);
+        }
+        const data = await response.json();
+        if (!data.value || !Array.isArray(data.value)) {
+            throw new Error('Meals data is not in the expected format.');
+        }
+        return data.value;
+    } catch (error) {
+        console.error('Error fetching meals:', error);
+        throw new Error('An error occurred while fetching meals. Please try again later.');
+    }
+}
+
+// Function to render meals on the HTML page
+function renderMeals(meals) {
+    const mealList = document.getElementById("mealList");
+    mealList.innerHTML = ""; // Clear previous content
+
+    // Create a heading for meal options
+    const heading = document.createElement("h2");
+    heading.textContent = "Meal Options";
+    mealList.appendChild(heading);
+
+    // Create a container for meal items
+    const mealContainer = document.createElement("div");
+    mealContainer.classList.add("meal-container");
+
+    meals.forEach(meal => {
+        // Create a box for each meal
+        const mealBox = document.createElement("div");
+        mealBox.classList.add("meal-box");
+
+        // Create elements for meal details
+        const mealName = document.createElement("h3");
+        mealName.textContent = meal.meal_name;
+
+        const description = document.createElement("p");
+        description.textContent = meal.description;
+
+        const createdBy = document.createElement("p");
+        createdBy.textContent = "Created by: " + meal.created_by;
+
+        const mealImage = document.createElement("img");
+        mealImage.src = meal.meal_image_url;
+        mealImage.alt = meal.meal_name;
+        mealImage.width = 200;
+
+        // Append meal details to meal box
+        mealBox.appendChild(mealName);
+        mealBox.appendChild(description);
+        mealBox.appendChild(createdBy);
+        mealBox.appendChild(mealImage);
+
+        // Append meal box to meal container
+        mealContainer.appendChild(mealBox);
+    });
+
+    // Append meal container to meal list
+    mealList.appendChild(mealContainer);
+}
+
+// Call the getAllMeals function when the DOM is loaded
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const meals = await getAllMeals();
+        console.log('Meals data:', meals);
+        renderMeals(meals);
+    } catch (error) {
+        console.error('Error:', error.message);
+        alert(error.message);
     }
 });

@@ -88,7 +88,7 @@ button[type="submit"]:hover {
 footer {
     display: flex;
     font: 500 1rem 'Quicksand', sans-serif;
-    background-color: #009579;
+     background-color: #009579;
     color: black;
     padding: 20px 0;
     position: fixed;
@@ -102,4 +102,35 @@ footer {
 .logo {
     margin-left: auto;
     margin-right: 20px;
+}
+/* CSS for meal boxes */
+.meal-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 200px; /* Add space between the meal cards and the footer */
+}
+
+.meal-box {
+    width: calc(30% - 20px); /* Adjust width to fit 3 boxes in a row with spacing */
+    margin-bottom: 20px; /* Margin between each meal box */
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.meal-box h3 {
+    margin-top: 0;
+}
+
+.meal-box p:last-child {
+    color: #888; /* Dull bold color for "Created by" */
+    margin-bottom: 8px; /* Add space at the bottom of the meal box */
+    font-weight: bold; /* Make "Created by" text bold */
+}
+
+/* Add space between the meal cards and the footer */
+footer {
+    margin-top: 20px;
 }
