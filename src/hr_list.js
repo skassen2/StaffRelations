@@ -236,7 +236,6 @@ async function renderStaffList() {
         staffList.appendChild(staffMember);
     });
 }
-console.log(usernameAndRole);
 
 async function getStaffManager(){
     const data=[]
