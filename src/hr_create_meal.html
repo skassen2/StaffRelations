@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Meal</title>
+    <link rel="stylesheet" href="hr_create_meal.css">
+</head>
+<body>
+    
+    <header>
+        <section class="container">
+            <h1>Welcome to the Meal Creation Page</h1>
+        </section>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </nav>
+        <img src="images/logo1.png" id="logo" alt="Logo Image" width="120" height="125">
+    </header>
+
+    <main>
+        <form id="mealForm">
+            <label for="mealName">Meal Name:</label>
+            <input type="text" id="mealName" name="mealName" required><br>
+
+            <label for="mealDescription">Description:</label>
+            <textarea id="mealDescription" name="mealDescription" rows="4" cols="50" required></textarea><br>
+
+            <label for="mealImageUrl">Image URL:</label>
+            <input type="url" id="mealImageUrl" name="mealImageUrl" required><br>
+
+            <button type="submit">Create Meal</button>
+        </form>
+
+        <section id="mealList" class="container"></section>
+    </main>
+ 
+    <footer>
+        <p>&copy; 2024 Staff Relations Management. All rights reserved.</p>
+    </footer>
+
+    <script src="hr_create_meal.js" defer></script>
+</body>
+</html>

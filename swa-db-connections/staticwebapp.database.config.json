@@ -73,6 +73,16 @@
           "role": "anonymous"
         }
       ]
+    },
+    "Meal_menu": {
+      "source": "dbo.meal_menu",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
+
   }
 }
