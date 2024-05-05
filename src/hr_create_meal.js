@@ -47,20 +47,9 @@ form.addEventListener("submit", async (e) => {
 
 // Function to fetch all meals from the database
 async function getAllMeals() {
-    try {
         const response = await fetch('/data-api/rest/Meal_menu');
-        if (!response.ok) {
-            throw new Error('Error fetching meals: ' + response.statusText);
-        }
         const data = await response.json();
-        if (!data.value || !Array.isArray(data.value)) {
-            throw new Error('Meals data is not in the expected format.');
-        }
         return data.value;
-    } catch (error) {
-        console.error('Error fetching meals:', error);
-        throw new Error('An error occurred while fetching meals. Please try again later.');
-    }
 }
 
 // Function to render meals on the HTML page
@@ -115,10 +104,12 @@ function renderMeals(meals) {
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const meals = await getAllMeals();
-        console.log('Meals data:', meals);
         renderMeals(meals);
     } catch (error) {
         console.error('Error:', error.message);
         alert(error.message);
     }
 });
+
+//export for testing
+module.exports = {renderMeals, getAllMeals}

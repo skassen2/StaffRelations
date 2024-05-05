@@ -28,7 +28,7 @@ describe('Fetch Functions from staff_task.js', () => {
     {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
     {assignment_id: 94, task: 'test', staff: 'skassen2'}];
     
-    let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
+    const times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
         {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
         {task: 'test', staff: 'skassen2', total_time: 0, id: 59}];
 
@@ -39,24 +39,27 @@ describe('Fetch Functions from staff_task.js', () => {
     const func = require('../src/staff_task.js');
     
     test('Test that fetchAssignments() returns the right data', async () => {
+        fetch.mockClear();
         fetch.mockResponseOnce(JSON.stringify({ value: assignments}));
         const assigns = await func.fetchAssignments();
         expect(assigns).toStrictEqual(assignments);
     });
     
     test('Test that fetchAlltasks() returns the right data', async () => {
+        fetch.mockClear();
         fetch.mockResponseOnce(JSON.stringify({ value: tasks}));
         const tasksL = await func.fetchAllTasks();
         expect(tasksL).toStrictEqual(tasks);
     });
 
     test('Test that fetchTimeSpent() returns the right data', async () => {
+        fetch.mockClear();
         fetch.mockResponseOnce(JSON.stringify({ value: times}));
         const timesL = await func.fetchTimeSpent();
         expect(timesL).toStrictEqual(times);
     });
-
-    /*test('Test logStopWatchTime() posts correct data to database ', () => {
+    //mock returning assingments instead of times
+    test('Test logStopWatchTime() posts correct data to database ', () => {
         //set up elements needed for logStopWatch()
         const taskCard = document.createElement('article');
         taskCard.classList.add('staff-card');
@@ -71,13 +74,14 @@ describe('Fetch Functions from staff_task.js', () => {
         taskCard.appendChild(stopwatch);
         document.body.appendChild(taskCard);
         stopwatch.parentElement.querySelector('h2').textContent = 'test';
-        fetch.mockClear();
+        //fetch.mockClear();
+        fetch.resetMocks();
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
         fetch.mockResponseOnce(JSON.stringify({ value: times })).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data =  {
             task: 'test',
             staff: 'skassen2',
-            total_time: '60',
+            total_time: 60,
         };
 
         Object.defineProperty(window, 'location', {
@@ -87,7 +91,9 @@ describe('Fetch Functions from staff_task.js', () => {
         });
 
         return func.logStopwatchTime(stopwatch).then(response =>{
-            expect(fetch).toHaveBeenCalledWith('/data-api/rest/Time/id/59', {
+            expect(fetch).toHaveBeenCalledTimes(2);
+            expect(fetch).toHaveBeenNthCalledWith(1,'/data-api/rest/Time');
+            expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Time/id/59', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -97,7 +103,7 @@ describe('Fetch Functions from staff_task.js', () => {
             expect(window.location.reload).toHaveBeenCalled();
         });
         
-    });*/
+    });
     /*test('Test that renderTasks() returns the right data', async () => {
         fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}));
         

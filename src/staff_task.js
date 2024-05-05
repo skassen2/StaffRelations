@@ -173,16 +173,13 @@ async function logStopwatchTime(stopwatchElement) {
         alert("Nothing to log.");
         return;
     }
-
+    
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
-
     const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
     const staff = localStorage.getItem('username');
     const data = await fetchTimeSpent();
-    console.log(data);
     const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
-    
     // Calculate new total time
     const newTotalTime = currentTotalTime + totalMinutes;
     

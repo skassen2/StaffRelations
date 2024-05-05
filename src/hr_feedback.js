@@ -19,6 +19,7 @@ async function fetchUsers() {
 }
 async function fetchTasks() {
     const endpoint = `/data-api/rest/Tasks`;
+    
     const response = await fetch(endpoint);
     const tasks = await response.json();
     return tasks.value;
@@ -116,3 +117,5 @@ async function addCommentToDatabase(task,sender,receiver,comment){
 
     window.location.reload();
 }
+
+module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};
