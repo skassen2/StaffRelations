@@ -82,6 +82,15 @@
           "role": "anonymous"
         }
       ]
+    },
+    "Meal_orders": {
+      "source": "dbo.meal_orders",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
 
   }
