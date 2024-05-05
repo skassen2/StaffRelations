@@ -19,7 +19,7 @@ async function getAllMeals() {
 }
 
 // Function to render meals on the HTML page
-function renderMeals(meals) {
+async function renderMeals(meals) {
     const mealList = document.getElementById("mealList");
     mealList.innerHTML = ""; // Clear previous content
 
@@ -32,7 +32,15 @@ function renderMeals(meals) {
     const mealContainer = document.createElement("section");
     mealContainer.classList.add("meal-container");
 
+    // Fetch ordered meal IDs for the current user
+    const userId = localStorage.getItem('username');
+    const allOrderedMeals = await getOrderedMeals(userId);
+    const orderedMeals = filterOrderedMealsByUsername(allOrderedMeals, userId);
+    console.log('Ordered meals:', orderedMeals);
+
     meals.forEach(meal => {
+        const isOrdered = orderedMeals.some(orderedMeal => orderedMeal.meal_id === meal.meal_id);
+
         // Create a box for each meal
         const mealBox = document.createElement("section");
         mealBox.classList.add("meal-box");
@@ -52,13 +60,6 @@ function renderMeals(meals) {
         mealImage.alt = meal.meal_name;
         mealImage.width = 200;
 
-        // Create a button to order the meal
-        const orderButton = document.createElement("button");
-        orderButton.textContent = "Order";
-        orderButton.classList.add("order-button");
-        // Set the dataset attribute to store the meal ID
-        orderButton.dataset.meal_id = meal.meal_id;
-
         // Append meal details to meal box
         mealBox.appendChild(mealName);
         mealBox.appendChild(description);
@@ -69,12 +70,26 @@ function renderMeals(meals) {
         blankLine.style.height = "20px"; // Adjust the height as needed
         mealBox.appendChild(blankLine);
 
-        mealBox.appendChild(orderButton);
+        // Create a button to order the meal
+        if(isOrdered){
+            mealBox.style.backgroundColor = "lightgrey";
+            const ordered = document.createElement("p");
+            ordered.textContent = "Meal Already Ordered";
+            mealBox.appendChild(ordered);
+        }
+        else{
+            const orderButton = document.createElement("button");
+            orderButton.textContent = "Order";
+            orderButton.classList.add("order-button");
+
+            // Set the dataset attribute to store the meal ID
+            orderButton.dataset.meal_id = meal.meal_id;
+
+            mealBox.appendChild(orderButton);
+        }
 
         // Append meal box to meal container
-        mealContainer.appendChild(mealBox);
-
-        mealBox.appendChild(orderButton);
+        mealContainer.appendChild(mealBox); 
     });
 
     // Append meal container to meal list
@@ -109,6 +124,9 @@ document.addEventListener("click", async (event) => {
         } catch (error) {
             alert(error.message);
         }
+
+        const meals = await getAllMeals();
+        renderMeals(meals);
     }
 });
 
@@ -135,3 +153,24 @@ async function placeOrder(mealId, userId) {
         throw new Error('An error occurred while placing the order. Please try again later.');
     }
 }
+
+// Function to fetch ordered meals from the database
+async function getOrderedMeals() {
+    try {
+        const response = await fetch(`/data-api/rest/Meal_orders`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch ordered meals: ' + response.statusText);
+        }
+        const data = await response.json();
+        return data.value;
+    } catch (error) {
+        console.error('Error fetching ordered meals:', error);
+        throw new Error('An error occurred while fetching ordered meals. Please try again later.');
+    }
+}
+
+// Function to filter ordered meals by username
+function filterOrderedMealsByUsername(orderedMeals, username) {
+    return orderedMeals.filter(meal => meal.username === username);
+}
+
