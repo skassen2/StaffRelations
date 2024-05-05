@@ -85,6 +85,7 @@ describe('Functions from manager_task.js', () => {
         {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
     })).mockResponseOnce(JSON.stringify({value: times}));
     const func = require('../src/manager_task.js');
+    
     test('Test that getTasks return the right arr of tasks', () => {
     const manager = "keren";
     const list = func.getTasks(manager, json);

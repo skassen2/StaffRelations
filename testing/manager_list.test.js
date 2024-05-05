@@ -1,6 +1,8 @@
 require('jest-fetch-mock').enableFetchMocks();
 //move into describe
-beforeEach(() => {
+
+
+describe('Functions from manager_list', () => {
     fetch.mockResponse(JSON.stringify({
         value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
@@ -23,13 +25,9 @@ beforeEach(() => {
             '<button>Add Staff Member</button>'+
         '</form>'+
     '</section>'+
-'</main>';
-});
-
-describe('Functions from manager_list', () => {
-    
+    '</main>';
+    const manager = require('../src/manager_list.js');
     test('Test getStaff() returns the right data', async () => {
-        const manager = require('../src/manager_list.js');
         const sList = await manager.getStaff();
         expect(sList).toStrictEqual([{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
@@ -38,13 +36,12 @@ describe('Functions from manager_list', () => {
 
     //error recieved because of appendchild test removed for now
     /*test('Test renderStaffList(): document.createElement() has been called', async () =>{
-        const M = require('../src/manager_list.js');
         document.createElement = jest.fn().mockReturnValue({
             classList: {
                 add: jest.fn()
             }
         });
-        return M.renderStaffList().then(data => {
+        return manager.renderStaffList().then(data => {
             expect(document.createElement).toHaveBeenCalledWith('block');
             expect(element.classList.add).toHaveBeenCalledWith('staff-card');
             // Clean up

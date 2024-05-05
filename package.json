@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "sirv ./src public --cors --single --no-clear --port 8000",
-    "test": "jest --coverage --passWithNoTests",
+    "test": "jest --coverage",
     "badge": "npm test && jest-coverage-badges"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "jest-fetch-mock": "^3.0.3"
   },
   "jest": {
+    "collectCoverage": true,
     "testEnvironment": "jsdom",
     "automock": false,
     "setupFiles": [

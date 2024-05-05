@@ -284,4 +284,4 @@ async function fetchTime() {
 
 
 //export fucntions for testing
-module.exports = {getStaffManager, renderStaffList};
+module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers};
