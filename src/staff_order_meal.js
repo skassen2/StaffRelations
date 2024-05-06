@@ -2,20 +2,10 @@ const form = document.getElementById("mealForm");
 
 // Function to fetch all meals from the database
 async function getAllMeals() {
-    try {
         const response = await fetch('/data-api/rest/Meal_menu');
-        if (!response.ok) {
-            throw new Error('Error fetching meals: ' + response.statusText);
-        }
         const data = await response.json();
-        if (!data.value || !Array.isArray(data.value)) {
-            throw new Error('Meals data is not in the expected format.');
-        }
         return data.value;
-    } catch (error) {
-        console.error('Error fetching meals:', error);
-        throw new Error('An error occurred while fetching meals. Please try again later.');
-    }
+
 }
 
 // Function to render meals on the HTML page
@@ -114,7 +104,6 @@ document.addEventListener("click", async (event) => {
 
 // Function to place an order for a meal
 async function placeOrder(mealId, userId) {
-    try {
         const response = await fetch('/data-api/rest/Meal_orders', {
             method: 'POST',
             headers: {
@@ -125,13 +114,9 @@ async function placeOrder(mealId, userId) {
                 username: userId
             })
         });
-        if (!response.ok) {
-            throw new Error('Failed to place order: ' + response.statusText);
-        }
         const data = await response.json();
         return data;
-    } catch (error) {
-        console.error('Error placing order:', error);
-        throw new Error('An error occurred while placing the order. Please try again later.');
-    }
+
 }
+
+module.exports ={renderMeals, getAllMeals, placeOrder};
