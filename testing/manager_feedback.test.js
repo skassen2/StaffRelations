@@ -64,7 +64,7 @@ describe('Describe function from hr_feedback.js', () => {
         {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}
     ];
     
-    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments})).mockResponseOnce(JSON.stringify({value: users}));
+    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments})).mockResponseOnce(JSON.stringify({value: users}));
     const func = require('../src/manager_feedback.js');
     test('Test fetchFeedback() returns the correct data', async () => {
         fetch.resetMocks();
@@ -85,13 +85,6 @@ describe('Describe function from hr_feedback.js', () => {
         fetch.mockResponseOnce(JSON.stringify({value: users}));
         const urs = await func.fetchUsers();
         expect(urs).toStrictEqual(users);
-    });
-
-    test('Test that fetchTasks() returns the correct data', async () => {
-        fetch.resetMocks();
-        fetch.mockResponseOnce(JSON.stringify({value: tasks}));
-        const ts = await func.fetchTasks();
-        expect(ts).toStrictEqual(tasks);
     });
     
     test('Test that listOfHr() returns only a list of HR memebrs', async () => {
@@ -117,12 +110,6 @@ describe('Describe function from hr_feedback.js', () => {
         const staff = 'keren';
         const feeds =  func.getUserFeedback(staff, feedbacks);
         expect(feeds).toStrictEqual([{task: 'Task1', sender: 'prashant', receiver: 'keren', comment: 'b', id: 7}]);
-    });
-
-   
-    test('Test that getManagerWhoAssignedTask()  retruns the correct manager', () => {
-        const manager = func.getManagerWhoAssignedTask('test', tasks);
-        expect(manager).toBe('keren');
     });
 
     test('Test addCommentToDatabase()', async () => {

@@ -120,5 +120,10 @@ describe('Describe function from feedback.js', () => {
             expect(window.location.reload).toHaveBeenCalled();
         });
     });
+
+    test('Test that loadHRNamesDropDown() does what it needs to', async () => {
+      fetch.mockResponseOnce(JSON.stringify({value: users}));
+      func.loadHRNamesForDropDown();
+    });
 });
 

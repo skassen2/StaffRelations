@@ -18,28 +18,15 @@ async function fetchUsers() {
     return tasks.value;
 }
 
-// async function fetchTasks() {
-//     const endpoint = `/data-api/rest/Tasks`;
-//     const response = await fetch(endpoint);
-//     const tasks = await response.json();
-//     return tasks.value;
-// }
-
-
 async function renderFeedback2(){
     const data=await fetchFeedback();
     const username = localStorage.getItem('username');
     const staffFeedback=getUserFeedback(username,data);
-    const data1=await fetchTasks();
 
     //adds tiles
     const feedbackList=document.getElementById("allfeedback");
     feedbackList.innerHTML = '';
     staffFeedback.forEach((row, index) => {
-        let manager=getManagerWhoAssignedTask(row.task,data1);
-        if(manager==undefined){
-            manager="N/A";
-        }
         const task = document.createElement('block');
         task.classList.add('staff-card');
         task.innerHTML = `
@@ -54,66 +41,6 @@ async function renderFeedback2(){
 }
 renderFeedback2();
 
-//fetch which manager assigned task, returns just 1 word
-function getManagerWhoAssignedTask(task,json){
-    const toreturn=[];
-    for(const obj of json){
-        if(obj.task==task){
-            toreturn.push(obj.manager);
-        }
-    }
-    return toreturn[0];
-}
-
-async function renderFeedback(){
-    const data=await fetchFeedback();
-    const username = localStorage.getItem('username');
-    const staffFeedback=getUserFeedback(username,data);
-
-    const feedbackList=document.getElementById("allfeedback");
-    feedbackList.innerHTML = '';
-    staffFeedback.forEach(async (row, index) => {
-        const task = document.createElement('block');
-        task.classList.add('staff-card');
-
-        const hr= await listOfHr();
-        //modify sender so adds HR next to sender if it is hr
-        let sender=row.sender;
-        if(hr.includes(sender)){
-            sender=sender+" (HR)";
-        }
-        task.innerHTML = `
-            <p><b>Task:</b> ${row.task}</p>
-            <p><b>Sender:</b> ${sender}</p>
-            <p><b>Comment:</b> ${row.comment}</p>
-        `;
-        feedbackList.appendChild(task);
-    });
-
-}
-// renderFeedback();
-
-// async function renderTaskDropdown(){
-//     const data=await fetchAssignment();
-//     const username = localStorage.getItem('username');
-//     const taskDrop = document.getElementById('tasksDrop');
-//     data.forEach(obj=>{
-//         if(obj.staff==username){
-//             const option=document.createElement("option");
-//             option.text=obj.task;
-//             option.value=obj.task;
-//             taskDrop.add(option);  
-
-//         }
-//     })
-//     //adds General option
-//     const option=document.createElement("option");
-//     option.text="General(Contact HR)";
-//     option.value="General";
-//     taskDrop.add(option);
-// }
-// renderTaskDropdown();
-
 //returns array of feedback just allocated to the user
 function getUserFeedback(staff,json){
     data=[];
@@ -124,24 +51,11 @@ function getUserFeedback(staff,json){
     }
     return data;
 }
-//returns arrary of just hr [taruna,dummy]
-async function listOfHr(){
-    const toreturn=[];
-    const data=await fetchUsers();
-    for(const obj of data){
-        if(obj.role=="HR"){
-            toreturn.push(obj.username);
-        }
-    }
-    return toreturn;
-}
 
 //loads select staff dropdown with staff and HR
 async function loadAllStaffDropDown(){
     const data=await fetchUsers();
     const dropdown=document.getElementById("staffDrop");
-    
-   
 
     // Add HR options
     const hrData = data.filter(obj => obj.role === "HR");
@@ -166,7 +80,6 @@ loadAllStaffDropDown();//load staff names here
 //Send staff their feedback, calls addCommentToDatabase
 addComment2.addEventListener('submit',event=>{
     event.preventDefault();
-
     const receiver=document.getElementById("staffDrop").value;
     const topicOrtask=document.getElementById("topic").value;
     const comment=document.getElementById("comment").value;
@@ -321,4 +234,4 @@ async function addCommentToDatabase(task,sender,receiver,comment){
     window.location.reload();
 }
 
-module.exports = {loadHRNamesForDropDown, addCommentToDatabase, getStaffByTask, getUserFeedback, loadStaffForDropDown, renderFeedback,renderFeedback2, fetchAssignment, fetchFeedback, fetchUsers, fetchTasks, listOfHr, getManagerWhoAssignedTask, getHR};
+module.exports = {loadHRNamesForDropDown, addCommentToDatabase, getStaffByTask, getUserFeedback, loadStaffForDropDown,renderFeedback2, fetchAssignment, fetchFeedback, fetchUsers, getHR};
