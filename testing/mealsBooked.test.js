@@ -5,10 +5,6 @@ beforeEach(() =>{
 });
 
 describe('Test staff_order_meals', () =>{
-    localStorage.setItem('username', 'skassen2' ); 
-    localStorage.setItem('role', 'Staff' );
-    localStorage.setItem('name', 'Shaneel' );
-    localStorage.setItem('surname', 'Kassen' );
     document.body.innerHTML = '<main>'+'<section id="mealList" class="container"></section>'+'</main>';
     const meals = [
         {meal_id: 1, meal_name: 'Grilled Salmon', description: 'Delicious grilled salmon served with vegetables and rice.', created_by: 'taruna', meal_image_url: 'https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg'},
@@ -21,45 +17,44 @@ describe('Test staff_order_meals', () =>{
         {order_id: 25, meal_id: 28, username: 'prashant', order_date: '2024-05-06T12:19:58.473'}
     ];
 
-    fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: orders}));
-    const func = require('../src/staff_order_meal.js');
+    const func = require('../src/mealsBooked.js');
 
     test('Test that getAllMeals() returns the right data', async () =>{
         fetch.mockResponseOnce(JSON.stringify({value: meals}));
         const m = await func.getAllMeals();
         expect(m).toStrictEqual(meals)
     });
-    test('Test that getOrderedMeals() returns the right data', async () => {
+    test('Test that getAllMealOrders() returns the right data', async () => {
         fetch.mockResponseOnce(JSON.stringify({value: orders}));
-        const o = await func.getOrderedMeals();
+        const o = await func.getAllMealOrders();
         expect(o).toStrictEqual(orders);
     });
 
-    test('Test that filterOrderedMealsByUsername returns the right orders for a Staff Member', () => {
-        const list = func.filterOrderedMealsByUsername(orders, 'skassen2');
-        expect(list).toStrictEqual([{order_id: 23, meal_id: 28, username: 'skassen2', order_date: '2024-05-06T12:11:22.020'}]);
+    test('test that getAllMeals() throws error when needed', async () =>{
+        fetchMock.mockRejectOnce();
+        expect(async () => {
+            await func.getAllMeals();
+          }).rejects.toThrow();
     });
 
-    test('Test placeOrder()', async () => {
-        // Mock a response expected from server
-        const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
-        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
-        const data={
-            meal_id: 20,
-            username: 'skassen2'
-        }
-        const endpoint = '/data-api/rest/Meal_orders'; 
-        const mealOrd = func.placeOrder(20, 'skassen2');
-    
-        expect(fetch).toHaveBeenCalledWith(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        expect(mealOrd).toBeDefined();
+    test('test that getAllMealOrders() throws error when needed', async () =>{
+        fetchMock.mockRejectOnce();
+        expect(async () => {
+            await func.getAllMealOrders();
+          }).rejects.toThrow();
     });
+
+    test('Test that ffilterMealOrders() returns the right orders for a Staff Member', () => {
+        const list = func.filterMealOrders(meals, orders);
+        expect(list).toStrictEqual([{
+            meal_name: 'Grilled Salmon',
+            username: 'prashant',
+            order_date: '2024-05-06T12:19:56.687',
+            meal_image_url: 'https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg'
+          }]);
+    });
+
+    
 
 });
 
