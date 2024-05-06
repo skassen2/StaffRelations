@@ -18,12 +18,12 @@ async function fetchUsers() {
     return tasks.value;
 }
 
-async function fetchTasks() {
-    const endpoint = `/data-api/rest/Tasks`;
-    const response = await fetch(endpoint);
-    const tasks = await response.json();
-    return tasks.value;
-}
+// async function fetchTasks() {
+//     const endpoint = `/data-api/rest/Tasks`;
+//     const response = await fetch(endpoint);
+//     const tasks = await response.json();
+//     return tasks.value;
+// }
 
 
 async function renderFeedback2(){
@@ -91,28 +91,28 @@ async function renderFeedback(){
     });
 
 }
-renderFeedback();
+// renderFeedback();
 
-async function renderTaskDropdown(){
-    const data=await fetchAssignment();
-    const username = localStorage.getItem('username');
-    const taskDrop = document.getElementById('tasksDrop');
-    data.forEach(obj=>{
-        if(obj.staff==username){
-            const option=document.createElement("option");
-            option.text=obj.task;
-            option.value=obj.task;
-            taskDrop.add(option);  
+// async function renderTaskDropdown(){
+//     const data=await fetchAssignment();
+//     const username = localStorage.getItem('username');
+//     const taskDrop = document.getElementById('tasksDrop');
+//     data.forEach(obj=>{
+//         if(obj.staff==username){
+//             const option=document.createElement("option");
+//             option.text=obj.task;
+//             option.value=obj.task;
+//             taskDrop.add(option);  
 
-        }
-    })
-    //adds General option
-    const option=document.createElement("option");
-    option.text="General(Contact HR)";
-    option.value="General";
-    taskDrop.add(option);
-}
-renderTaskDropdown();
+//         }
+//     })
+//     //adds General option
+//     const option=document.createElement("option");
+//     option.text="General(Contact HR)";
+//     option.value="General";
+//     taskDrop.add(option);
+// }
+// renderTaskDropdown();
 
 //returns array of feedback just allocated to the user
 function getUserFeedback(staff,json){
@@ -136,18 +136,30 @@ async function listOfHr(){
     return toreturn;
 }
 
-//loads select staff dropdown with staff
+//loads select staff dropdown with staff and HR
 async function loadAllStaffDropDown(){
     const data=await fetchUsers();
     const dropdown=document.getElementById("staffDrop");
-    data.forEach(obj =>{
-        if(obj.role=="Staff"){
-            const option=document.createElement("option");
-            option.value=obj.username;
-            option.text=obj.username;
-            dropdown.add(option);
-        }
-    })
+    
+   
+
+    // Add HR options
+    const hrData = data.filter(obj => obj.role === "HR");
+    hrData.forEach(hr => {
+        const optionHR = document.createElement("option");
+        optionHR.value = hr.username;
+        optionHR.text = hr.username + " (HR)";
+        dropdown.add(optionHR);
+    });
+
+    // Add staff options
+    const staffData = data.filter(obj => obj.role === "Staff");
+    staffData.forEach(staff => {
+        const optionStaff = document.createElement("option");
+        optionStaff.value = staff.username;
+        optionStaff.text = staff.username;
+        dropdown.add(optionStaff);
+    });
 }
 loadAllStaffDropDown();//load staff names here
 
@@ -194,7 +206,7 @@ document.getElementById('nextButton').addEventListener('click', async (event) =>
       staffDropdown.setAttribute("required", "true");
       // Set default option
       const option1 = document.createElement("option");
-      option1.text = "Select staff";
+      option1.text = "Select Receiver";
       option1.value = ""
       option1.setAttribute("disabled", "true");
       option1.setAttribute("selected", "true");
