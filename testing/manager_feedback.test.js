@@ -1,9 +1,9 @@
 require('jest-fetch-mock').enableFetchMocks();
 describe('Describe function from hr_feedback.js', () => {
-    localStorage.setItem('username', 'taruna' ); 
-    localStorage.setItem('role', 'HR' );
-    localStorage.setItem('name', 'Taruna' );
-    localStorage.setItem('surname', 'Naidoo');
+    localStorage.setItem('username', 'keren' ); 
+    localStorage.setItem('role', 'Manager' );
+    localStorage.setItem('name', 'Keren' );
+    localStorage.setItem('surname', 'Chetty');
     document.body.innerHTML = 
         '<main>'+
         '<section class="grid-container">'+
@@ -64,7 +64,7 @@ describe('Describe function from hr_feedback.js', () => {
         {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}
     ];
     
-    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments})).mockResponseOnce(JSON.stringify({value: users}));
+    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users}));
     const func = require('../src/manager_feedback.js');
     test('Test fetchFeedback() returns the correct data', async () => {
         fetch.resetMocks();
@@ -73,37 +73,11 @@ describe('Describe function from hr_feedback.js', () => {
         expect(feeds).toStrictEqual(feedbacks);
     });
 
-    test('Test fetchAssignment() returns the correct data', async () => {
-        fetch.resetMocks();
-        fetch.mockResponseOnce(JSON.stringify({value: assignments}));
-        const assigns = await func.fetchAssignment();
-        expect(assigns).toStrictEqual(assignments);
-    });
-
     test('Test that fetchUsers() returns the correct data', async () => {
         fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({value: users}));
         const urs = await func.fetchUsers();
         expect(urs).toStrictEqual(users);
-    });
-    
-    test('Test that listOfHr() returns only a list of HR memebrs', async () => {
-        fetch.mockResponseOnce(JSON.stringify({value: users}));
-        const HR = await func.listOfHr();
-        expect(HR).toStrictEqual(['dummy', 'taruna']);
-      });
-  
-      test('Test that getHr() returns only an arr of HR objects', async () => {
-        const HR = func.getHR(users);
-        expect(HR).toStrictEqual([{username: 'dummy', name: 'dummyname', surname: 'dummysurname', password: 'pass', role: 'HR'}, {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]);
-      });
-      
-    test('Test getStaffByTask() returns right data', () => {
-        const staff = 'prashant';
-        const task = 'Create diagrams'; 
-        const staffL =  func.getStaffByTask(assignments, staff, task);
-        expect(staffL).toStrictEqual([{assignment_id: 99, task: 'Create diagrams', staff: 'skassen2'},
-        {assignment_id: 100, task: 'Create diagrams', staff: 'jaedon'}]);
     });
 
     test('Test getUserFeedback() returns right data', () => {

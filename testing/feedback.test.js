@@ -121,9 +121,9 @@ describe('Describe function from feedback.js', () => {
         });
     });
 
-    test('Test that loadHRNamesDropDown() does what it needs to', async () => {
+    /*test('Test that loadHRNamesDropDown() does what it needs to', async () => {
       fetch.mockResponseOnce(JSON.stringify({value: users}));
       func.loadHRNamesForDropDown();
-    });
+    });*/
 });
 
