@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feedback Page</title>
+  <title>Document</title>
   <link rel="stylesheet" href="feedback.css">
   <script src="feedback.js" defer></script>
 </head>
@@ -12,55 +12,27 @@
 <body>
   <header>
     <section class="container">
-      <h1>Feedback Page</h1>
+      <h1>Staff Relations</h1>
+      <br>
+      <h2>Feedback Page</h2>
     </section>
-    <nav class="navbar">
-      <ul>
-          <li><a href="index.html">Logout</a></li>
-      </ul>
-  </nav>
-    <img src="images/logo1.png" id="logo" alt="Logo Image" width="125" height="120">
+    <img src="logo/logo1.png" id="logo" alt="Logo Image" width="135" height="130">
   </header>
 
   <main>
     <section class="grid-container">
-      <article id="feedbackList" class="grid-container">
+      <article id="allfeedback" class="grid-container">
       </article>
     </section>
 
-    <br>
-    <br>
-
     <section class="container">
-      <h2>Give Feedback</h2>
-
-      <section>
-
-        <nav>
-          <h3 id="taskHeading" style="display: none;">Tasks</h3>
-          <ul id="taskList" class="grid-container">
-          </ul>
-        </nav>
-
-        <nav>
-          <h3 id="staffHeading" style="display: none;">Staff</h3>
-          <ul id="staffList" class="grid-container">
-          </ul>
-        </nav>
-      </section>
-
-      <br>
-
-      <section id="commentArea" class="grid-container" style="display: none;">
-        <block>
-            <textarea id="comment" placeholder="Enter Feedback" required></textarea>
-        </block>
-
-        <section id="buttonArea"></section>
-      </section>
-      
+      <form id="addComment">
+        <select id="tasksDrop" class="dropdown" required>
+          <option value="" disabled selected>Select task</option>
+        </select>
+        <br><button id="add">Next</button> 
+      </form>
     </section>
-
   </main>
 
   <footer>

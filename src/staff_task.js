@@ -9,6 +9,7 @@ async function fetchAssignments() {
     const response = await fetch(endpoint);
     const assignments = await response.json();
     return assignments.value;
+
 }
 
 // Fetch all tasks
@@ -60,7 +61,7 @@ async function renderTasks() {
             const timeSpent = filterTimeByTaskAndStaff(allTimeData, assignment.task, username);
 
             // Create task card element
-            const taskCard = document.createElement('div');
+            const taskCard = document.createElement('article');
             taskCard.classList.add('staff-card'); // Updated class name
 
             // Create header for task name
@@ -69,29 +70,29 @@ async function renderTasks() {
             taskCard.appendChild(taskNameHeader);
 
             // Create div for task details
-            const taskDetails = document.createElement('div');
+            const taskDetails = document.createElement('section');
             taskDetails.classList.add('staff-details');
             
             const description = document.createElement('p');
-            description.innerHTML = `<span>Description:</span> ${task.description}`;
+            description.innerHTML = `<b>Description:</b> ${task.description}`;
             taskDetails.appendChild(description);
             
             const assignedBy = document.createElement('p');
-            assignedBy.innerHTML = `<span>Assigned by:</span> ${task.manager}`;
+            assignedBy.innerHTML = `<b>Assigned by:</b> ${task.manager}`;
             taskDetails.appendChild(assignedBy);
             
             const estimatedTime = document.createElement('p');
-            estimatedTime.innerHTML = `<span>Estimated Time:</span> ${task.est_time} minutes`;
+            estimatedTime.innerHTML = `<b>Estimated Time:</b> ${task.est_time} minutes`;
             taskDetails.appendChild(estimatedTime);
             
-            const timeSpentText = timeSpent ? `<span>Time Spent:</span> ${timeSpent.total_time} minutes` : '<span>Time Spent:</span> 0.00 minutes';
+            const timeSpentText = timeSpent ? `<b>Time Spent:</b> ${timeSpent.total_time} minutes` : '<span>Time Spent:</span> 0.00 minutes';
             const timeSpentElement = document.createElement('p');
             timeSpentElement.innerHTML = timeSpentText;
             taskDetails.appendChild(timeSpentElement);
             taskCard.appendChild(taskDetails);
 
             // Create stopwatch element
-            const stopwatch = document.createElement('div');
+            const stopwatch = document.createElement('section');
             stopwatch.classList.add('stopwatch');
             stopwatch.textContent = '00:00:00'; // Initial stopwatch time
             taskCard.appendChild(stopwatch);
@@ -172,19 +173,16 @@ async function logStopwatchTime(stopwatchElement) {
         alert("Nothing to log.");
         return;
     }
-
+    
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
-
     const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
     const staff = localStorage.getItem('username');
-    
     const data = await fetchTimeSpent();
     const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
-
     // Calculate new total time
     const newTotalTime = currentTotalTime + totalMinutes;
-
+    
     // Update time in database
     const newData = {
         task: taskName,
@@ -210,7 +208,7 @@ manualtime.addEventListener('submit', async event=>{
     event.preventDefault();
     const task=document.getElementById("taskdrop").value;
     const time=document.getElementById("time").value;
-    console.log(task);
+    //console.log(task);
 
     const staff = localStorage.getItem('username');
     const data=await fetchTimeSpent();
@@ -239,3 +237,6 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
         }
     }
 }
+
+//export functions for testing
+module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};

@@ -46,7 +46,7 @@ async function renderTasks(manager){
     const response = await fetch(endpoint);
     const result=await response.json();
     let data=result.value;
-    console.log(data);
+    //console.log(data);
     data= getTasks(manager,data);
 
     //renders here
@@ -95,7 +95,7 @@ async function renderTasks(manager){
     const response12 = await fetch(endpoint12);
     const result12=await response12.json();
     let data12=result12.value;
-     console.log(data12);
+     //console.log(data12);
      for(i=0;i<data12.length;i++){
          if(managersTasks.includes(data12[i].task)){
             const container=document.getElementById(data12[i].task);
@@ -179,6 +179,7 @@ assignment.addEventListener('submit', async event => {
     const res = await fetch(end);
     const result=await res.json();
     let d=result.value;
+    console.log(d);
     const check=existsAssignment(d,task,staff);
     if(check==1){
         const data={
@@ -210,12 +211,11 @@ assignment.addEventListener('submit', async event => {
         alert("The asssignment already exists");
     }
     
-    
-
     //add entry in time table with 0 minutes
 });
 
-
+//exports functions to be used for testing
+module.exports = {renderTasks, existsAssignment, taskNameValid, getManagersTasks, getStaff, getTasks};
 /*test existsAssignment,getManagersTasks,getStaff,taskNameValid,getTasks will use[
     {
         "task_id": 1,
