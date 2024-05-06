@@ -80,6 +80,18 @@ addComment2.addEventListener('submit',event=>{
     addCommentToDatabase(topicOrtask,sender,receiver,comment);
 })
 
+// Send staff their feedback, calls addCommentToDatabase
+// addComment.addEventListener('submit',event=>{
+//     event.preventDefault();
+
+//     const receiver=document.getElementById("staffDrop").value;
+//     const topicOrtask=document.getElementById("topic").value;
+//     const comment=document.getElementById("comment").value;
+//     const sender = localStorage.getItem('username');
+//     addCommentToDatabase(topicOrtask,sender,receiver,comment);
+// })
+
+// Add comment to database function
 async function addCommentToDatabase(task,sender,receiver,comment){
     const data={
         task:task,
@@ -97,4 +109,4 @@ async function addCommentToDatabase(task,sender,receiver,comment){
     window.location.reload();
 }
 
-module.exports = {loadHRNamesForDropDown, addCommentToDatabase, getStaffByTask, getUserFeedback, loadStaffForDropDown, renderFeedback,renderFeedback2, renderTaskDropdown, fetchAssignment, fetchFeedback, fetchUsers, fetchTasks, listOfHr, getManagerWhoAssignedTask, getHR};
+module.exports = {addCommentToDatabase, getUserFeedback, loadAllStaffDropDown, renderFeedback2, fetchFeedback, fetchUsers};
