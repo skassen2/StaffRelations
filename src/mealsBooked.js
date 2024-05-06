@@ -5,16 +5,10 @@ const heading = document.getElementById('heading');
 async function getAllMeals() {
     try {
         const response = await fetch('/data-api/rest/Meal_menu');
-        if (!response.ok) {
-            throw new Error('Error fetching meals: ' + response.statusText);
-        }
         const data = await response.json();
-        if (!data.value || !Array.isArray(data.value)) {
-            throw new Error('Meals data is not in the expected format.');
-        }
         return data.value;
     } catch (error) {
-        console.error('Error fetching meals:', error);
+        //console.error('Error fetching meals:', error);
         throw new Error('An error occurred while fetching meals. Please try again later.');
     }
 }
@@ -23,16 +17,10 @@ async function getAllMeals() {
 async function getAllMealOrders() {
     try {
         const response = await fetch('/data-api/rest/Meal_orders');
-        if (!response.ok) {
-            throw new Error('Error fetching meal orders: ' + response.statusText);
-        }
         const data = await response.json();
-        if (!data.value || !Array.isArray(data.value)) {
-            throw new Error('Meal orders data is not in the expected format.');
-        }
         return data.value;
     } catch (error) {
-        console.error('Error fetching meal orders:', error);
+        //console.error('Error fetching meal orders:', error);
         throw new Error('An error occurred while fetching meal orders. Please try again later.');
     }
 }
@@ -74,7 +62,7 @@ function renderMealList(filteredResults){
         mealBooking.innerHTML = `
             <h3><u>${meal.meal_name}</u></h3>
             <p><Strong>Booked By: </Strong>${meal.username}</p>
-            <p><Strong>Ordered On: </Strong>${meal.order_date}</p>
+            <p><Strong>Ordered On: </Strong>${meal.order_date.split('T')[0]}</p>
             <img src=${meal.meal_image_url} alt = ${meal.meal_name} width = 200>
         `;
         
@@ -89,14 +77,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const meals = await getAllMeals();
         const orders = await getAllMealOrders();
-        console.log('Meals data:', meals);
-        console.log('Order Data:', orders);
+        //console.log('Meals data:', meals);
+        //console.log('Order Data:', orders);
         let filteredResults = filterMealOrders(meals, orders);
         console.log('Result:', filteredResults);
         renderMealList(filteredResults);
     } catch (error) {
-        console.error('Error:', error.message);
+        //console.error('Error:', error.message);
         alert(error.message);
     }
 });
 
+module.exports = {renderMealList, getAllMealOrders, getAllMeals, filterMealOrders}

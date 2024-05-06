@@ -214,7 +214,8 @@ test('Test Login() where VALID login is given for staff, expect to be alerted th
     const CALLBACK_URL = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/staff_dash.html';
     Object.defineProperty(window, 'location', {
         value: {
-          href: 'https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&response_mode=query&scope=openid profile email' 
+            //href: 'staff_dash.html'
+            href: 'https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL)}&response_mode=query&scope=openid profile email' 
         }
       });
     const input1Value = document.getElementById('username');
@@ -224,6 +225,7 @@ test('Test Login() where VALID login is given for staff, expect to be alerted th
     return login.login().then(data => {
         const alert=document.getElementById('alert');
         expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        //expect(window.location.href).toBe('staff_dash.html');
         expect(window.location.href).toBe('https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=https%3A%2F%2Fjolly-ocean-04e2df210.5.azurestaticapps.net%2Fstaff_dash.html&response_mode=query&scope=openid profile email');
     });
     
@@ -249,7 +251,8 @@ test('Test Login() where VALID login is given for manager, expect to be alerted 
     const CALLBACK_URL1 = 'https://jolly-ocean-04e2df210.5.azurestaticapps.net/manager_dash.html';
     Object.defineProperty(window, 'location', {
         value: {
-          href: 'https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL1)}&response_mode=query&scope=openid profile email' 
+            //href: 'manager_dash.html'
+            href: 'https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL1)}&response_mode=query&scope=openid profile email' 
         }
       });
     const input1Value = document.getElementById('username');
@@ -259,6 +262,7 @@ test('Test Login() where VALID login is given for manager, expect to be alerted 
     return login.login().then(data => {
         const alert=document.getElementById('alert');
         expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        //expect(window.location.href).toBe('manager_dash.html');
         expect(window.location.href).toBe('https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=https%3A%2F%2Fjolly-ocean-04e2df210.5.azurestaticapps.net%2Fmanager_dash.html&response_mode=query&scope=openid profile email');
     });
     
@@ -285,6 +289,7 @@ test('Test Login() where VALID login is given for HR, expect to be alerted that 
     Object.defineProperty(window, 'location', {
         value: {
           href: 'https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=${encodeURIComponent(CALLBACK_URL2)}&response_mode=query&scope=openid profile email' 
+            //href:'hr_dash.html'
         }
       });
     const input1Value = document.getElementById('username');
@@ -294,6 +299,7 @@ test('Test Login() where VALID login is given for HR, expect to be alerted that 
     return login.login().then(data => {
         const alert=document.getElementById('alert');
         expect(alert.textContent).toBe('loging in...'); //alert should have this text
+        //expect(window.location.href).toBe('hr_dash.html');
         expect(window.location.href).toBe('https://login.microsoftonline.com/4b1b908c-5582-4377-ba07-a36d65e34934/oauth2/v2.0/authorize?client_id=b644e6ee-1475-4a22-b480-321b16113323&response_type=code&redirect_uri=https%3A%2F%2Fjolly-ocean-04e2df210.5.azurestaticapps.net%2Fhr_dash.html&response_mode=query&scope=openid profile email');
     });
     
