@@ -104,6 +104,15 @@ staffList.addEventListener('click', async event => {
         }
         console.log("feedback",feedback);
 
+        let dataMealOrders=await fetchMealOredrs();
+        const orderIDs=[];
+        for(const obj of dataMealOrders){
+            if(obj.username==personToDelete){
+                orderIDs.push(obj.order_id);
+            }
+        }
+        console.log(orderIDs,"food orders");
+
         //do deleting
         //delete from time
        for(const id of timeId){
@@ -138,7 +147,13 @@ staffList.addEventListener('click', async event => {
         const response = await fetch(`${endpoint}/${personToDelete}`, {
             method: "DELETE"
         });
-        
+        //delete from meal_order
+        for(const id of orderIDs){
+            const endpoint = '/data-api/rest/Meal_orders/order_id';
+            const response = await fetch(`${endpoint}/${id}`, {
+            method: "DELETE"
+            });
+        }
         
         
     }
@@ -179,6 +194,15 @@ staffList.addEventListener('click', async event => {
         }
         console.log("feedback",feedback);
 
+        let dataMealOrders=await fetchMealOredrs();
+        const orderIDs=[];
+        for(const obj of dataMealOrders){
+            if(obj.username==personToDelete){
+                orderIDs.push(obj.order_id);
+            }
+        }
+        console.log(orderIDs,"food orders");
+
         //do deleting
         //delete from time
        for(const id of timeId){
@@ -213,6 +237,13 @@ staffList.addEventListener('click', async event => {
         const response = await fetch(`${endpoint}/${personToDelete}`, {
             method: "DELETE"
         });
+        //delete from meal_order
+        for(const id of orderIDs){
+            const endpoint = '/data-api/rest/Meal_orders/order_id';
+            const response = await fetch(`${endpoint}/${id}`, {
+            method: "DELETE"
+            });
+        }
     }
     window.location.reload();
     
@@ -277,6 +308,12 @@ async function fetchTasks() {
 }
 async function fetchTime() {
     const endpoint = `/data-api/rest/Time`;
+    const response = await fetch(endpoint);
+    const tasks = await response.json();
+    return tasks.value;
+}
+async function fetchMealOredrs() {
+    const endpoint = `/data-api/rest/Meal_orders`;
     const response = await fetch(endpoint);
     const tasks = await response.json();
     return tasks.value;
