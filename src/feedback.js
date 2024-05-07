@@ -184,8 +184,8 @@ async function loadHRNamesForDropDown(){
         const option=document.createElement("option");
         option.value=obj.username;
         option.text=obj.username+" (HR)";
-        staffdrop.add(option)
-    })
+        staffdrop.add(option);
+    });
 }
 //takes assignment table, username and task and retruns staff doing the same task
 function getStaffByTask(json,staff,task){

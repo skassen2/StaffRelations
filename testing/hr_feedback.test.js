@@ -1,4 +1,13 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
+
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
 describe('Describe function from hr_feedback.js', () => {
     localStorage.setItem('username', 'taruna' ); 
     localStorage.setItem('role', 'HR' );
@@ -51,7 +60,8 @@ describe('Describe function from hr_feedback.js', () => {
 
     const tasks = [
         {task_id: 16, manager: 'keren', task: 'test', description: 'ello', est_time: 400},
-        {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}
+        {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30},
+        {task_id: 15, /*manager: 'keren',*/ task: 'test1', description: 'ell', est_time: 300}
     ];
     
     fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments}));
@@ -95,6 +105,7 @@ describe('Describe function from hr_feedback.js', () => {
         expect(manager).toBe('keren');
     });
 
+
     test('Test addCommentToDatabase()', async () => {
         // Mock a response expected from server
         fetch.mockClear();
@@ -124,5 +135,39 @@ describe('Describe function from hr_feedback.js', () => {
             expect(window.location.reload).toHaveBeenCalled();
         });
     });
+
+    test('Test event listener to add comment to database', async () => {
+        const butn = document.getElementById('addComment');
+        document.getElementById("staffDrop").value = 'skassen2';
+        document.getElementById("topic").value = 'test';
+        document.getElementById("comment").value = 'comment test';
+        
+        
+        const event = new Event('submit', { bubbles: true });
+        butn.dispatchEvent(event);
+        await await Promise.resolve()
+
+        const data={
+            task:'test',
+            sender:'taruna',
+            receiver:'skassen2',
+            comment:'comment test'
+        }
+        const endpoint = '/data-api/rest/Feedback'; 
+        //expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenCalledWith(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    });
+
+    /*test('Test renderFeedback()', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments}));
+        func.renderFeedback();
+    });*/
+    
 });
 

@@ -79,6 +79,18 @@ addComment2.addEventListener('submit',event=>{
     addCommentToDatabase(topicOrtask,sender,receiver,comment);
 })
 
+// Send staff their feedback, calls addCommentToDatabase
+// addComment.addEventListener('submit',event=>{
+//     event.preventDefault();
+
+//     const receiver=document.getElementById("staffDrop").value;
+//     const topicOrtask=document.getElementById("topic").value;
+//     const comment=document.getElementById("comment").value;
+//     const sender = localStorage.getItem('username');
+//     addCommentToDatabase(topicOrtask,sender,receiver,comment);
+// })
+
+// Add comment to database function
 async function addCommentToDatabase(task,sender,receiver,comment){
     const data={
         task:task,

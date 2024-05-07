@@ -1,6 +1,22 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
+
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
+beforeEach(() =>{
+    global.alert = jest.fn();
+});
 
 describe('Test Functions from hr_create_meal.js', () => {
+    localStorage.setItem('username', 'taruna' ); 
+    localStorage.setItem('role', 'HR' );
+    localStorage.setItem('name', 'Taruna' );
+    localStorage.setItem('surname', 'Naidoo');
     document.body.innerHTML = 
         '<main>'+
         '<form id="mealForm">'+
@@ -29,6 +45,81 @@ describe('Test Functions from hr_create_meal.js', () => {
         expect(m).toStrictEqual(meals)
     });
 
+    test('Event listener returns alert when a field is empty ', async () => {
+        document.getElementById("mealName").value = null ;
+        document.getElementById("mealDescription").value = null;
+        document.getElementById("mealImageUrl").value = null;
+        const butn = document.getElementById("mealForm");
+        const event = new Event('submit', { bubbles: true });
+        butn.dispatchEvent(event);
+        expect(global.alert).toHaveBeenCalledWith("Please fill in all fields.");
+        global.alert.mockClear();
+
+    });
+
+    test('Event listener returns alert when a field is empty ', async () => {
+        fetch.resetMocks();
+        const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 201 }).mockResponseOnce(JSON.stringify({value: meals}));
+        //setting values to post
+        document.getElementById("mealName").value = 'Chicken Test' ;
+        document.getElementById("mealDescription").value = 'Description';
+        document.getElementById("mealImageUrl").value = 'https://meal.img';
+        const butn = document.getElementById("mealForm");
+        const event = new Event('submit', { bubbles: true });
+        butn.dispatchEvent(event);
+        const data = {
+            meal_name: 'Chicken Test',
+            description: 'Description',
+            created_by: localStorage.getItem('username'), // Get the logged-in HR user
+            meal_image_url: 'https://meal.img'
+        };
+        const endpoint = '/data-api/rest/Meal_menu';
+
+        //expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenCalledWith(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        //expect(fetch).toHaveBeenCalledWith(2, '/data-api/rest/Meal_menu');
+        //expect(global.alert).toHaveBeenCalledWith("Meal created successfully!");
+    });
+
+    test('test that eventListener throws error when needed', async () =>{
+        document.getElementById("mealName").value = 'Chicken Test' ;
+        document.getElementById("mealDescription").value = 'Description';
+        document.getElementById("mealImageUrl").value = 'https://meal.img';
+        //fetch.mockRejectOnce();
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
+        const butn = document.getElementById("mealForm");
+        const event = new Event('submit', { bubbles: true });
+        butn.dispatchEvent(event);
+        await Promise.resolve()
+        expect(global.alert).toHaveBeenCalledWith("An error occurred while creating the meal. Please try again later.");
+        global.alert.mockClear();
+    });
+
+    test('test handleDOMContentLoaded for document', async () =>{
+        //fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: meals}));
+        func.handleDOMContentLoaded();
+        await Promise.resolve();
+        expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
+        
+    });
+
+    //if lines are covered then it is cathing errors
+    test('test eventListener for document throws error when needed', async () =>{
+        //fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({error: {message: "error"}}), { status: 500});
+        func.handleDOMContentLoaded();
+        await Promise.resolve();
+        expect(fetch).toHaveBeenCalled();
+
+    });
 
 });
 

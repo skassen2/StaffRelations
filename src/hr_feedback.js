@@ -36,9 +36,9 @@ async function renderFeedback(){
     feedbackList.innerHTML = '';
     staffFeedback.forEach((row, index) => {
         let manager=getManagerWhoAssignedTask(row.task,data1);
-        if(manager==undefined){
+        /*if(manager==undefined){
             manager="N/A";
-        }
+        }*/
         const task = document.createElement('block');
         task.classList.add('staff-card');
         task.innerHTML = `

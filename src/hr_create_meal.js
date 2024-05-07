@@ -40,7 +40,7 @@ form.addEventListener("submit", async (e) => {
             throw new Error('Failed to create meal.');
         }
     } catch (error) {
-        console.error('Error creating meal:', error);
+        //console.error('Error creating meal:', error);
         alert("An error occurred while creating the meal. Please try again later.");
     }
 });
@@ -101,15 +101,26 @@ function renderMeals(meals) {
 }
 
 // Call the getAllMeals function when the DOM is loaded
-document.addEventListener("DOMContentLoaded", async () => {
+//code changed to make testing easier
+async function handleDOMContentLoaded() {
     try {
         const meals = await getAllMeals();
         renderMeals(meals);
     } catch (error) {
-        console.error('Error:', error.message);
+        //console.log('There was an error')
         alert(error.message);
     }
-});
+}
+document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
+/*document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const meals = await getAllMeals();
+        renderMeals(meals);
+    } catch (error) {
+        //console.error('Error:', error.message);
+        alert(error.message);
+    }
+});*/
 
 //export for testing
-module.exports = {renderMeals, getAllMeals}
+module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}

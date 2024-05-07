@@ -1,4 +1,13 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
+
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
 describe('Describe function from hr_feedback.js', () => {
     localStorage.setItem('username', 'keren' ); 
     localStorage.setItem('role', 'Manager' );
@@ -66,6 +75,7 @@ describe('Describe function from hr_feedback.js', () => {
     
     fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users}));
     const func = require('../src/manager_feedback.js');
+
     test('Test fetchFeedback() returns the correct data', async () => {
         fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({value: feedbacks}));
@@ -114,6 +124,34 @@ describe('Describe function from hr_feedback.js', () => {
             });
             expect(window.location.reload).toHaveBeenCalled();
         });
+    });
+
+    test('Test eventListener for adding new comment', async () => {
+        const Sub = document.getElementById('addComment2');
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        const data={
+            task:'test',
+            sender:'keren',
+            receiver:'skassen2',
+            comment:'please see me.'
+        }
+        const endpoint = '/data-api/rest/Feedback'; 
+        document.getElementById("staffDrop").value = 'skassen2';
+        document.getElementById("topic").value = 'test';
+        document.getElementById("comment").value = 'please see me.';
+
+        const event = new Event('submit', { bubbles: true });
+        Sub.dispatchEvent(event);
+        expect(fetch).toHaveBeenCalledWith(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+       
+
     });
 });
 
