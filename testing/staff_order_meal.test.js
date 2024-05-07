@@ -1,5 +1,13 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
 
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
 beforeEach(() =>{
     global.alert = jest.fn();
 });
@@ -60,6 +68,51 @@ describe('Test staff_order_meals', () =>{
         });
         expect(mealOrd).toBeDefined();
     });
+
+    test('Test RenderMeals() does what its supposed to, this test is for meal that is ordered', async () => {
+        //change test conditions
+        localStorage.setItem('username', 'prashant' ); 
+        localStorage.setItem('role', 'Staff' );
+        localStorage.setItem('name', 'Prashant' );
+        localStorage.setItem('surname', 'Kessa' );
+        const createElementSpy = jest.spyOn(document, 'createElement');
+        fetch.mockResponseOnce(JSON.stringify({value: orders}));
+        //only pass 1 meal so that loops only run once to test functionality
+        return func.renderMeals(meals)
+        .then(response => {
+            expect(document.getElementsByTagName("h2")[0].textContent).toBe("Meal Options");
+            expect(document.getElementsByTagName("h3")[0].textContent).toBe("Grilled Salmon");
+            expect(document.getElementsByTagName("p")[0].textContent).toBe("Delicious grilled salmon served with vegetables and rice.");
+            expect(document.getElementsByTagName("p")[1].textContent).toBe("Created by: taruna");
+            expect(document.getElementsByTagName("img")[0].src).toBe('https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg');
+            expect(document.getElementsByTagName("p")[2].textContent).toBe("Meal Already Ordered");
+            expect(document.getElementsByTagName("button")[0].textContent).toBe("Order");
+        });
+        createElementSpy.mockRestore();
+    });
+    
+    test('Test DOMContentLoaded eventListener', async () => {
+        //setup
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: orders}));
+        //test
+        document.dispatchEvent(new Event('DOMContentLoaded'));
+        await Promise.resolve();
+        expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
+        /*expect(global.alert).toHaveBeenCalledWith("Order placed successfully!");
+        global.alert.mockClear();*/
+    });
+
+    /*test('Test DOMContentLoaded eventListener throws error when needed', async () => {
+        //setup
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
+        document.dispatchEvent(new Event('DOMContentLoaded'));
+        await Promise.resolve();
+        //if lines are covered then catch was reached
+        expect(fetch).toHaveBeenCalled();
+    });*/
+
 
 });
 

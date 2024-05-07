@@ -90,10 +90,9 @@ async function renderMeals(meals) {
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const meals = await getAllMeals();
-        console.log('Meals data:', meals);
         renderMeals(meals);
     } catch (error) {
-        console.error('Error:', error.message);
+        //console.error('Error:', error.message);
         alert(error.message);
     }
 });
@@ -105,7 +104,7 @@ document.addEventListener("click", async (event) => {
         // Get the user ID from local storage and corresponding meal ID
         const user_id = localStorage.getItem('username');
         const meal_id = event.target.dataset.meal_id;
-        console.log('Placing order for meal:', meal_id);
+        //console.log('Placing order for meal:', meal_id);
 
         // Place the order
         try {

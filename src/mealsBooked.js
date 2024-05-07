@@ -52,6 +52,7 @@ function renderMealList(filteredResults){
     const pageTitle = document.createElement("h1");
     pageTitle.classList.add("page-title");
     pageTitle.textContent = "Meal Bookings Page";
+    //console.log(pageTitle.textContent);
     heading.appendChild(pageTitle);
 
     filteredResults.forEach((meal, index) => {
@@ -77,10 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const meals = await getAllMeals();
         const orders = await getAllMealOrders();
-        //console.log('Meals data:', meals);
-        //console.log('Order Data:', orders);
         let filteredResults = filterMealOrders(meals, orders);
-        console.log('Result:', filteredResults);
         renderMealList(filteredResults);
     } catch (error) {
         //console.error('Error:', error.message);

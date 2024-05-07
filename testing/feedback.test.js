@@ -1,4 +1,13 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
+
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
 describe('Describe function from feedback.js', () => {
     localStorage.setItem('username', 'prashant' ); 
     localStorage.setItem('role', 'Staff' );
@@ -123,7 +132,17 @@ describe('Describe function from feedback.js', () => {
 
     /*test('Test that loadHRNamesDropDown() does what it needs to', async () => {
       fetch.mockResponseOnce(JSON.stringify({value: users}));
+      document.createElement = jest.fn().mockReturnValue({
+        classList: {
+            add: jest.fn()
+        }
+      });
+      const staffDropdown=document.createElement('select'); 
+      document.body.appendChild(staffDropdown);
+      staffDropdown.setAttribute("id","staffDropdown");
       func.loadHRNamesForDropDown();
-    });*/
+      expect(document.createElement).toHaveBeenCalledWith("option");
+    
+  });*/
 });
 

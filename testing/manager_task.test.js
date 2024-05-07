@@ -1,4 +1,13 @@
 require('jest-fetch-mock').enableFetchMocks();
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+const {JSDOM} = require('jsdom');
+
+// Create a JSDOM instance
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+// Set up global variables like document and window
+global.document = dom.window.document;
+global.window = dom.window;
 //Tests functions: getTasks, taskNameValid, getStaff, getManagersTasks, existsAssignment
 describe('Functions from manager_task.js', () => {
     localStorage.setItem('username', 'keren' ); 
