@@ -42,8 +42,6 @@ staffForm.addEventListener('submit', event => {
         <h2>${name} ${surname}</h2>
         <p><strong>Username:</strong> ${username}</p>
         <p><strong>Role:</strong> ${role}</p>
-        <button class="btn" id="changePermissions_${index}">Change Permissions</button>
-        <button class="btn" id="removeAccess_${index}">Remove Access</button>
         <button class="btn-remove delete" data-index="${index}">Delete</button>
     `;
     staffList.appendChild(staffMember);
@@ -52,7 +50,9 @@ staffForm.addEventListener('submit', event => {
 
 //where the deleting happens
 staffList.addEventListener('click', async event => {
+    console.log(event.target.dataset.index);
     const index = event.target.dataset.index;
+    
     const personToDelete=usernameAndRole[index][0];
     console.log(personToDelete); 
     
@@ -267,7 +267,7 @@ async function renderStaffList() {
         staffList.appendChild(staffMember);
     });
 }
-
+console.log(usernameAndRole);
 async function getStaffManager(){
     const data=[]
     const endpoint = `/data-api/rest/Users`;
@@ -321,4 +321,4 @@ async function fetchMealOredrs() {
 
 
 //export fucntions for testing
-module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers};
+module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers, fetchMealOredrs};

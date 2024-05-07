@@ -106,13 +106,36 @@ describe('Test staff_order_meals', () =>{
     /*test('Test DOMContentLoaded eventListener throws error when needed', async () => {
         //setup
         fetch.resetMocks();
-        fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
+        //fetch.mockRejectedValueOnce(new Error('Failed to fetch data'));
+        fetch.mockRejectOnce()
         document.dispatchEvent(new Event('DOMContentLoaded'));
-        await Promise.resolve();
-        //if lines are covered then catch was reached
         expect(fetch).toHaveBeenCalled();
+        expect(async () => {
+            await Promise.resolve();
+          }).rejects.toThrow();
+        //fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
+        //if lines are covered then catch was reached
+        
     });*/
 
+    /*test('Test DOMContentLoaded "click" eventListener', async () => {
+        //setup
+        const orderButton = document.createElement("button");
+        orderButton.textContent = "Order";
+        orderButton.classList.add("order-button"); 
+        document.getElementById("mealList").appendChild(orderButton);  
+        orderButton.dataset.meal_id = 1;    
+            
+       
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: meals}));
+        //test
+        document.dispatchEvent(new Event('click'));
+        await Promise.resolve();
+        expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
+        expect(global.alert).toHaveBeenCalledWith("Order placed successfully!");
+        global.alert.mockClear();
+    });*/
 
 });
 
