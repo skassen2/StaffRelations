@@ -70,13 +70,16 @@ async function loadAllStaffDropDown(){
 loadAllStaffDropDown();
 
 // Send staff their feedback, calls addCommentToDatabase
-addComment2.addEventListener('submit',event=>{
+addComment2.addEventListener('submit', async event=>{
     event.preventDefault();
     const receiver=document.getElementById("staffDrop").value;
     const topicOrtask=document.getElementById("topic").value;
     const comment=document.getElementById("comment").value;
+    const rating=document.getElementById("rating").value;
     const sender = localStorage.getItem('username');
-    addCommentToDatabase(topicOrtask,sender,receiver,comment);
+    const sender_role = "Manager";
+    const receiver_role=await getStaffRole(receiver);
+    addCommentToDatabase(topicOrtask,sender,receiver,comment,sender_role,receiver_role,parseInt(rating));
 })
 
 // Send staff their feedback, calls addCommentToDatabase
@@ -91,12 +94,15 @@ addComment2.addEventListener('submit',event=>{
 // })
 
 // Add comment to database function
-async function addCommentToDatabase(task,sender,receiver,comment){
+async function addCommentToDatabase(task,sender,receiver,comment,sender_role,receiver_role,rating){
     const data={
         task:task,
         sender:sender,
         receiver:receiver,
-        comment:comment
+        comment:comment,
+        sender_role:sender_role,
+        receiver_role:receiver_role,
+        rating:rating
     }
     const endpoint = `/data-api/rest/Feedback`;
     const response = await fetch(endpoint, {
@@ -106,6 +112,14 @@ async function addCommentToDatabase(task,sender,receiver,comment){
     });
 
     window.location.reload();
+}
+async function getStaffRole(staff){
+    let data=await fetchUsers();
+    for(const obj of data){
+        if(obj.username==staff){
+            return obj.role;
+        }
+    }
 }
 
 module.exports = {addCommentToDatabase, getUserFeedback, loadAllStaffDropDown, renderFeedback2, fetchFeedback, fetchUsers};
