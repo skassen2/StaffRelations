@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "jest": "^29.7.0",
-    "jest-coverage-badges": "^1.1.2"
+    "jest-coverage-badges": "^1.1.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@azure/static-web-apps-cli": "^1.1.7",
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3"
   },
@@ -22,7 +24,7 @@
       "./setupJest.js"
     ],
     "coverageReporters": [
-      "json-summary", 
+      "json-summary",
       "text",
       "lcov"
     ]

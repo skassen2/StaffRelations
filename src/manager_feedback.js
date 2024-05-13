@@ -99,6 +99,7 @@ async function addCommentToDatabase(task,sender,receiver,comment){
         comment:comment
     }
     const endpoint = `/data-api/rest/Feedback`;
+    //const endpoint = `/data-api/rest/Users`;
     const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -107,5 +108,81 @@ async function addCommentToDatabase(task,sender,receiver,comment){
 
     window.location.reload();
 }
+
+// Calculate average rating per staff-role
+async function calculateAverageRating() {
+    const feedbackData = await fetchFeedback();
+    const filteredData = feedbackData.filter(entry => entry.rating !== "" && entry.rating !== -1);
+
+    const ratingsData = {};
+
+    filteredData.forEach(entry => {
+        // filter only if receiver_role is "Staff" and leave it blank if it's empty
+        if (entry.receiver_role === "Staff") {
+            // initialise ratings array for each receiver
+            if (!ratingsData[entry.receiver]) {
+                ratingsData[entry.receiver] = [];
+            }
+            // add rating data into ratings array by pushing
+            ratingsData[entry.receiver].push({
+                rating: parseFloat(entry.rating),
+                receiver_role: entry.receiver_role || '' 
+            });
+        }
+    });
+    // calc average ratings for each receiver
+    const averageRatings = {};
+    for (const receiver in ratingsData) {
+        const ratings = ratingsData[receiver];
+        const sum = ratings.reduce((acc, { rating }) => acc + rating, 0);
+        const average = sum / ratings.length;
+        if (!isNaN(average)) {// Check if average is NaN
+            // Store average rating and receiver role for each receiver
+            averageRatings[receiver] = {
+                average_rating: average,
+                receiver_role: ratings[0].receiver_role 
+            };
+        }
+    }
+
+    return averageRatings;
+}
+// create new Excel file
+const excelFileBtn = document.getElementById("genExcelFile");
+excelFileBtn.addEventListener('click', async (e) => {
+    const averageRatings = await calculateAverageRating();
+    // prep data for Excel
+    const data = Object.keys(averageRatings).map(key => ({
+        'Sent to': key,
+        //'Role': averageRatings[key].receiver_role,
+        'Overall Performance': averageRatings[key].average_rating
+    }));
+    //create worksheet
+    const worksheet = XLSX.utils.json_to_sheet(data, {
+        header: ['Sent to', /*'Role',*/ 'Overall Performance']
+    });
+    //create workbook & add worksheet to it
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Staff Ratings');
+
+    //convert workbook to buffer - buffer is needed to create actual Excel file in browser
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+    // create blob and URL for downloading
+    const blob = new Blob([excelBuffer], { type: EXCEL_TYPE });
+    const url = window.URL.createObjectURL(blob);
+
+    //download setup
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'staff_ratings_'+new Date().toDateString()+'.xlsx';
+    document.body.appendChild(a);
+    a.click();
+
+    //clean up since a unique url is generated for each click
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+});
 
 module.exports = {addCommentToDatabase, getUserFeedback, loadAllStaffDropDown, renderFeedback2, fetchFeedback, fetchUsers};

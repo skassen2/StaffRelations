@@ -43,6 +43,7 @@ form.addEventListener("submit", async (e) => {
         //console.error('Error creating meal:', error);
         alert("An error occurred while creating the meal. Please try again later.");
     }
+    
 });
 
 // Function to fetch all meals from the database
@@ -100,10 +101,41 @@ function renderMeals(meals) {
     mealList.appendChild(mealContainer);
 }
 
+// Function to check if it's too late to add a meal option
+function checkCutOffTime() {
+    // Set cutoff time to 12pm (midday)
+    var cutOff = new Date();
+    cutOff.setHours(12, 0, 0);
+
+    // Get current time and compare with cutoff time
+    const currTime = new Date();
+    if (currTime.getHours() > cutOff.getHours()) {
+        if(isSaturday()){
+            alert("Oops! Too late to add an option. Try again on Monday between 08:00 & 12:00.");
+        }
+        else{
+            alert("Oops! Too late to add an option. Try again another day between 08:00 & 12:00.");
+        }
+        //prevent input and submission of new option after 12pm
+        document.getElementById("mealName").setAttribute("disabled", "disabled");
+        document.getElementById("mealDescription").setAttribute("disabled", "disabled");
+        document.getElementById("mealImageUrl").setAttribute("disabled", "disabled");
+        document.querySelector("#mealForm button[type='submit']").setAttribute("disabled", "disabled"); 
+    }
+}
+//check if following day is a weekend day, change the alert accordingly
+//JS recognises Saturday as day 6 of the week
+function isSaturday(){
+    const tmrw = new Date();
+    tmrw.setDate(tmrw.getDate()+1);
+    return tmrw.getDay()===6;
+}
+
 // Call the getAllMeals function when the DOM is loaded
 //code changed to make testing easier
 async function handleDOMContentLoaded() {
     try {
+        checkCutOffTime();
         const meals = await getAllMeals();
         renderMeals(meals);
     } catch (error) {
@@ -123,4 +155,4 @@ document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
 });*/
 
 //export for testing
-module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}
+//module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}

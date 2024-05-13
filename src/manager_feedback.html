@@ -7,16 +7,23 @@
   <title>Document</title>
   <link rel="stylesheet" href="manager_feedback.css">
   <script src="manager_feedback.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
+  <!-- The 2nd script tag is needed for the excel file generation -->
+
 </head>
 
 <body>
   <header>
     <section class="container">
-      <h1>Staff Relations</h1>
-      <br>
-      <h2>Feedback Page</h2>
+      <h1>Feedback Page</h1>
     </section>
-    <img src="logo/logo1.png" id="logo" alt="Logo Image" width="135" height="130">
+    <nav class="navbar">
+      <ul>
+          <li><a href="index.html">Logout</a></li>
+          <li><a href="manager_dash.html">Dashboard</a></li>
+      </ul>
+  </nav>
+    <img src="logo/logo1.png" id="logo" alt="Logo Image" width="120" height="125">
   </header>
 
   <main>
@@ -38,6 +45,7 @@
 
     <section class="container">
         <form id="addComment2">
+          
           <select id="staffDrop" class="dropdown" required>
             <option value="" disabled selected>Select Receiver</option>
           </select>
@@ -46,6 +54,10 @@
           <br>
           <button type="submit" id="Send">Send</button> 
         </form>
+      </section>
+
+      <section class="excelGenerator">
+        <button id="genExcelFile">Staff Performance</button>
       </section>
   </main>
 
