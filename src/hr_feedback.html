@@ -7,6 +7,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="hr_feedback.css">
   <script src="hr_feedback.js" defer></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -33,6 +34,15 @@
           <input id="topic" type="text" placeholder="Topic" required>
           <textarea id="comment" placeholder="Comment to send" rows="6" required></textarea>
           <br><button id="Send">Send</button> 
+        </form>
+      </section>
+
+      <section class="container">
+        <form id="downloadExcel">
+          <select id="staffSelection" class="dropdown" required>
+            <option value="" disabled selected>Select staff to view</option>
+          </select>
+          <button id="genExcelFile">Download Staff Performance</button>
         </form>
       </section>
     </main>

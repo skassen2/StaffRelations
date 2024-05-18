@@ -7,6 +7,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="manager_feedback.css">
   <script src="manager_feedback.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
 </head>
 
 <body>
@@ -47,6 +48,15 @@
           <input id="rating" type="number" min="0" max="10" placeholder="(Otional) add anon rating">
           <br>
           <button type="submit" id="Send">Send</button> 
+        </form>
+      </section>
+
+      <section class="container">
+        <form id="downloadExcel">
+          <select id="staffSelection" class="dropdown" required>
+            <option value="" disabled selected>Select staff to view</option>
+          </select>
+          <button id="genExcelFile">Download Staff Performance</button>
         </form>
       </section>
   </main>

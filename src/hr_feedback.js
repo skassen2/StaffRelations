@@ -87,6 +87,21 @@ async function loadAllStaffDropDown(){
     })
 }
 loadAllStaffDropDown();//load staff names here
+//loads staff and managers for the dropdown relating to creating the excel document
+async function loadAllStaffManagerDropDown(){
+    const data=await fetchUsers();
+    const dropdown=document.getElementById("staffSelection");
+    data.forEach(obj =>{
+        if(obj.role=="Staff"){
+            const option=document.createElement("option");
+            option.value=obj.username;
+            option.text=obj.username;
+            dropdown.add(option);
+        }
+    })
+}
+loadAllStaffManagerDropDown();//load staff names here
+
 
 
 //Send staff their feedback, calls addCommentToDatabase
@@ -117,5 +132,66 @@ async function addCommentToDatabase(task,sender,receiver,comment){
 
     window.location.reload();
 }
+
+// Creates a map of objects which will be used to create excel file
+async function getExcelFeedback() {
+    const staffmember=document.getElementById("staffSelection").value;
+    const feedbackData = await fetchFeedback();
+    const filteredData = feedbackData.filter(entry => entry.rating !=null && entry.rating !== -1 && entry.receiver_role=="Staff" && entry.receiver==staffmember);
+    console.log(filteredData);
+
+    const data = {};
+    let i=0;
+    for(const obj of filteredData){
+        data[i]={
+            task:obj.task,
+            sender:obj.sender,
+            receiver:obj.receiver,
+            comment:obj.comment,
+            rating:obj.rating
+        }
+        i=i+1;
+    }
+    return data;
+}
+// create new Excel file
+downloadExcel.addEventListener('submit', async e => {
+    e.preventDefault();
+    const getExcelFeedbackdata = await getExcelFeedback();
+    // prep data for Excel
+    const data = Object.keys(getExcelFeedbackdata).map(key => ({
+        'task':getExcelFeedbackdata[key].task,
+        'sender':getExcelFeedbackdata[key].sender,
+        'receiver':getExcelFeedbackdata[key].receiver,
+        'comment':getExcelFeedbackdata[key].comment,
+        'rating':getExcelFeedbackdata[key].rating
+    }));
+    //create worksheet
+    const worksheet = XLSX.utils.json_to_sheet(data, {
+        header: ['task', 'sender','receiver','comment','rating']
+    });
+    //create workbook & add worksheet to it
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Staff Ratings');
+
+    //convert workbook to buffer - buffer is needed to create actual Excel file in browser
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+    // create blob and URL for downloading
+    const blob = new Blob([excelBuffer], { type: EXCEL_TYPE });
+    const url = window.URL.createObjectURL(blob);
+
+    //download setup
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'staff_ratings_'+new Date().toDateString()+'.xlsx';
+    document.body.appendChild(a);
+    a.click();
+
+    //clean up since a unique url is generated for each click
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+});
 
 module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};
