@@ -95,7 +95,8 @@ async function listOfHr(){
 let click1=false;
 let click2=false;
 let click3=false;
-addComment.addEventListener('submit', event=>{
+let addRating=0;//checks if we doing a rating,so know to call different add to database method
+addComment.addEventListener('submit',async event=>{
     event.preventDefault();
 
     if(click1==false){//if button is clicked once
@@ -151,14 +152,42 @@ addComment.addEventListener('submit', event=>{
         //changed button text
         const button=document.getElementById("add");
         button.textContent="Add comment"; 
+        //checks if person selected is a staff, then adds input field to enter rating
+        const isStaff=await checkIfStaff(staff.value);
+        if(isStaff==1){ 
+            addRating=1;//adding a rating
+            const input=document.createElement("input");
+            input.setAttribute("placeholder","(Optional) anon rating");
+            input.setAttribute("type","number");
+            input.setAttribute("min", "0");
+            input.setAttribute("max", "10");
+            input.setAttribute("id","rating");
+            form.insertBefore(input,addButton);
+            form.insertBefore(linebreak,input);
+            form.insertBefore(input,linebreak);
+        }
     }
     else if(click3==false){//add data to database
         //fetch the data from the input fields
-        const task=document.getElementById("tasksDrop").value;
-        const staff=document.getElementById("staffDropdown").value;
-        const comment=document.getElementById("comment").value;
-        const sender = localStorage.getItem('username');
-        addCommentToDatabase(task,sender,staff,comment);
+        if(addRating){
+            const task=document.getElementById("tasksDrop").value;
+            const staff=document.getElementById("staffDropdown").value;
+            const comment=document.getElementById("comment").value;
+            const sender = localStorage.getItem('username');
+            const rating=document.getElementById("rating").value;
+            const sender_role="Staff";
+            const receiver_role="Staff"; 
+            console.log(typeof(rating));
+            addRatingCommentToDatabase(task,sender,staff,comment,sender_role,receiver_role,parseInt(rating));
+        }
+        else{
+            const task=document.getElementById("tasksDrop").value;
+            const staff=document.getElementById("staffDropdown").value;
+            const comment=document.getElementById("comment").value;
+            const sender = localStorage.getItem('username');
+            addCommentToDatabase(task,sender,staff,comment);
+        }
+        
     }
 
 })
@@ -186,6 +215,16 @@ async function loadHRNamesForDropDown(){
         option.text=obj.username+" (HR)";
         staffdrop.add(option);
     });
+}
+//checks if user entered in dropdown in a staff member, then know if to add rating input field
+async function checkIfStaff(person){
+    let data= await fetchUsers();
+    for(const obj of data){ 
+        if(obj.username==person && obj.role=="Staff"){
+            return 1;
+        }
+    }
+    return 0;
 }
 //takes assignment table, username and task and retruns staff doing the same task
 function getStaffByTask(json,staff,task){
@@ -215,6 +254,25 @@ async function addCommentToDatabase(task,sender,receiver,comment){
         sender:sender,
         receiver:receiver,
         comment:comment
+    }
+    const endpoint = `/data-api/rest/Feedback`;
+    const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+    });
+
+    window.location.reload();
+}
+async function addRatingCommentToDatabase(task,sender,receiver,comment,sender_role,receiver_role,rating){
+    const data={
+        task:task,
+        sender:sender,
+        receiver:receiver,
+        comment:comment,
+        sender_role:sender_role,
+        receiver_role:receiver_role,
+        rating:rating
     }
     const endpoint = `/data-api/rest/Feedback`;
     const response = await fetch(endpoint, {
