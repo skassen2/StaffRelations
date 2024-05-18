@@ -152,3 +152,43 @@ input[type="text"]:focus {
     border-color: var(--color-primary);
 }
 
+input[type="number"] {
+    width: 40%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+
+input[type="number"]:focus {
+    border-color: var(--color-primary);
+}
+
+.excelGenerator{
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+#genExcelFile{
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+#genExcelFile:hover{
+    background-color: var(--color-primary-dark);
+    transform: scale(1.2);
+}
+#genExcelFile:active{
+    transform: scale(0.98);
+}
+
