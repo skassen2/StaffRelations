@@ -11,7 +11,34 @@ async function fetchAssignments() {
     return assignments.value;
 
 }
+// Function to log time in DateTimeLog table
+async function logTimeInDateTimeLog(taskName, staff, logDate, totalMinutes) {
+    const logData = {
+        task: taskName,
+        staff: staff,
+        time_logged: totalMinutes,
+        log_date: logDate
+    };
 
+    try {
+        const response = await fetch('/data-api/rest/DateTimeLog', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(logData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to log time in DateTimeLog table.');
+        }
+
+        console.log('Time logged successfully in DateTimeLog table.');
+
+    } catch (error) {
+        console.error('Error logging time in DateTimeLog table:', error.message);
+    }
+}
 // Fetch all tasks
 async function fetchAllTasks() {
     const endpoint = `/data-api/rest/Tasks`;
@@ -178,6 +205,11 @@ async function logStopwatchTime(stopwatchElement) {
     const totalMinutes = hours * 60 + minutes + Math.ceil(seconds / 60);
     const taskName = stopwatchElement.parentElement.querySelector('h2').textContent;
     const staff = localStorage.getItem('username');
+
+    const logDate = new Date().toISOString().split('T')[0]; // Use current date
+   // const stopTime = new Date(); // Use current time as stop time
+    await logTimeInDateTimeLog(taskName, staff, logDate, totalMinutes);
+
     const data = await fetchTimeSpent();
     const [taskId, currentTotalTime] = getIDTotalTimeFromTaskStaff(data, taskName, staff);
     // Calculate new total time
@@ -196,6 +228,7 @@ async function logStopwatchTime(stopwatchElement) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData)
     });
+    
 
     window.location.reload();
 }
@@ -211,6 +244,12 @@ manualtime.addEventListener('submit', async event=>{
     //console.log(task);
 
     const staff = localStorage.getItem('username');
+
+    const logDate = new Date().toISOString().split('T')[0]; // Use current date
+    const totalMinutes = parseFloat(time);
+
+    await logTimeInDateTimeLog(task, staff, logDate, totalMinutes);
+    
     const data=await fetchTimeSpent();
     const id_and_time=getIDTotalTimeFromTaskStaff(data,task,staff);
     
@@ -239,4 +278,4 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
 }
 
 //export functions for testing
-module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};
+//module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};
