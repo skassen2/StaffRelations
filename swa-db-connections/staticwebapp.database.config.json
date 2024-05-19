@@ -92,6 +92,24 @@
         }
       ]
     },
+    "Staff_cars": {
+      "source": "dbo.staff_cars",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "Car_wash": {
+      "source": "dbo.car_wash",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
     "DateTimeLog": {
       "source": "dbo.DateTimeLog",
       "permissions": [
