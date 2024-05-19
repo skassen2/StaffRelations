@@ -133,25 +133,34 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
             `;
         }
         
-        // Append meal booking to group of meal bookings
+        // Appends car with details and booking options to page container
         carContainer.appendChild(CarBooking);
     });
-    carsList.appendChild(carContainer); //Appens group of meal bookings to page section
+    carsList.appendChild(carContainer); //Appends container to page
 };
 
 //Function allows users booking to be succesfully submitted and recorded in the car_wash table in the DB for a slot based on the button clicked
 carsList.addEventListener('click', async event => {
-    let slot = event.target.id;
-    
-    // Place the order
-    try {
-        await addCarwashBooking(car[0].car_id, slot);
-        alert('Car wash booked successfully!');
-    } catch (error) {
-        alert(error.message);
+    if(event.target.id == slot1){
+        // Book for wednesday
+        try {
+            await addCarwashBooking(car[0].car_id, slot1);
+            alert('Car wash booked successfully!');
+        } catch (error) {
+            alert(error.message);
+        }
+        location.reload();
     }
-
-    location.reload();
+    if(event.target.id == slot2){
+        // Book for friday
+        try {
+            await addCarwashBooking(car[0].car_id, slot2);
+            alert('Car wash booked successfully!');
+        } catch (error) {
+            alert(error.message);
+        }
+        location.reload();
+    }
 });
 
 // Function to place booking for carwash
