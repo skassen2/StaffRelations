@@ -109,7 +109,17 @@
           "role": "anonymous"
         }
       ]
+    },
+    "DateTimeLog": {
+      "source": "dbo.DateTimeLog",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
+
 
   }
 }
