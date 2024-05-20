@@ -87,6 +87,21 @@ async function loadAllStaffDropDown(){
     })
 }
 loadAllStaffDropDown();//load staff names here
+//loads staff and managers for the dropdown relating to creating the excel document
+async function loadAllStaffManagerDropDown(){
+    const data=await fetchUsers();
+    const dropdown=document.getElementById("staffSelection");
+    data.forEach(obj =>{
+        if(obj.role=="Staff"){
+            const option=document.createElement("option");
+            option.value=obj.username;
+            option.text=obj.username;
+            dropdown.add(option);
+        }
+    })
+}
+loadAllStaffManagerDropDown();//load staff names here
+
 
 
 //Send staff their feedback, calls addCommentToDatabase
@@ -118,95 +133,45 @@ async function addCommentToDatabase(task,sender,receiver,comment){
     window.location.reload();
 }
 
-// Calculate average rating per staff and manager
-async function calculateAverageRating() {
+// Creates a map of objects which will be used to create excel file
+async function getExcelFeedback() {
+    const staffmember=document.getElementById("staffSelection").value;
     const feedbackData = await fetchFeedback();
-    const filteredData = feedbackData.filter(entry => entry.rating !== "" && entry.rating !== -1);
+    const filteredData = feedbackData.filter(entry => entry.rating !=null && entry.rating !== -1 && entry.receiver_role=="Staff" && entry.receiver==staffmember);
 
-    const staffRatingsData = {};
-    const managerRatingsData = {};
-    //filter staff and managers out of data
-    filteredData.forEach(entry => {
-        if (entry.receiver_role === "Staff") {
-            if (!staffRatingsData[entry.receiver]) {
-                staffRatingsData[entry.receiver] = [];
-            }
-            // add rating data into ratings array  - staff
-            staffRatingsData[entry.receiver].push({
-                rating: parseFloat(entry.rating),
-                receiver_role: entry.receiver_role || ''
-            });
-        } else if (entry.receiver_role === "Manager") {
-            if (!managerRatingsData[entry.receiver]) {
-                managerRatingsData[entry.receiver] = [];
-            }
-            // add rating data into ratings array - manager
-            managerRatingsData[entry.receiver].push({
-                rating: parseFloat(entry.rating),
-                receiver_role: entry.receiver_role || ''
-            });
+    const data = {};
+    let i=0;
+    for(const obj of filteredData){
+        data[i]={
+            task:obj.task,
+            sender:obj.sender,
+            receiver:obj.receiver,
+            comment:obj.comment,
+            rating:obj.rating
         }
-    });
-    
-    // calc average ratings for each receiver - staff
-    const staffAverageRatings = {};
-    for (const receiver in staffRatingsData) {
-        const ratings = staffRatingsData[receiver];
-        const sum = ratings.reduce((acc, { rating }) => acc + rating, 0);
-        const average = sum / ratings.length;
-        if (!isNaN(average)) {// Check if average is NaN
-            // Store average rating and receiver role for each receiver
-            staffAverageRatings[receiver] = {
-                average_rating: average,
-                receiver_role: ratings[0].receiver_role
-            };
-        }
+        i=i+1;
     }
-    // calc average ratings for each receiver - manager
-    const managerAverageRatings = {};
-    for (const receiver in managerRatingsData) {
-        const ratings = managerRatingsData[receiver];
-        const sum = ratings.reduce((acc, { rating }) => acc + rating, 0);
-        const average = sum / ratings.length;
-        if (!isNaN(average)) {// Check if average is NaN
-            // Store average rating and receiver role for each receiver
-            managerAverageRatings[receiver] = {
-                average_rating: average,
-                receiver_role: ratings[0].receiver_role
-            };
-        }
-    }
-
-    return { staffAverageRatings, managerAverageRatings };
+    return data;
 }
-
 // create new Excel file
-const excelFileBtn = document.getElementById("genExcelFile");
-excelFileBtn.addEventListener('click', async (e) => {
-    const { staffAverageRatings, managerAverageRatings } = await calculateAverageRating();
-
-    // prep data for staff worksheet
-    const staffData = Object.keys(staffAverageRatings).map(key => ({
-        'Sent to': key,
-        'Overall Performance': staffAverageRatings[key].average_rating
+downloadExcel.addEventListener('submit', async e => {
+    e.preventDefault();
+    /*const getExcelFeedbackdata = await getExcelFeedback();
+    // prep data for Excel
+    const data = Object.keys(getExcelFeedbackdata).map(key => ({
+        'task':getExcelFeedbackdata[key].task,
+        'sender':getExcelFeedbackdata[key].sender,
+        'receiver':getExcelFeedbackdata[key].receiver,
+        'comment':getExcelFeedbackdata[key].comment,
+        'rating':getExcelFeedbackdata[key].rating
     }));
-    const staffWorksheet = XLSX.utils.json_to_sheet(staffData, {
-        header: ['Sent to', 'Overall Performance']
-    });
-
-    // prep data for manager worksheet
-    const managerData = Object.keys(managerAverageRatings).map(key => ({
-        'Sent to': key,
-        'Overall Performance': managerAverageRatings[key].average_rating
-    }));
-    const managerWorksheet = XLSX.utils.json_to_sheet(managerData, {
-        header: ['Sent to', 'Overall Performance']
-    });
-
     //create worksheet
+    const worksheet = XLSX.utils.json_to_sheet(data, {
+        header: ['task', 'sender','receiver','comment','rating']
+    });
+    //create workbook & add worksheet to it
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, staffWorksheet, 'Staff Ratings');
-    XLSX.utils.book_append_sheet(workbook, managerWorksheet, 'Manager Ratings');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Staff Ratings');
 
     //convert workbook to buffer - buffer is needed to create actual Excel file in browser
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -219,13 +184,110 @@ excelFileBtn.addEventListener('click', async (e) => {
     //download setup
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'staff_and_manager_ratings_' + new Date().toDateString() + '.xlsx';
+    a.download = 'staff_ratings_'+new Date().toDateString()+'.xlsx';
     document.body.appendChild(a);
     a.click();
 
     //clean up since a unique url is generated for each click
     window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);*/
+
+    const getExcelFeedbackdata = await getExcelFeedback();
+    // Prep data for Excel
+    const data = Object.keys(getExcelFeedbackdata).map(key => ({
+        task: getExcelFeedbackdata[key].task,
+        sender: getExcelFeedbackdata[key].sender,
+        receiver: getExcelFeedbackdata[key].receiver,
+        comment: getExcelFeedbackdata[key].comment,
+        rating: getExcelFeedbackdata[key].rating
+    }));
+    
+    // Create a new workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(`${staffMember}_Ratings`);
+    
+    // Add column headers
+    worksheet.columns = [
+        { header: 'Task', key: 'task' },
+        { header: 'Sender', key: 'sender' },
+        { header: 'Receiver', key: 'receiver' },
+        { header: 'Comment', key: 'comment' },
+        { header: 'Rating', key: 'rating' }
+    ];
+    
+    // Add data to worksheet
+    data.forEach(item => {
+        worksheet.addRow(item);
+    });
+    
+    // Prepare data for the chart
+    const ratings = data.map(d => d.rating);
+    const ratingCount = ratings.reduce((acc, rating) => {
+        acc[rating] = (acc[rating] || 0) + 1;
+        return acc;
+    }, {});
+    
+    // Add chart data to worksheet
+    worksheet.addRow([]);
+    worksheet.addRow(['Rating', 'Count']);
+    
+    Object.entries(ratingCount).forEach(([rating, count]) => {
+        worksheet.addRow([rating, count]);
+    });
+    
+    // Calculate average rating per task
+    worksheet.addRow([]);
+    worksheet.addRow(['Task', 'Average Rating']);
+    
+    // Calculate average rating per task
+    const taskGroups = data.reduce((acc, item) => {
+        if (!acc[item.task]) {
+            acc[item.task] = [];
+        }
+        acc[item.task].push(item.rating);
+        return acc;
+    }, {});
+    
+    Object.entries(taskGroups).forEach(([task, ratings]) => {
+        const averageRating = ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length;
+        worksheet.addRow([task, averageRating]);
+    });
+    
+    // Calculate average rating per sender per task
+    worksheet.addRow([]);
+    worksheet.addRow(['Sender', 'Task', 'Average Rating']);
+    
+    const senderTaskGroups = data.reduce((acc, item) => {
+        const senderTask = `${item.sender}-${item.task}`;
+        if (!acc[senderTask]) {
+            acc[senderTask] = [];
+        }
+        acc[senderTask].push(item.rating);
+        return acc;
+    }, {});
+    
+    Object.entries(senderTaskGroups).forEach(([senderTask, ratings]) => {
+        const [sender, task] = senderTask.split('-');
+        const averageRating = ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length;
+        worksheet.addRow([sender, task, averageRating]);
+    });
+    
+    // Create a buffer to generate the Excel file
+    const buffer = await workbook.xlsx.writeBuffer();
+    
+    // Create a blob and URL for downloading
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Download setup
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `staff_ratings_${new Date().toISOString().split('T')[0]}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up since a unique URL is generated for each click
+    window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
 });
-
 module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};

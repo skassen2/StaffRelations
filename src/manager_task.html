@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="manager_task.css">
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.2.1/dist/exceljs.min.js"></script>
     <script src="manager_task.js" defer></script>
 </head>
 <body>
@@ -46,6 +47,14 @@
                 <button id="adsk">Add assignment</button>
             </form>
         </section>
+        <section class="container">
+            <form id="downloadExcel">
+              <select id="staffSelection" class="dropdown" required>
+                <option value="" disabled selected>Select staff Member</option>
+              </select>
+              <button id="genExcelFile">Download Staff Timesheet</button>
+            </form>
+          </section>
     </main> 
 
     <footer>

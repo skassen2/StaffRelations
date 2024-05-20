@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="hr_feedback.css">
-  <script src="hr_feedback.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
-
+  <script src="hr_feedback.js" defer></script> 
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.2.1/dist/exceljs.min.js"></script>
 </head>
 
 <body>
@@ -38,8 +37,13 @@
         </form>
       </section>
 
-      <section class="excelGenerator">
-        <button id="genExcelFile">Employee Performance</button>
+      <section class="container">
+        <form id="downloadExcel">
+          <select id="staffSelection" class="dropdown" required>
+            <option value="" disabled selected>Select staff to view</option>
+          </select>
+          <button id="genExcelFile">Download Staff Performance</button>
+        </form>
       </section>
     </main>
 
