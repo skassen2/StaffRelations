@@ -1,3 +1,4 @@
+
 require('jest-fetch-mock').enableFetchMocks();
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
@@ -28,11 +29,12 @@ describe('Describe function from feedback.js', () => {
     '</section>'+
   '</main>';
     const feedbacks = [
-      {task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2},
-      {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3},
-      {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4},
-      {task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5},
-      {task: 'Test code', sender: 'prashant', receiver: 'skassen2', comment: 'aaaaaa', id: 6}
+      {task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+      {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+      {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+      {task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+      {task: 'Test code', sender: 'prashant', receiver: 'skassen2', comment: 'aaaaaa', id: 6, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+      {task: 'Task1', sender: 'prashant', receiver: 'keren', comment: 'b', id: 7, rating: 2, sender_role:'Staff', receiver_role:'Manager'}
     ];
 
     const assignments = [
@@ -83,7 +85,7 @@ describe('Describe function from feedback.js', () => {
     test('Test getUserFeedback() returns right data', () => {
         const staff = 'prashant';
         const assigns =  func.getUserFeedback(staff, feedbacks);
-        expect(assigns).toStrictEqual([{task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5}]);
+        expect(assigns).toStrictEqual([{task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5, rating: 2, sender_role:'Staff', receiver_role:'Staff'}]);
     });
 
     test('Test getStaffByTask() returns right data', () => {
@@ -103,13 +105,14 @@ describe('Describe function from feedback.js', () => {
 
     test('Test addCommentToDatabase()', async () => {
         // Mock a response expected from server
+        fetch.mockClear();
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
         fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data={
             task: 'Task1',
             sender:'prashant',
             receiver:'skassen',
-            comment:'comment'
+            comment:'comment',
         }
         const endpoint = '/data-api/rest/Feedback'; 
         Object.defineProperty(window, 'location', {
@@ -130,19 +133,50 @@ describe('Describe function from feedback.js', () => {
         });
     });
 
-    /*test('Test that loadHRNamesDropDown() does what it needs to', async () => {
-      fetch.mockResponseOnce(JSON.stringify({value: users}));
-      document.createElement = jest.fn().mockReturnValue({
-        classList: {
-            add: jest.fn()
-        }
+    test('Test addRatingCommentToDatabase()', async () => {
+      // Mock a response expected from server
+      fetch.mockClear();
+      const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+      fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+      const data={
+          task: 'Task1',
+          sender:'prashant',
+          receiver:'skassen',
+          comment:'comment',
+          sender_role: 'Staff',
+          receiver_role: 'Staff',
+          rating: 2
+      }
+      const endpoint = '/data-api/rest/Feedback'; 
+      Object.defineProperty(window, 'location', {
+          value: {
+            reload: jest.fn(),
+          },
       });
-      const staffDropdown=document.createElement('select'); 
-      document.body.appendChild(staffDropdown);
-      staffDropdown.setAttribute("id","staffDropdown");
-      func.loadHRNamesForDropDown();
-      expect(document.createElement).toHaveBeenCalledWith("option");
+
+      return func.addRatingCommentToDatabase('Task1', 'prashant', 'skassen', 'comment', 'Staff', 'Staff', 2).then(response => {
+          expect(fetch).toHaveBeenCalledWith(endpoint, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+          expect(window.location.reload).toHaveBeenCalled();
+      });
+    });
+
+    test('Test checkIfStaff(), is person is a staff member return 1', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: users}));
+        const staffCheck = await func.checkIfStaff('skassen2');
+        expect(staffCheck).toBe(1);
+    });
     
-  });*/
+    test('Test checkIfStaff(), is person is not a staff member return 0', async () => {
+      fetch.mockResponseOnce(JSON.stringify({value: users}));
+      const staffCheck = await func.checkIfStaff('keren');
+      expect(staffCheck).toBe(0);
+    });
+
 });
 

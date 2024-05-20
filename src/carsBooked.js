@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let filteredResults = filterCarAndCarwash(cars, carwash)
         renderCarsList(filteredResults);
     } catch (error) {
-        //console.error('Error:', error.message);
         alert(error.message);
     }
 });

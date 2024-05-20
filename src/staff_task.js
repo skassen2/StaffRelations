@@ -33,10 +33,9 @@ async function logTimeInDateTimeLog(taskName, staff, logDate, totalMinutes) {
             throw new Error('Failed to log time in DateTimeLog table.');
         }
 
-        console.log('Time logged successfully in DateTimeLog table.');
-
     } catch (error) {
         console.error('Error logging time in DateTimeLog table:', error.message);
+        throw error;
     }
 }
 // Fetch all tasks
@@ -278,4 +277,4 @@ function getIDTotalTimeFromTaskStaff(json,task,staff){
 }
 
 //export functions for testing
-//module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff};
+module.exports = {logStopwatchTime, stopStopwatch, startStopwatch, renderTasks, getIDTotalTimeFromTaskStaff, fetchAssignments, fetchAllTasks, fetchTimeSpent, filterAssignments, filterTaskByName, filterTimeByTaskAndStaff, logTimeInDateTimeLog};

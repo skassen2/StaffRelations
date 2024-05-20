@@ -12,7 +12,7 @@ beforeEach(() =>{
     global.alert = jest.fn();
 });
 
-describe('Test staff_order_meals', () =>{
+describe('Test staff_order_meals.js', () =>{
     localStorage.setItem('username', 'skassen2' ); 
     localStorage.setItem('role', 'Staff' );
     localStorage.setItem('name', 'Shaneel' );
@@ -48,7 +48,7 @@ describe('Test staff_order_meals', () =>{
         expect(list).toStrictEqual([{order_id: 23, meal_id: 28, username: 'skassen2', order_date: '2024-05-06T12:11:22.020'}]);
     });
 
-    test('Test placeOrder()', async () => {
+    test('Test placeOrder() sends the right data to be inserted in the meal_orders table', async () => {
         // Mock a response expected from server
         const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
         fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
@@ -69,7 +69,7 @@ describe('Test staff_order_meals', () =>{
         expect(mealOrd).toBeDefined();
     });
 
-    test('Test RenderMeals() does what its supposed to, this test is for meal that is ordered', async () => {
+    test('Test RenderMeals() does generates cards with information, this test is for meal that is ordered', async () => {
         //change test conditions
         localStorage.setItem('username', 'prashant' ); 
         localStorage.setItem('role', 'Staff' );
@@ -86,12 +86,13 @@ describe('Test staff_order_meals', () =>{
             expect(document.getElementsByTagName("p")[1].textContent).toBe("Created by: taruna");
             expect(document.getElementsByTagName("img")[0].src).toBe('https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg');
             expect(document.getElementsByTagName("p")[2].textContent).toBe("Meal Already Ordered");
-            expect(document.getElementsByTagName("button")[0].textContent).toBe("Order");
+            expect(document.getElementsByTagName("button")[0].textContent).toBe("Order"); 
+            createElementSpy.mockRestore();
         });
-        createElementSpy.mockRestore();
+       
     });
     
-    test('Test DOMContentLoaded eventListener', async () => {
+    test('Test DOMContentLoaded eventListener code runs and database fetch occurs', async () => {
         //setup
         fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: orders}));
@@ -99,38 +100,46 @@ describe('Test staff_order_meals', () =>{
         document.dispatchEvent(new Event('DOMContentLoaded'));
         await Promise.resolve();
         expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
-        /*expect(global.alert).toHaveBeenCalledWith("Order placed successfully!");
-        global.alert.mockClear();*/
     });
 
-    /*test('Test DOMContentLoaded eventListener throws error when needed', async () => {
+    test('Test DOMContentLoaded eventListener throws error when needed', async () => {
         //setup
         fetch.resetMocks();
-        //fetch.mockRejectedValueOnce(new Error('Failed to fetch data'));
+        fetch.mockResponseOnce(new Error({message: 'Failed to fetch data'}));
         fetch.mockRejectOnce()
         document.dispatchEvent(new Event('DOMContentLoaded'));
+       
         expect(fetch).toHaveBeenCalled();
-        expect(async () => {
-            await Promise.resolve();
-          }).rejects.toThrow();
-        //fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
         //if lines are covered then catch was reached
         
-    });*/
+    });
 
     /*test('Test DOMContentLoaded "click" eventListener', async () => {
         //setup
         const orderButton = document.createElement("button");
         orderButton.textContent = "Order";
         orderButton.classList.add("order-button"); 
+        orderButton.dataset.meal_id = 1;  
         document.getElementById("mealList").appendChild(orderButton);  
-        orderButton.dataset.meal_id = 1;    
-            
+        const mockEvent =new Event('click');
+        const mockTarget = {
+            classList: {
+                contains: jest.fn()
+            },
+            dataset: {
+                meal_id: 'meal1'
+            }
+        };
+        Object.defineProperty(mockEvent, 'target', {
+            writable: true,
+            value: mockTarget
+        });
        
-        fetch.resetMocks();
+        fetch.mockClear();
         fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: meals}));
         //test
-        document.dispatchEvent(new Event('click'));
+        document.dispatchEvent(mockEvent);
+        orderButton.click();
         await Promise.resolve();
         expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
         expect(global.alert).toHaveBeenCalledWith("Order placed successfully!");

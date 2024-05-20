@@ -42,19 +42,21 @@ describe('Functions from manager_list', () => {
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
 
-    //error recieved because of appendchild test removed for now
-    /*test('Test renderStaffList(): document.createElement() has been called', async () =>{
-        document.createElement = jest.fn().mockReturnValue({
-            classList: {
-                add: jest.fn()
-            }
-        });
-        return manager.renderStaffList().then(data => {
-            expect(document.createElement).toHaveBeenCalledWith('block');
-            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
-            // Clean up
-            document.createElement.mockRestore();
-        });
-     
-    });*/
+    test('Test staffForm eventlistener loads content', async () => {
+        const createElementSpy = jest.spyOn(document, 'createElement');
+        const btn = document.getElementById("staffForm");
+        btn.dispatchEvent(new Event('submit', { bubbles: true }));
+        expect(createElementSpy).toHaveBeenCalledWith("block");
+        createElementSpy.mockRestore();
+    });
+
+    test('Test staffForm eventlistener loads content', async () => {
+        const createElementSpy = jest.spyOn(document, 'createElement');
+        const btn = document.getElementById("staffForm");
+        btn.dispatchEvent(new Event('submit', { bubbles: true }));
+        expect(createElementSpy).toHaveBeenCalledWith("block");
+        createElementSpy.mockRestore();
+    });
+
+    
 });

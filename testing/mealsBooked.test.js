@@ -1,3 +1,4 @@
+
 require('jest-fetch-mock').enableFetchMocks();
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;

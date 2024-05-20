@@ -119,37 +119,54 @@ describe('Functions from hr_list', () => {
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
 
-    /*test('Test that eventListener for delete users does what it needs to', async () => {
-        //console.log(document.body.innerHTML);
-        fetch.mockResponseOnce(JSON.stringify({value: users}));
-        const createElementSpy = jest.spyOn(document, 'createElement');
-        func.renderStaffList();
+    test('Test that eventListener for delete deletes Manager', async () => {
+        fetch.mockClear();
+        func.usernameAndRole = [
+            [ 'angie', 'Manager' ],
+            [ 'jaedon', 'Staff' ],
+            [ 'keren', 'Manager' ],
+            [ 'prashant', 'Staff' ],
+            [ 'skassen2', 'Staff' ],
+            [ 'angie', 'Manager' ],
+            [ 'jaedon', 'Staff' ],
+            [ 'keren', 'Manager' ],
+            [ 'prashant', 'Staff' ],
+            [ 'skassen2', 'Staff' ]
+          ];
+        fetch.mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: times}))
+        .mockResponseOnce(JSON.stringify({value: assignments}))
+        .mockResponseOnce(JSON.stringify({value: tasks}))
+        .mockResponseOnce(JSON.stringify({value: feedbacks}))
+        .mockResponseOnce(JSON.stringify({value: orders}))
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 });
+        
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
+            },
+        });
+
+        //const createElementSpy = jest.spyOn(document, 'createElement');
         const butn = document.getElementById("staffList");
+        butn.dataset.index = 2; 
         const event = new Event('click', { bubbles: true });
         butn.dispatchEvent(event);
-        createElementSpy.mockRestore();
-    });*/
+        await Promise.resolve().then(resolve => {
+            //expect(fetch).toHaveBeenCalledWith('/data-api/rest/Tasks');
+            //expect(fetch).toHaveBeenCalledTimes(14);
+            //expect(fetch).toHaveBeenNthCalledWith(7, '/data-api/rest/Time/id/57', {method: "DELETE"});
+            //expect(window.location.reload).toHaveBeenCalled();
+        });
+        
+        
+    });
     
-    //error recieved because of appendchild test removed for now
-    /*test('Test renderStaffList(): document.createElement() has been called', async () =>{
-        const HR = require('../src/hr_list.js');
-        document.createElement = jest.fn().mockReturnValue({
-            classList: {
-                add: jest.fn()
-            }
-        });
-        fetch.mockResponseOnce(JSON.stringify({
-            value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
-            {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
-            {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
-            {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'},
-            {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
-        }));
-        return HR.renderStaffList().then(data => {
-            expect(document.createElement).toHaveBeenCalledWith('block');
-            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
-            // Clean up
-            document.createElement.mockRestore();
-        });
-    });*/
+    
 });

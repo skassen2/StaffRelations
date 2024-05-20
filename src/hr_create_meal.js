@@ -28,7 +28,7 @@ form.addEventListener("submit", async (e) => {
             },
             body: JSON.stringify(mealData)
         });
-
+        
         if (response.ok) {
             alert("Meal created successfully!");
             // Clear the form fields after successful submission
@@ -107,20 +107,11 @@ async function handleDOMContentLoaded() {
         const meals = await getAllMeals();
         renderMeals(meals);
     } catch (error) {
-        //console.log('There was an error')
         alert(error.message);
     }
 }
 document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
-/*document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const meals = await getAllMeals();
-        renderMeals(meals);
-    } catch (error) {
-        //console.error('Error:', error.message);
-        alert(error.message);
-    }
-});*/
+
 
 //export for testing
 module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}

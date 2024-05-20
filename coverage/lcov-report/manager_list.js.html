@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.5% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/40</span>
+                <span class='fraction'>35/40</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.5% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/40</span>
+                <span class='fraction'>35/40</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -177,24 +177,24 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,25 +263,25 @@ let staffs = [
 staffList.innerHTML = '';
 renderStaffList();
 &nbsp;
-staffForm.addEventListener('submit', <span class="fstat-no" title="function not covered" >ev</span>ent =&gt; {
-<span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
-    const name = <span class="cstat-no" title="statement not covered" >document.getElementById('name').value;</span>
-    const surname = <span class="cstat-no" title="statement not covered" >document.getElementById('surname').value;</span>
-    const username = <span class="cstat-no" title="statement not covered" >document.getElementById('username').value;</span>
-    const password = <span class="cstat-no" title="statement not covered" >document.getElementById('password').value;</span>
+staffForm.addEventListener('submit', event =&gt; {
+    event.preventDefault();
+    const name = document.getElementById('name').value;
+    const surname = document.getElementById('surname').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
     
-<span class="cstat-no" title="statement not covered" >    staffs.push({ name, surname, username, password}); </span>
-    const index = <span class="cstat-no" title="statement not covered" >staffs.length - 1; </span>
+    staffs.push({ name, surname, username, password}); 
+    const index = staffs.length - 1; 
     
-    const staffMember = <span class="cstat-no" title="statement not covered" >document.createElement('block');</span>
-<span class="cstat-no" title="statement not covered" >    staffMember.classList.add('staff-card');</span>
-<span class="cstat-no" title="statement not covered" >    staffMember.innerHTML = `</span>
+    const staffMember = document.createElement('block');
+    staffMember.classList.add('staff-card');
+    staffMember.innerHTML = `
         &lt;h2&gt;${name} ${surname}&lt;/h2&gt;
         &lt;p&gt;&lt;strong&gt;Username:&lt;/strong&gt; ${username}&lt;/p&gt;
         &lt;button class="btn-remove delete" data-index="${index}"&gt;Delete&lt;/button&gt;
     `;
-<span class="cstat-no" title="statement not covered" >    staffList.appendChild(staffMember);</span>
-<span class="cstat-no" title="statement not covered" >    staffForm.reset();</span>
+    staffList.appendChild(staffMember);
+    staffForm.reset();
 });
 &nbsp;
 &nbsp;
@@ -331,7 +331,7 @@ module.exports = {getStaff, renderStaffList};</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-07T18:10:39.056Z
+                at 2024-05-19T23:18:01.618Z
             </div>
         <script src="prettify.js"></script>
         <script>

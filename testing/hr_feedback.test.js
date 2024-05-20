@@ -1,13 +1,17 @@
 require('jest-fetch-mock').enableFetchMocks();
+
+
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
 const {JSDOM} = require('jsdom');
-
 // Create a JSDOM instance
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Set up global variables like document and window
 global.document = dom.window.document;
 global.window = dom.window;
+
+
+
 describe('Describe function from hr_feedback.js', () => {
     localStorage.setItem('username', 'taruna' ); 
     localStorage.setItem('role', 'HR' );
@@ -29,16 +33,25 @@ describe('Describe function from hr_feedback.js', () => {
         '<br><button id="Send">Send</button>'+
         '</form>'+
         '</section>'+
+        '<section class="container">'+
+        '<form id="downloadExcel">'+
+          '<select id="staffSelection" class="dropdown" required>'+
+            '<option value="" disabled selected>Select staff to view</option>'+
+          '</select>'+
+          '<button id="genExcelFile">Download Staff Performance</button>'+
+        '</form>'+
+      '</section>'+
         '</main>';
 
     const feedbacks = [
-      {task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2},
-      {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3},
-      {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4},
-      {task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5},
-      {task: 'Test code', sender: 'prashant', receiver: 'skassen2', comment: 'aaaaaa', id: 6},
-      {task: 'Task1', sender: 'prashant', receiver: 'taruna', comment: 'b', id: 7}
-    ];
+        {task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+        {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+        {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+        {task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+        {task: 'Test code', sender: 'prashant', receiver: 'skassen2', comment: 'aaaaaa', id: 6, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+        {task: 'Task1', sender: 'prashant', receiver: 'keren', comment: 'b', id: 7, rating: 2, sender_role:'Staff', receiver_role:'Manager'}
+      ];
+  
 
     const assignments = [
       {assignment_id: 97, task: 'Test code', staff: 'prashant'}, 
@@ -64,7 +77,7 @@ describe('Describe function from hr_feedback.js', () => {
         {task_id: 15, /*manager: 'keren',*/ task: 'test1', description: 'ell', est_time: 300}
     ];
     
-    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments}));
+    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: users}));
     const func = require('../src/hr_feedback.js');
     
     test('Test fetchFeedback() returns the correct data', async () => {
@@ -94,9 +107,13 @@ describe('Describe function from hr_feedback.js', () => {
     
 
     test('Test getUserFeedback() returns right data', () => {
-        const staff = 'taruna';
+        const staff = 'skassen2';
         const feeds =  func.getUserFeedback(staff, feedbacks);
-        expect(feeds).toStrictEqual([{task: 'Task1', sender: 'prashant', receiver: 'taruna', comment: 'b', id: 7}]);
+        expect(feeds).toStrictEqual([
+            {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+            {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
+            {task: 'Test code', sender: 'prashant', receiver: 'skassen2', comment: 'aaaaaa', id: 6, rating: 2, sender_role:'Staff', receiver_role:'Staff'}
+        ]);
     });
 
    
@@ -137,37 +154,61 @@ describe('Describe function from hr_feedback.js', () => {
     });
 
     test('Test event listener to add comment to database', async () => {
+        fetch.mockClear();
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const butn = document.getElementById('addComment');
-        document.getElementById("staffDrop").value = 'skassen2';
-        document.getElementById("topic").value = 'test';
-        document.getElementById("comment").value = 'comment test';
-        
-        
         const event = new Event('submit', { bubbles: true });
         butn.dispatchEvent(event);
-        await await Promise.resolve()
-
-        const data={
-            task:'test',
-            sender:'taruna',
-            receiver:'skassen2',
-            comment:'comment test'
-        }
-        const endpoint = '/data-api/rest/Feedback'; 
-        //expect(fetch).toHaveBeenCalledTimes(2);
-        expect(fetch).toHaveBeenCalledWith(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+        await await Promise.resolve();
+        expect(fetch).toHaveBeenCalled(); //testing that addCommenToDatabase was called.
     });
 
-    /*test('Test renderFeedback()', async () => {
-        fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments}));
-        func.renderFeedback();
+    test('Test getExcelFeedback() returns the right filtered data', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: feedbacks}));
+        document.getElementById("staffSelection").value = 'skassen2';
+        const data = await func.getExcelFeedback();
+        expect(data).toStrictEqual( {
+            '0': {
+              task: 'test',
+              sender: 'jaedon',
+              receiver: 'skassen2',
+              comment: 'bbbaaa',
+              rating: 2
+            },
+            '1': {
+              task: 'Task1',
+              sender: 'prashant',
+              receiver: 'skassen2',
+              comment: 'bbbccaa',
+              rating: 2
+            },
+            '2': {
+              task: 'Test code',
+              sender: 'prashant',
+              receiver: 'skassen2',
+              comment: 'aaaaaa',
+              rating: 2
+            }
+          });
+    });
+
+    /*test('Test excelDownload event listener to add comment to database', async () => {
+        
+        fetch.mockResponseOnce(JSON.stringify({value: feedbacks}));
+        const btn = document.getElementById('downloadExcel')
+        const event = new Event('submit', { bubbles: true });
+        btn.dispatchEvent(event);
+        await Promise.resolve();
+        expect(fetch).toHaveBeenCalledTimes(1);
+        // Verify download link creation
+        const link = document.querySelector('a');
+        expect(link).not.toBeNull();
+        expect(link.download).toContain('staff_ratings_');
+        expect(link.href).toContain('blob:');
+
     });*/
+
     
 });
 

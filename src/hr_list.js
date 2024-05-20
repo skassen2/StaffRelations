@@ -267,7 +267,7 @@ async function renderStaffList() {
         staffList.appendChild(staffMember);
     });
 }
-console.log(usernameAndRole);
+
 async function getStaffManager(){
     const data=[]
     const endpoint = `/data-api/rest/Users`;

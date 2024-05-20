@@ -297,4 +297,4 @@ downloadExcel.addEventListener('submit', async e => {
 
 });
 
-module.exports = {addCommentToDatabase, getUserFeedback, loadAllStaffDropDown, renderFeedback2, fetchFeedback, fetchUsers};
+module.exports = {addCommentToDatabase, getUserFeedback, loadAllStaffDropDown, renderFeedback2, fetchFeedback, fetchUsers, getStaffRole, getExcelFeedback};

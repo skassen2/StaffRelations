@@ -51,8 +51,8 @@ function filterCarAndCarwash(cars, carwash) {
     // Create a map from the carwash array for quick lookup
     const carwashMap = new Map();
     carwash.forEach(item => carwashMap.set(item.car_id, item.slot));
-
     // Filter and merge the cars array based on the carwashMap
+
     return cars
         .filter(car => carwashMap.has(car.car_id))  // Filter cars present in carwashMap
         .map(car => ({  // Merge fields
@@ -176,6 +176,7 @@ async function addCarwashBooking(carId, Slot) {
         })
     });
     const data = await response.json();
+    
     return data;
 
 }
@@ -191,16 +192,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         isBooked = isCarInCarwash(carwash, car[0].car_id);
         carBooking = getCarwashEntryById(carwash, car[0].car_id);
         renderCarsList(car, isBooked, carBooking);
-        console.log(cars);
-        console.log(carwash);
-        console.log(car);
-        console.log(isBooked);
-        console.log(wednesdayCount);
-        console.log(fridayCount);
+        //console.log(cars);
+        //console.log(carwash);
+        //console.log(car);
+        //console.log(isBooked);
+        //console.log(wednesdayCount);
+        //console.log(fridayCount);
     } catch (error) {
-        //console.error('Error:', error.message);
         alert(error.message);
     }
 });
 
-module.exports = {getAllCars, getAllCarwashBookings, filterCarAndCarwash, renderCarsList, getCarsByUsername, isCarInCarwash}
+module.exports = {getAllCars, getAllCarwashBookings, filterCarAndCarwash, renderCarsList, getCarsByUsername, isCarInCarwash, getCarwashEntryById, addCarwashBooking,countCarwashesBySlot}

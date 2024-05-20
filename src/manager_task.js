@@ -4,14 +4,11 @@ taskform.addEventListener('submit', async event => {
     const est_time = document.getElementById('est_time').value;
     const description = document.getElementById('description').value;
     const manager=localStorage.getItem('username');
-
     const end = `/data-api/rest/Tasks/`;
     const res = await fetch(end);
     const result=await res.json();
     let d=result.value;
-
     const check=taskNameValid(d,task);
-        
     if(check==1){
         //posts data to database
         const data={
@@ -20,8 +17,8 @@ taskform.addEventListener('submit', async event => {
         description: description,
         est_time: est_time
     }
-
         const endpoint = `/data-api/rest/Tasks/`;
+       
         const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,6 +29,7 @@ taskform.addEventListener('submit', async event => {
     }
     else{
         alert("The task already exists");
+
     }
 
     
@@ -179,7 +177,7 @@ assignment.addEventListener('submit', async event => {
     const res = await fetch(end);
     const result=await res.json();
     let d=result.value;
-    console.log(d);
+    
     const check=existsAssignment(d,task,staff);
     if(check==1){
         const data={
@@ -216,40 +214,3 @@ assignment.addEventListener('submit', async event => {
 
 //exports functions to be used for testing
 module.exports = {renderTasks, existsAssignment, taskNameValid, getManagersTasks, getStaff, getTasks};
-/*test existsAssignment,getManagersTasks,getStaff,taskNameValid,getTasks will use[
-    {
-        "task_id": 1,
-        "manager": "keren",
-        "task": "Test",
-        "description": "This is a test",
-        "est_time": 5
-    },
-    {
-        "task_id": 2,
-        "manager": "keren",
-        "task": "Task",
-        "description": "I dont know",
-        "est_time": 545
-    },
-    {
-        "task_id": 3,
-        "manager": "random",
-        "task": "finance statements",
-        "description": "This is a test",
-        "est_time": 88
-    },
-    {
-        "task_id": 4,
-        "manager": "keren",
-        "task": "Task1",
-        "description": "d",
-        "est_time": 55
-    },
-    {
-        "task_id": 5,
-        "manager": "keren",
-        "task": "Task2",
-        "description": "tgg",
-        "est_time": 4
-    }
-]*/

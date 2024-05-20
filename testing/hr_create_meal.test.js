@@ -1,3 +1,6 @@
+//file receives 100% code coverage
+//note however renderMeals() is not explicitly tested as it functions purely for front end set-up 
+//all functions called within it have been tested
 require('jest-fetch-mock').enableFetchMocks();
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
@@ -75,8 +78,7 @@ describe('Test Functions from hr_create_meal.js', () => {
             meal_image_url: 'https://meal.img'
         };
         const endpoint = '/data-api/rest/Meal_menu';
-
-        //expect(fetch).toHaveBeenCalledTimes(2);
+        await Promise.resolve();
         expect(fetch).toHaveBeenCalledWith(endpoint, {
             method: 'POST',
             headers: {
@@ -84,8 +86,7 @@ describe('Test Functions from hr_create_meal.js', () => {
             },
             body: JSON.stringify(data)
         });
-        //expect(fetch).toHaveBeenCalledWith(2, '/data-api/rest/Meal_menu');
-        //expect(global.alert).toHaveBeenCalledWith("Meal created successfully!");
+        expect(global.alert).toHaveBeenCalledWith("Meal created successfully!");
     });
 
     test('test that eventListener throws error when needed', async () =>{
