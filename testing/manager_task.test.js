@@ -272,7 +272,18 @@ describe('Functions from manager_task.js', () => {
     });
     
 
-    /*test('test that assignment.eventListener posts the right created task to the database', async () => {
+    test('test that assignment.eventListener posts the right created task to the database', async () => {
+        const taskdrop = document.getElementById('taskdrop');
+        const taskOption = document.createElement('option');
+        taskOption.value = 'T1';
+        taskdrop.appendChild(taskOption);
+        taskdrop.value = 'T1';
+
+        const staffdrop = document.getElementById('staffdrop');
+        const staffOption = document.createElement('option');
+        staffOption.value = 'skassen2';
+        staffdrop.appendChild(staffOption);
+        staffdrop.value = 'skassen2';
         const data = {
             task: 'T1',
             staff: 'skassen2'
@@ -286,12 +297,8 @@ describe('Functions from manager_task.js', () => {
         const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
         fetch.mockResponseOnce(JSON.stringify({value: assigments})).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 }).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
         const btn = document.getElementById('assignment');
-        const btnSpy = jest.spyOn(document, 'getElementById');
-        document.getElementById("taskdrop").value = 'T1';
-        document.getElementById("staffdrop").value = 'skassen2';
         console.log(document.getElementById("taskdrop").value);
-
-        btn.dispatchEvent(new Event('submit'), { bubbles: true });
+        btn.dispatchEvent(new Event('submit', { bubbles: true }));
         await new Promise(process.nextTick); 
         expect(fetch).toHaveBeenCalledTimes(3);
         expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Assignment', {
@@ -313,25 +320,17 @@ describe('Functions from manager_task.js', () => {
     test('test that assignment.eventListener alerts when a task already exists', async () => {
         fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({ value: assigments }));
-    
         const btn = document.getElementById('assignment');
         const Task = document.getElementById('taskdrop');
         Task.value = 'Test';
         const Staff = document.getElementById('staffdrop');
         Staff.value = 'skassen2';
-    
-        // Spy on document.getElementById and mock its behavior
-        jest.spyOn(document, 'getElementById').mockImplementation((id) => {
-            if (id === 'taskdrop') return Task;
-            if (id === 'staffdrop') return Staff;
-        });
-        func.existsAssignment.mockReturnedValueOnce(0);
-        //jest.spyOn(func, 'existsAssignment').mockReturnValueOnce(0);
-        btn.dispatchEvent(new Event('submit'), { bubbles: true });
+
+        btn.dispatchEvent(new Event('submit', { bubbles: true }));
         await new Promise(process.nextTick); 
         expect(global.alert).toHaveBeenCalledWith('The assignment already exists');
         global.alert.mockClear();
-    });*/
+    });
 });
 
 

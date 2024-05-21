@@ -151,9 +151,8 @@ describe('Test functions from BookCarwash.js', () => {
         '<button class="btn" id="Wednesday">Wednesday</button>'+
         '<button class="btn" id="Friday">Friday</button>'+
         '</block></section></section></main>';
-        //const Button = document.querySelector('.btn#Wednesday');
-        const Button = document.getElementsByClassName('btn')[0];
-        Button.dispatchEvent(new Event('click', { bubbles: true }));
+        const wednesdayButton = document.getElementById('Wednesday');
+        wednesdayButton.click();
         await new Promise(process.nextTick);
         expect(global.alert).toHaveBeenCalledWith('Car wash booked successfully!');
     });*/

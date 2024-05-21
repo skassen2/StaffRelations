@@ -204,7 +204,7 @@ assignment.addEventListener('submit', async event => {
         window.location.reload();
     }
     else{
-        alert("The asssignment already exists");
+        alert("The assignment already exists");
     }
     
     //add entry in time table with 0 minutes

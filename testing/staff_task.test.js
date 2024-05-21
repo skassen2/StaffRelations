@@ -115,44 +115,6 @@ describe('Fetch Functions from staff_task.js', () => {
         });
         
     });
-    
-});
-
-describe('Functions from staff_task.js', () => {
-    localStorage.setItem('username', 'skassen2' ); 
-    localStorage.setItem('role', 'Staff' );
-    localStorage.setItem('name', 'Shaneel' );
-    localStorage.setItem('surname', 'Kassen' );
-    
-    let assignments = [{assignment_id: 92, task: 'test', staff: 'jaedon'},
-    {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
-    {assignment_id: 94, task: 'test', staff: 'skassen2'}];
-    
-    let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
-        {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
-        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}
-        /*{task: 'test', staff: 'jaedon', total_time: 0, id: 60}*/];
-
-    let tasks = [{task_id: 16, manager: 'keren', task: 'test', description: 'ello', est_time: 400},
-    {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}];
-    
-    document.body.innerHTML = '<main>'+
-    '<section class="grid-container" id="tasksList"> <!-- Updated class name -->'+
-    '</section>'+
-    '<section class="container">'+
-        '<form id="manualtime">'+
-            '<select id="taskdrop" class="dropdown" required>'+
-                '<option value="" disabled selected>Select task</option>'+
-            '</select><br>'+
-            '<input type="number" id="time"  placeholder="Time spent on task in minutes" required min="1">'+
-            '<br>'+
-            '<button id="addManualTime">Add time</button>'+
-        '</form>'+
-    '</section>'+
-    '</main>';
-
-    fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}));
-    const func = require('../src/staff_task.js');
 
     //TEST FILTERBYNAME
     test('Test that filterTaskByName returns the right task name given a list of tasks', () => {
@@ -303,20 +265,23 @@ describe('Functions from staff_task.js', () => {
         await expect(func.logTimeInDateTimeLog('Test', 'skassen2', '2024-12-04', 60)).rejects.toThrow('Failed to log time in DateTimeLog table.');
     });
 
-
+    //test exceeding time limit
     /*test('Test eventListener for submitting ', async () =>{
-        //set up testing values and mocks
-        const task=document.getElementById("taskdrop");
-        task.value = 'test';
-        const time=document.getElementById("time");
-        time.value = 60;
-        fetch.mockResponseOnce(JSON.stringify({value: times}));
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 }).mockResponseOnce(JSON.stringify({value: times})).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data={
-            task:task.value,
+            task: 'test',
             staff:'skassen2',
             total_time: 60,
         }
-
+        const taskdrop = document.getElementById('taskdrop');
+        const taskOption = document.createElement('option');
+        taskOption.value = 'test';
+        taskdrop.appendChild(taskOption);
+        taskdrop.value = 'test';
+        document.getElementById('time').value = 60;
+    
         Object.defineProperty(window, 'location', {
             value: {
               reload: jest.fn(),
@@ -327,9 +292,8 @@ describe('Functions from staff_task.js', () => {
         const event = new Event('submit', { bubbles: true });
         Submit.dispatchEvent(event);
         await new Promise(process.nextTick);
-        expect(fetch).toHaveBeenCalledTimes(2);
-        expect(fetch).toHaveBeenNthCalledWith(1,'/data-api/rest/Time');
-        expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Time/id/59', {
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(3, '/data-api/rest/Time/id/59', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
