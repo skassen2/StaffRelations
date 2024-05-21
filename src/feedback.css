@@ -152,4 +152,32 @@ input[type="number"]:focus {
     border-color: var(--color-primary);
 }
 
+/* Styling for tabs */
+.tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
+.tab-button {
+    background-color: #414644;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.tab-button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.tab-button.active {
+    background-color: var(--color-primary); /* Change to use the primary color */
+    border-bottom: 1px solid #fff;
+}

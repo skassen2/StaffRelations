@@ -20,9 +20,17 @@
   </header>
 
   <main>
-    <section class="grid-container">
-      <article id="allfeedback" class="grid-container">
-      </article>
+    <section class="container">
+      <nav class="tabs">
+        <button class="tab-button" data-filter="all">All</button>
+        <button class="tab-button" data-filter="staff">Staff</button>
+        <button class="tab-button" data-filter="manager">Manager</button>
+        <button class="tab-button" data-filter="hr">HR</button>
+      </nav>
+      <section class="grid-container">
+        <article id="allfeedback" class="grid-container">
+        </article>
+      </section>
     </section>
 
     <section class="container">
@@ -30,7 +38,7 @@
         <select id="tasksDrop" class="dropdown" required>
           <option value="" disabled selected>Select task</option>
         </select>
-        <br><button id="add">Next</button> 
+        <br><button id="add">Next</button>
       </form>
     </section>
   </main>
