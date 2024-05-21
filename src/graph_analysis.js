@@ -1,43 +1,10 @@
-
-const sampleData1 = [
-    { task: "Task", staff: "jaedon", total_time: 17.00, id: 76 },
-    { task: "Task", staff: "prashant", total_time: 9.00, id: 77 },
-    { task: "fix errors!!!", staff: "jaedon", total_time: 19.00, id: 78 },
-    { task: "fix errors!!!", staff: "prashant", total_time: 0.00, id: 79 },
-    { task: "fix errors!!!", staff: "skassen2", total_time: 26.00, id: 80 } 
-]; 
-
-const sampleData2 = [
-    { id: 5, task: "fix errors!!!", sender: "jaedon", receiver: "dummy", comment: "a", sender_role: null, receiver_role: "Staff", rating: -1 },
-    { id: 6, task: "fix errors!!!", sender: "jaedon", receiver: "skassen2", comment: "good", sender_role: "Staff", receiver_role: "Staff", rating: 8 },
-    { id: 7, task: "fix errors!!!", sender: "jaedon", receiver: "prashant", comment: "elloooo", sender_role: "Staff", receiver_role: "Staff", rating: 5 },
-    { id: 8, task: "Poor Performace", sender: "taruna", receiver: "jaedon", comment: "ekse", sender_role: "Staff", receiver_role: "Staff", rating: -1 },
-    { id: 9, task: "General", sender: "jaedon", receiver: "taruna", comment: "you ekse", sender_role: "Staff", receiver_role: "Staff", rating: -1 },
-    { id: 10, task: "hows it", sender: "keren", receiver: "jaedon", comment: "elooo", sender_role: "Manager", receiver_role: "Staff", rating: 5 },
-    { id: 11, task: "Very good very nice", sender: "keren", receiver: "skassen2", comment: "nice", sender_role: "Manager", receiver_role: "Staff", rating: 10 },
-    { id: 12, task: "a", sender: "keren", receiver: "taruna", comment: "a", sender_role: "Manager", receiver_role: "HR", rating: 7 },
-    { id: 13, task: "q", sender: "keren", receiver: "skassen2", comment: "nice", sender_role: "Manager", receiver_role: "Staff", rating: 9 },
-    { id: 14, task: "fix errors!!!", sender: "skassen2", receiver: "prashant", comment: "a", sender_role: "Staff", receiver_role: "Staff", rating: 4 },
-    { id: 15, task: "General", sender: "skassen2", receiver: "dummy", comment: "q", sender_role: "Staff", receiver_role: "Staff", rating: -1 },
-    { id: 16, task: "fix errors!!!", sender: "skassen2", receiver: "jaedon", comment: "tttt", sender_role: "Staff", receiver_role: "Staff", rating: 5 },
-    { id: 17, task: "fix errors!!!", sender: "jaedon", receiver: "prashant", comment: "7ihi", sender_role: "Staff", receiver_role: "Staff", rating: 5 },
-    { id: 18, task: "Performace", sender: "keren", receiver: "jaedon", comment: "gggg", sender_role: "Manager", receiver_role: "Staff", rating: 6 },
-    { id: 19, task: "fix errors!!!", sender: "prashant", receiver: "skassen2", comment: "yu y iu oigf oh", sender_role: "Staff", receiver_role: "Staff", rating: 10 },
-    { id: 20, task: "fix errors!!!", sender: "prashant", receiver: "skassen2", comment: "yu oiu dty ik", sender_role: "Staff", receiver_role: "Staff", rating: 7 },
-    { id: 21, task: "fix errors!!!", sender: "jaedon", receiver: "skassen2", comment: "ii ug o ftdrd", sender_role: "Staff", receiver_role: "Staff", rating: 10 },
-    { id: 22, task: "a", sender: "keren", receiver: "jaedon", comment: "uu", sender_role: "Manager", receiver_role: "Staff", rating: 4 }
-];
-
-
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const tasks = await getTasksFromDatabase();
-        //const tasks = sampleData1;
         const taskNames = [...new Set(tasks.map(item => item.task))];
         populateTaskDropdown(tasks, taskNames);
 
         const feedback = await getFeedbackFromDatabase();
-        //const feedback = sampleData2;
         const staffNames = [...new Set(feedback.map(item => item.receiver))];
         populateFeedbackDropdown(feedback, staffNames);
     } catch (error) {
@@ -111,7 +78,7 @@ function renderTaskGraph(tasks) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Time Spent on Selected Task (hours)',
+                label: 'Time Spent on Selected Task (minutes)',
                 data: values,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -124,7 +91,7 @@ function renderTaskGraph(tasks) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Time Spent (hours)'
+                        text: 'Time Spent (minutes)'
                     }
                 },
                 x: {
@@ -184,7 +151,7 @@ function aggregateFeedbackRatings(data) {
 
     data.forEach(item => {
         // Exclude entries with an empty or null task
-        if (item.task && item.task.trim() !== "" && item.rating >= 0) {
+        if (item.task && item.task.trim() !== "" && item.rating > 0) {
             if (taskMap[item.task]) {
                 taskMap[item.task].push(item.rating);
             } else {
