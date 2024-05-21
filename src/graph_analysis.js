@@ -186,7 +186,7 @@ function aggregateFeedbackRatings(data) {
 
     data.forEach(item => {
         // Exclude entries with an empty or null task
-        if (item.task && item.task.trim() !== "") {
+        if (item.task && item.task.trim() !== "" && item.rating >= 0) {
             if (taskMap[item.task]) {
                 taskMap[item.task].push(item.rating);
             } else {
