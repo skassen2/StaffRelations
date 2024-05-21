@@ -101,7 +101,7 @@ describe('Test functions from BookCarwash.js', () => {
           ]);
     });
 
-    test('Test addCarwashBooking() posts the right data to the database', () => {
+    test('Test addCarwashBooking() posts the right data to the database', async () => {
         fetch.mockClear();
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
         fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
@@ -120,6 +120,43 @@ describe('Test functions from BookCarwash.js', () => {
             });
         });
     });
+
+    test('Test DOMContentLoaded event listener does what is needed', async () => {
+        fetch.resetMocks()
+        fetch.mockResponseOnce(JSON.stringify({value: cars})).mockResponseOnce(JSON.stringify({value: carsBooked}))
+        document.dispatchEvent(new Event('DOMContentLoaded', { bubbles: true }));
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenNthCalledWith(1, '/data-api/rest/Staff_cars');
+        expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Car_wash');
+    });
+
+    test('Test DOMContentLoaded event listener throws error when needed', async () => {
+        fetch.resetMocks()
+        fetch.mockRejectedValueOnce(new Error("error")).mockResponseOnce(JSON.stringify({value: carsBooked}))
+        document.dispatchEvent(new Event('DOMContentLoaded', { bubbles: true }));
+        await new Promise(process.nextTick); 
+        expect(global.alert).toHaveBeenCalled();
+        global.alert.mockClear();
+    });
+
+    /*test('Test that carsList event listener books car for slot on wednesday', async () => {
+        func.car = [ {car_id: 7, car_name: 'Jeep Wrangler', number_plate: 'TAR125GP', username: 'taruna'}];
+        const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
+        document.body.innerHTML = '<main><section id="carsList" class="container"><section class="meal-container"><block class="meal-booking meal-card">'+
+        '<h3><u>Jeep Wrangler</u></h3>'+
+        '<p><Strong>Number Plate: TAR125GP</p>'+
+        '<p><Strong>Available Slots:</Strong></p>'+
+        '<button class="btn" id="Wednesday">Wednesday</button>'+
+        '<button class="btn" id="Friday">Friday</button>'+
+        '</block></section></section></main>';
+        //const Button = document.querySelector('.btn#Wednesday');
+        const Button = document.getElementsByClassName('btn')[0];
+        Button.dispatchEvent(new Event('click', { bubbles: true }));
+        await new Promise(process.nextTick);
+        expect(global.alert).toHaveBeenCalledWith('Car wash booked successfully!');
+    });*/
 });
 
 

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const cars = await getAllCars();
         const carwash = await getAllCarwashBookings();
-        let filteredResults = filterCarAndCarwash(cars, carwash)
+        let filteredResults = filterCarAndCarwash(cars, carwash);
         renderCarsList(filteredResults);
     } catch (error) {
         alert(error.message);

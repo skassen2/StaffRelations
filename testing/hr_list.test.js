@@ -1,3 +1,6 @@
+//lines uncovered are left uncovered because code is the same for both Manager and Staff in testing event listener for deletion.
+//each loop is tested at least once under different situations (i.e. a staff or manager) hence the uncovered nature.
+
 require('jest-fetch-mock').enableFetchMocks();
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
@@ -9,9 +12,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
 
-
 describe('Functions from hr_list', () => {
-    //innerHTML if needed
     const feedbacks = [{task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2},
     {task: 'test', sender: 'jaedon', receiver: 'skassen2', comment: 'bbbaaa', id: 3},
     {task: 'Task1', sender: 'prashant', receiver: 'skassen2', comment: 'bbbccaa', id: 4},
@@ -119,8 +120,25 @@ describe('Functions from hr_list', () => {
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
 
+    //note update this when add is being implemented backend wise.
+    test('Test that staffForm event listener does what it needs to', () => {
+        const butn = document.getElementById("staffForm"); 
+        const createElementSpy = jest.spyOn(document, 'createElement');
+        const resetSpy = jest.spyOn(butn, 'reset');
+        const event = new Event('submit', { bubbles: true });
+        butn.dispatchEvent(event);
+        expect(resetSpy).toHaveBeenCalled();
+        expect(createElementSpy).toHaveBeenCalledWith('block');
+    });
+
+
+    /*time [ 57, 58, 59 ]
+      Assignment []
+      tasks [ 16, 17 ]
+      feedback [ 2, 3, 4 ]
+      [] food orders*/
     test('Test that eventListener for delete deletes Manager', async () => {
-        fetch.mockClear();
+       
         func.usernameAndRole = [
             [ 'angie', 'Manager' ],
             [ 'jaedon', 'Staff' ],
@@ -133,7 +151,15 @@ describe('Functions from hr_list', () => {
             [ 'prashant', 'Staff' ],
             [ 'skassen2', 'Staff' ]
           ];
-        fetch.mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: times}))
+
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
+            },
+        });
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: tasks}))
+        .mockResponseOnce(JSON.stringify({value: times}))
         .mockResponseOnce(JSON.stringify({value: assignments}))
         .mockResponseOnce(JSON.stringify({value: tasks}))
         .mockResponseOnce(JSON.stringify({value: feedbacks}))
@@ -145,25 +171,88 @@ describe('Functions from hr_list', () => {
         .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
         .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
         .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
         .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 });
         
+        const butn = document.getElementById("staffList");
+        butn.dataset.index = 2; 
+        const event = new Event('click', { bubbles: true });
+        butn.dispatchEvent(event);
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(15);
+        expect(fetch).toHaveBeenNthCalledWith(7, '/data-api/rest/Time/id/57', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(8, '/data-api/rest/Time/id/58', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(9, '/data-api/rest/Time/id/59', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(10, '/data-api/rest/Tasks/task_id/16', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(11, '/data-api/rest/Tasks/task_id/17', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(12, '/data-api/rest/Feedback/id/2', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(13, '/data-api/rest/Feedback/id/3', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(14, '/data-api/rest/Feedback/id/4', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(15, '/data-api/rest/Users/username/keren', {method: "DELETE"});
+        expect(window.location.reload).toHaveBeenCalled();
+        
+        
+    });
+    /*time [ 59 ]
+      Assignment [ 98, 99 ]
+      tasks []
+      feedback [ 2, 3, 4, 5, 6 ]
+      [ 23 ] food orders*/
+    test('Test that eventListener for delete deletes Staff', async () => {
+        
+        func.usernameAndRole = [
+            [ 'angie', 'Manager' ],
+            [ 'jaedon', 'Staff' ],
+            [ 'keren', 'Manager' ],
+            [ 'prashant', 'Staff' ],
+            [ 'skassen2', 'Staff' ],
+            [ 'angie', 'Manager' ],
+            [ 'jaedon', 'Staff' ],
+            [ 'keren', 'Manager' ],
+            [ 'prashant', 'Staff' ],
+            [ 'skassen2', 'Staff' ]
+          ];
+
         Object.defineProperty(window, 'location', {
             value: {
               reload: jest.fn(),
             },
         });
-
-        //const createElementSpy = jest.spyOn(document, 'createElement');
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: times}))
+        .mockResponseOnce(JSON.stringify({value: assignments}))
+        .mockResponseOnce(JSON.stringify({value: tasks}))
+        .mockResponseOnce(JSON.stringify({value: feedbacks}))
+        .mockResponseOnce(JSON.stringify({value: orders}))
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 })
+        .mockResponseOnce(JSON.stringify({ message: 'Data deleted successfully' }), { status: 200 });
+        
         const butn = document.getElementById("staffList");
-        butn.dataset.index = 2; 
+        butn.dataset.index = 4; 
         const event = new Event('click', { bubbles: true });
         butn.dispatchEvent(event);
-        await Promise.resolve().then(resolve => {
-            //expect(fetch).toHaveBeenCalledWith('/data-api/rest/Tasks');
-            //expect(fetch).toHaveBeenCalledTimes(14);
-            //expect(fetch).toHaveBeenNthCalledWith(7, '/data-api/rest/Time/id/57', {method: "DELETE"});
-            //expect(window.location.reload).toHaveBeenCalled();
-        });
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(15);
+        expect(fetch).toHaveBeenNthCalledWith(6, '/data-api/rest/Time/id/59', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(7, '/data-api/rest/Assignment/assignment_id/98', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(8, '/data-api/rest/Assignment/assignment_id/99', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(9, '/data-api/rest/Feedback/id/2', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(10, '/data-api/rest/Feedback/id/3', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(11, '/data-api/rest/Feedback/id/4', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(12, '/data-api/rest/Feedback/id/5', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(13, '/data-api/rest/Feedback/id/6', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(14, '/data-api/rest/Users/username/skassen2', {method: "DELETE"});
+        expect(fetch).toHaveBeenNthCalledWith(15, '/data-api/rest/Meal_orders/order_id/23', {method: "DELETE"});
+        expect(window.location.reload).toHaveBeenCalled();
+        
         
         
     });

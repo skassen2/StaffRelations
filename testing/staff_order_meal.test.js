@@ -8,6 +8,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Set up global variables like document and window
 global.document = dom.window.document;
 global.window = dom.window;
+
 beforeEach(() =>{
     global.alert = jest.fn();
 });
@@ -114,37 +115,48 @@ describe('Test staff_order_meals.js', () =>{
         
     });
 
-    /*test('Test DOMContentLoaded "click" eventListener', async () => {
+    test('Test DOMContentLoaded "click" eventListener', async () => {
         //setup
-        const orderButton = document.createElement("button");
-        orderButton.textContent = "Order";
-        orderButton.classList.add("order-button"); 
-        orderButton.dataset.meal_id = 1;  
-        document.getElementById("mealList").appendChild(orderButton);  
-        const mockEvent =new Event('click');
-        const mockTarget = {
-            classList: {
-                contains: jest.fn()
-            },
-            dataset: {
-                meal_id: 'meal1'
-            }
-        };
-        Object.defineProperty(mockEvent, 'target', {
-            writable: true,
-            value: mockTarget
-        });
+        fetch.resetMocks();
+        const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 201 }).mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: meals}));
+        document.body.innerHTML = '<main>'+
+            '<section id="mealList" class="container">'+
+                '<h2>Meal Options</h2>'+
+                '<section class="meal-container">'+
+                '<section class="meal-box"><h3>Grilled Salmon</h3><p>Delicious grilled salmon served with vegetables and rice.</p><p>Created by: taruna</p><img src="https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg" alt="Grilled Salmon" width="200">'+
+                '<section style="height: 20px;"></section>'+
+                '<button class="order-button" data-meal_id="1">Order</button></section>';
        
-        fetch.mockClear();
-        fetch.mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: meals}));
-        //test
-        document.dispatchEvent(mockEvent);
-        orderButton.click();
-        await Promise.resolve();
-        expect(fetch).toHaveBeenCalledWith('/data-api/rest/Meal_menu');
+        const orderButton = document.querySelector('.order-button');
+        orderButton.dispatchEvent(new Event('click', { bubbles: true }));
+        await new Promise(process.nextTick); 
         expect(global.alert).toHaveBeenCalledWith("Order placed successfully!");
         global.alert.mockClear();
-    });*/
+        
+    });
+
+    test('Test DOMContentLoaded "click" eventListener throws error when needed', async () => {
+        //setup
+        fetch.resetMocks();
+        fetch.mockRejectedValueOnce(new Error("error")).mockResponseOnce(JSON.stringify({value: meals})).mockResponseOnce(JSON.stringify({value: meals}));
+        //fetch.mockResponseOnce(JSON.stringify({message: 'error'}), { status: 500 });
+        document.body.innerHTML = '<main>'+
+            '<section id="mealList" class="container">'+
+                '<h2>Meal Options</h2>'+
+                '<section class="meal-container">'+
+                '<section class="meal-box"><h3>Grilled Salmon</h3><p>Delicious grilled salmon served with vegetables and rice.</p><p>Created by: taruna</p><img src="https://www.theseasonedmom.com/wp-content/uploads/2021/09/grilled-salmon-9.jpg" alt="Grilled Salmon" width="200">'+
+                '<section style="height: 20px;"></section>'+
+                '<button class="order-button" data-meal_id="1">Order</button></section>';
+       
+        const orderButton = document.querySelector('.order-button');
+        orderButton.dispatchEvent(new Event('click', { bubbles: true }));
+        await new Promise(process.nextTick); 
+        expect(global.alert).toHaveBeenCalled();
+        global.alert.mockClear();
+        
+    });
+
 
 });
 

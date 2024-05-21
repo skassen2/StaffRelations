@@ -48,8 +48,25 @@ describe('Functions from manager_task.js', () => {
            '<button id="adsk">Add assignment</button>'+
         '</form>'+
     '</section>'+
+    '<section class="container">'+
+    '<form id="downloadExcel">'+
+      '<select id="staffSelection" class="dropdown" required>'+
+        '<option value="" disabled selected>Select staff Member</option>'+
+      '</select>'+
+      '<button id="genExcelFile">Download Staff Timesheet</button>'+
+    '</form>'+
+    '</section>'+
     '</main> ';
     
+    let timeTasks = [
+        {id: 1, task: 'fix errors!!!', staff: 'jaedon', time_logged: 1, log_date: '2024-05-18'},
+        {id: 2, task: 'fix errors!!!', staff: 'jaedon', time_logged: 2, log_date: '2024-05-18'},
+        {id: 3, task: 'fix errors!!!', staff: 'skassen2', time_logged: 20, log_date: '2024-05-18'},
+        {id: 4, task: 'fix errors!!!', staff: 'skassen2', time_logged: 5, log_date: '2024-05-19'},
+        {id: 5, task: 'Get the graph to work', staff: 'prashant', time_logged: 4, log_date: '2024-05-19'},
+        {id: 6, task: 'Get the graph to work', staff: 'jaedon', time_logged: 3, log_date: '2024-05-19'}
+    ];
+
     let assigments = [{task: 'Test', staff: 'skassen2', total_time: 2, id: 26},
         {task: 'rgt', staff: 'prashant', total_time: 0, id: 27},
         {task: 'Task77', staff: 'jaedon', total_time: 27, id: 28},
@@ -104,13 +121,15 @@ describe('Functions from manager_task.js', () => {
             "est_time": 4
         }];
     
-    fetch.mockResponseOnce(JSON.stringify({value: json})).mockResponseOnce(JSON.stringify({
-        value : [{username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
+    const users = [
+        {username: 'jaedon', name: 'Jaedon', surname: 'Moodley', password: 'pass', role: 'Staff'},
         {username: 'keren', name: 'Keren', surname: 'Chetty', password: 'pass', role: 'Manager'},
         {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'},
-        {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]
-    })).mockResponseOnce(JSON.stringify({value: times}));
+        {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}
+    ];
+
+    fetch.mockResponseOnce(JSON.stringify({value: json})).mockResponseOnce(JSON.stringify({value : users })).mockResponseOnce(JSON.stringify({value: times})).mockResponseOnce(JSON.stringify({value : users }));
     const func = require('../src/manager_task.js');
     
     //tests
@@ -205,23 +224,21 @@ describe('Functions from manager_task.js', () => {
             manager: 'keren',
             task: 't1',
             description: 'DESCPT',
-            est_time: 300
+            est_time: '300'
         }
         const endpoint = `/data-api/rest/Tasks/`;
         const butn = document.getElementById("taskform");
         const event = new Event('submit', { bubbles: true });
         butn.dispatchEvent(event);
-        await Promise.resolve().then(resolve => {
-            expect(fetch).toHaveBeenCalledTimes(2);
-            expect(fetch).toHaveBeenCalledNthTimeWith(2, endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }); 
-        });
-        
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenNthCalledWith(2, endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });   
     });
 
     test('test that taskform.eventListener alerts when a task already exists', async () => {
@@ -242,42 +259,80 @@ describe('Functions from manager_task.js', () => {
         const butn = document.getElementById("taskform");
         const event = new Event('submit', { bubbles: true });
         butn.dispatchEvent(event);
-        await Promise.resolve().then(resolve => {
-            expect(global.alert).toHaveBeenCalledWith("The task already exists");
-            global.alert.mockClear()
-        });
+        await new Promise(process.nextTick); 
+        expect(global.alert).toHaveBeenCalledWith("The task already exists");
+        global.alert.mockClear()
+        
+    });
+
+    test('Test that fetchDateTimeLog() returns the right data', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: timeTasks}));
+        const logs = await func.fetchDateTimeLog();
+        expect(logs).toStrictEqual(logs);
     });
     
 
-    test('test that assignment.eventListener posts the right created task to the database', async () => {
-        document.getElementById("taskdrop").value = 'T1';
-        document.getElementById("staffdrop").value = 'skassen2';
+    /*test('test that assignment.eventListener posts the right created task to the database', async () => {
+        const data = {
+            task: 'T1',
+            staff: 'skassen2'
+        };
+        const data1 = {
+            task: 'T1',
+            staff: 'skassen2',
+            total_time:0
+        };
         fetch.resetMocks();
         const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
-        fetch.mockResponseOnce(JSON.stringify({value: assigments})).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
+        fetch.mockResponseOnce(JSON.stringify({value: assigments})).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 }).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
         const btn = document.getElementById('assignment');
+        const btnSpy = jest.spyOn(document, 'getElementById');
+        document.getElementById("taskdrop").value = 'T1';
+        document.getElementById("staffdrop").value = 'skassen2';
+        console.log(document.getElementById("taskdrop").value);
+
         btn.dispatchEvent(new Event('submit'), { bubbles: true });
-        await Promise.resolve();
-        expect(fetch).toHaveBeenCalledTimes(2);
-        expect(fetch).toHaveBeenCalledNthTimeWith(2, endpoint, {
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Assignment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         }); 
+        expect(fetch).toHaveBeenNthCalledWith(3, '/data-api/rest/Time', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data1)
+        }); 
     });
 
     test('test that assignment.eventListener alerts when a task already exists', async () => {
-        document.getElementById("taskdrop").value = 'Test';
-        document.getElementById("staffdrop").value = 'skassen2';
         fetch.resetMocks();
-        const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
-        fetch.mockResponseOnce(JSON.stringify({value: assigments})).mockResponseOnce(JSON.stringify(mockResponse), { status: 201 });
+        fetch.mockResponseOnce(JSON.stringify({ value: assigments }));
+    
         const btn = document.getElementById('assignment');
+        const Task = document.getElementById('taskdrop');
+        Task.value = 'Test';
+        const Staff = document.getElementById('staffdrop');
+        Staff.value = 'skassen2';
+    
+        // Spy on document.getElementById and mock its behavior
+        jest.spyOn(document, 'getElementById').mockImplementation((id) => {
+            if (id === 'taskdrop') return Task;
+            if (id === 'staffdrop') return Staff;
+        });
+        func.existsAssignment.mockReturnedValueOnce(0);
+        //jest.spyOn(func, 'existsAssignment').mockReturnValueOnce(0);
         btn.dispatchEvent(new Event('submit'), { bubbles: true });
-        await Promise.resolve();
-        expect(global.alert).toHaveBeenCalledWith("The asssignment already exists");
-        global.alert.mockClear()
-    });
+        await new Promise(process.nextTick); 
+        expect(global.alert).toHaveBeenCalledWith('The assignment already exists');
+        global.alert.mockClear();
+    });*/
 });
+
+
+

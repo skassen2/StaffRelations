@@ -106,9 +106,11 @@ describe('Describe function from manager_feedback.js', () => {
         expect(feeds).toStrictEqual([{task: 'Task1', sender: 'prashant', receiver: 'keren', comment: 'b', id: 7, rating: 2, receiver_role: 'Manager', sender_role: 'Staff'}]);
     });
 
-    /*test('Test getStaffRole() returns the right data', async () => {
-        
-    });*/
+    test('Test getStaffRole() returns the right data', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: users}));
+        const role = await func.getStaffRole('skassen2');
+        expect(role).toBe('Staff');
+    });
 
     test('Test addCommentToDatabase()', async () => {
         // Mock a response expected from server
@@ -143,19 +145,19 @@ describe('Describe function from manager_feedback.js', () => {
         });
     });
 
-    /*test('Test eventListener for adding new comment', async () => {
+    test('Test eventListener for adding new comment', async () => {
+        fetch.mockClear();
         const Sub = document.getElementById('addComment2');
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
-        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        fetch.mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data={
             task:'test',
             sender:'keren',
             receiver:'skassen2',
             comment:'please see me.',
-            rating: 2,
-            sender: 'keren',
             sender_role: "Manager",
-            receiver_role: 'Staff'
+            receiver_role: 'Staff',
+            rating: 2
         }
         const endpoint = '/data-api/rest/Feedback'; 
         document.getElementById("staffDrop").value = 'skassen2';
@@ -168,15 +170,26 @@ describe('Describe function from manager_feedback.js', () => {
 
         const event = new Event('submit', { bubbles: true });
         Sub.dispatchEvent(event);
-        expect(fetch).toHaveBeenCalledWith(endpoint, {
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenNthCalledWith(2, endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         });
-       
+    });
 
-    });*/
+    
+    test('Test getExcelFeedback() returns the right data', async () => {
+        fetch.mockResponseOnce(JSON.stringify({value: feedbacks}));
+        document.getElementById("staffSelection").value = 'skassen2';
+        const filtered = await func.getExcelFeedback();
+        expect(filtered).toStrictEqual({
+            '0': { "comment": "bbbaaa", "rating": 2, "receiver": "skassen2", "sender": "jaedon", "task": "test",}, 
+            '1': {"comment": "bbbccaa", "rating": 2, "receiver": "skassen2", "sender": "prashant", "task": "Task1",},
+            '2': {"comment": "aaaaaa", "rating": 2, "receiver": "skassen2", "sender": "prashant", "task": "Test code",}
+        });
+    });
 });
-

@@ -291,4 +291,82 @@ downloadExcel.addEventListener('submit', async e => {
     document.body.removeChild(a);
 });
 
+//Excel for timesheets of staff members
+async function fetchDateTimeLog() {
+    const endpoint = `/data-api/rest/DateTimeLog`;
+    const response = await fetch(endpoint);
+    const logData = await response.json();
+    return logData.value;
+}
+
+async function loadJustStaffDropDown() {
+    const data = await fetchUsers();
+    const dropdown = document.getElementById("staffSelection1");
+
+    const staffData = data.filter(obj => obj.role === "Staff");
+    staffData.forEach(staff => {
+        const optionStaff = document.createElement("option");
+        optionStaff.value = staff.username;
+        optionStaff.text = staff.username;
+        dropdown.add(optionStaff);
+    });
+}
+loadJustStaffDropDown();
+document.getElementById('genExcelTime').addEventListener('click', async e => {
+    e.preventDefault();
+    console.log("Button clicked");
+    const staffMember = document.getElementById("staffSelection1").value;
+    if (!staffMember) {
+        // Display tooltip if staff member is not selected
+        document.getElementById("staffSelection1").title = "Please choose a staff member.";
+        return;
+    } else {
+        // Reset tooltip if staff member is selected
+        document.getElementById("staffSelection1").title = "";
+    }
+
+    const logData = await fetchDateTimeLog();
+
+    const filteredData = logData.filter(entry => entry.staff === staffMember);
+
+    const taskTimeMap = {};
+    filteredData.forEach(entry => {
+        const taskKey = `${entry.task}-${entry.log_date}`;
+        if (!taskTimeMap[taskKey]) {
+            taskTimeMap[taskKey] = { task: entry.task, log_date: entry.log_date, staff: entry.staff, total_time: 0 };
+        }
+        taskTimeMap[taskKey].total_time += entry.time_logged;
+    });
+
+    const processedData = Object.values(taskTimeMap);
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(`${staffMember}_TimeSheet`);
+
+    worksheet.columns = [
+        { header: 'Task', key: 'task' },
+        { header: 'Log Date', key: 'log_date' },
+        { header: 'Staff', key: 'staff' },
+        { header: 'Total Time Logged', key: 'total_time' }
+    ];
+
+    processedData.forEach(item => {
+        worksheet.addRow(item);
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${staffMember}_time_logs_${new Date().toISOString().split('T')[0]}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+});
+
 module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks, getExcelFeedback};

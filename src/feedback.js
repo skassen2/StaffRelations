@@ -98,7 +98,7 @@ let click3=false;
 let addRating=0;//checks if we doing a rating,so know to call different add to database method
 addComment.addEventListener('submit',async event=>{
     event.preventDefault();
-
+    console.log('made it in');
     if(click1==false){//if button is clicked once
         const form=document.getElementById("addComment");
         const addButton=document.getElementById("add");

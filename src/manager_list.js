@@ -24,6 +24,7 @@ let staffs = [
 staffList.innerHTML = '';
 renderStaffList();
 
+//remove as managers dont have permission
 staffForm.addEventListener('submit', event => {
     event.preventDefault();
     const name = document.getElementById('name').value;
@@ -45,7 +46,7 @@ staffForm.addEventListener('submit', event => {
     staffForm.reset();
 });
 
-
+//remove this as managers don't have permission
 staffList.addEventListener('click', event => {
     if (event.target.classList.contains('btn-remove')) {
         const index = event.target.dataset.index;

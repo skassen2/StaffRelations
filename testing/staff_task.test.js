@@ -304,7 +304,7 @@ describe('Functions from staff_task.js', () => {
     });
 
 
-    /*test('Test eventListener for submitting time manually', async () =>{
+    /*test('Test eventListener for submitting ', async () =>{
         //set up testing values and mocks
         const task=document.getElementById("taskdrop");
         task.value = 'test';
@@ -326,7 +326,7 @@ describe('Functions from staff_task.js', () => {
         const Submit = document.getElementById('manualtime');
         const event = new Event('submit', { bubbles: true });
         Submit.dispatchEvent(event);
-        await Promise.resolve()
+        await new Promise(process.nextTick);
         expect(fetch).toHaveBeenCalledTimes(2);
         expect(fetch).toHaveBeenNthCalledWith(1,'/data-api/rest/Time');
         expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Time/id/59', {
@@ -336,7 +336,7 @@ describe('Functions from staff_task.js', () => {
         },
         body: JSON.stringify(data)
         });
-        expect(window.location.reload).toHaveBeenCalled();      
+        expect(window.location.reload).toHaveBeenCalled();  
     });*/
 });
 

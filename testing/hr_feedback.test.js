@@ -1,5 +1,5 @@
 require('jest-fetch-mock').enableFetchMocks();
-
+//const ExcelJS = require('exceljs');
 
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
@@ -41,7 +41,14 @@ describe('Describe function from hr_feedback.js', () => {
           '<button id="genExcelFile">Download Staff Performance</button>'+
         '</form>'+
       '</section>'+
-        '</main>';
+        '<section class="container">'+
+        '<form id="downloadExcelTime">'+
+          '<select id="staffSelection1" class="dropdown" required>'+
+            '<option value="" disabled selected>Select staff Member</option>'+
+          '</select>'+
+          '<button id="genExcelTime">Download Staff Timesheet</button>'+
+        '</form>'+
+      '</section>'+'</main>';
 
     const feedbacks = [
         {task: 'test', sender: 'skassen2', receiver: 'jaedon', comment: 'aaaaaa', id: 2, rating: 2, sender_role:'Staff', receiver_role:'Staff'},
@@ -77,7 +84,7 @@ describe('Describe function from hr_feedback.js', () => {
         {task_id: 15, /*manager: 'keren',*/ task: 'test1', description: 'ell', est_time: 300}
     ];
     
-    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: users}));
+    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: tasks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: users}));
     const func = require('../src/hr_feedback.js');
     
     test('Test fetchFeedback() returns the correct data', async () => {
@@ -193,7 +200,10 @@ describe('Describe function from hr_feedback.js', () => {
           });
     });
 
-    /*test('Test excelDownload event listener to add comment to database', async () => {
+    /*test('Test excelDownload event listener to download sheets', async () => {
+        Object.defineProperty(ExcelJS, 'Workbook', {
+          addWorksheet: jest.fn()
+        });
         
         fetch.mockResponseOnce(JSON.stringify({value: feedbacks}));
         const btn = document.getElementById('downloadExcel')
@@ -201,11 +211,8 @@ describe('Describe function from hr_feedback.js', () => {
         btn.dispatchEvent(event);
         await Promise.resolve();
         expect(fetch).toHaveBeenCalledTimes(1);
-        // Verify download link creation
-        const link = document.querySelector('a');
-        expect(link).not.toBeNull();
-        expect(link.download).toContain('staff_ratings_');
-        expect(link.href).toContain('blob:');
+        expect(ExcelJS.Workbook).toHaveBeenCalled();
+        
 
     });*/
 

@@ -50,15 +50,12 @@ staffForm.addEventListener('submit', event => {
 
 //where the deleting happens
 staffList.addEventListener('click', async event => {
-    console.log(event.target.dataset.index);
     const index = event.target.dataset.index;
     
-    const personToDelete=usernameAndRole[index][0];
-    console.log(personToDelete); 
+    const personToDelete=usernameAndRole[index][0]; 
     
     //get id of rows in database that needs to be deleted from every table
     if(usernameAndRole[index][1]=="Manager"){
-        console.log("ok");
         //get managers tasks
         const managersTasks=[]
         let dataTasks1=await fetchTasks();

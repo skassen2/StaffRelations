@@ -100,11 +100,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 // When the Order button is clicked, place the order
 document.addEventListener("click", async (event) => {
     if (event.target && event.target.classList.contains("order-button")) {
-
         // Get the user ID from local storage and corresponding meal ID
         const user_id = localStorage.getItem('username');
         const meal_id = event.target.dataset.meal_id;
-        //console.log('Placing order for meal:', meal_id);
+        console.log('Placing order for meal:', meal_id);
 
         // Place the order
         try {
