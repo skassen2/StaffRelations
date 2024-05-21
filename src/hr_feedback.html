@@ -21,8 +21,18 @@
   </header>
 
   <main>
+    <section class="tabs">
+      <button class="tab active" data-target="allfeedback">All Feedback</button>
+      
+      <button class="tab" data-target="managerfeedback">Manager Feedback</button>
+    </section>
+
     <section class="grid-container">
-      <article id="allfeedback" class="grid-container">
+      <article id="allfeedback" class="grid-container active">
+      </article>
+      <article id="stafffeedback" class="grid-container" style="display: none;">
+      </article>
+      <article id="managerfeedback" class="grid-container" style="display: none;">
       </article>
     </section>
 

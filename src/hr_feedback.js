@@ -1,3 +1,4 @@
+
 //fetch data
 async function fetchFeedback() {
     const endpoint = `/data-api/rest/Feedback`;
@@ -25,33 +26,61 @@ async function fetchTasks() {
     return tasks.value;
 }
 
-async function renderFeedback(){
-    const data=await fetchFeedback();
-    const username = localStorage.getItem('username');
-    const staffFeedback=getUserFeedback(username,data);
-    const data1=await fetchTasks();
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.tab');
+    const articles = document.querySelectorAll('article');
 
-    //adds tiles
-    const feedbackList=document.getElementById("allfeedback");
-    feedbackList.innerHTML = '';
-    staffFeedback.forEach((row, index) => {
-        let manager=getManagerWhoAssignedTask(row.task,data1);
-        if(manager==undefined){
-            manager="N/A";
-        }
-        const task = document.createElement('block');
-        task.classList.add('staff-card');
-        task.innerHTML = `
-            <p><b>Task:</b> ${row.task}</p>
-            <p><b>Manager:</b> ${manager}</p>
-            <p><b>Sender:</b> ${row.sender}</p>
-            <p><b>Comment:</b> ${row.comment}</p>
-        `;
-        feedbackList.appendChild(task);
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            articles.forEach(article => {
+                article.style.display = article.id === tab.dataset.target ? 'grid' : 'none';
+            });
+        });
     });
+    
+async function renderFeedback() {
+    const hrUsername = localStorage.getItem('username');
+    const feedbackData = await fetchFeedback();
+    const tasksData = await fetchTasks();
 
+    const allFeedbackList = document.getElementById("allfeedback");
+    const staffFeedbackList = document.getElementById("stafffeedback");
+    const managerFeedbackList = document.getElementById("managerfeedback");
+
+    allFeedbackList.innerHTML = '';
+    staffFeedbackList.innerHTML = '';
+    managerFeedbackList.innerHTML = '';
+
+    feedbackData.forEach((feedback) => {
+        const taskData = tasksData.find(task => task.task === feedback.task);
+        const manager = taskData ? taskData.manager : "N/A";
+
+        const feedbackItem = `
+            <article class="staff-card">
+                <p><b>Task:</b> ${feedback.task}</p>
+                <p><b>Manager:</b> ${manager}</p>
+                <p><b>Sender:</b> ${feedback.sender}</p>
+                <p><b>Comment:</b> ${feedback.comment}</p>
+            </article>
+        `;
+
+        if (feedback.receiver === hrUsername) {
+            allFeedbackList.innerHTML += feedbackItem;
+
+            if (feedback.sender_role === 'Staff') {
+                staffFeedbackList.innerHTML += feedbackItem;
+            } else if (feedback.sender_role === 'Manager') {
+                managerFeedbackList.innerHTML += feedbackItem;
+            }
+        }
+    });
 }
+
 renderFeedback();
+});
 //fetch which manager assigned task, returns just 1 word
 function getManagerWhoAssignedTask(task,json){
     const toreturn=[];
@@ -369,4 +398,4 @@ document.getElementById('genExcelTime').addEventListener('click', async e => {
     document.body.removeChild(a);
 });
 
-module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};
+//module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};
