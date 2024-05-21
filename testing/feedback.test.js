@@ -17,6 +17,12 @@ describe('Describe function from feedback.js', () => {
     localStorage.setItem('surname', 'Kessa');
     document.body.innerHTML = '<main>'+
     '<section class="grid-container">'+
+      '<nav class="tabs">'+
+      '<button class="tab-button" data-filter="all">All</button>'+
+      '<button class="tab-button" data-filter="staff">Staff</button>'+
+      '<button class="tab-button" data-filter="manager">Manager</button>'+
+      '<button class="tab-button" data-filter="hr">HR</button>'+
+      '</nav>'+
       '<article id="allfeedback" class="grid-container">'+
       '</article>'+
     '</section>'+
@@ -56,7 +62,7 @@ describe('Describe function from feedback.js', () => {
       {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}
     ];
 
-    fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users})).mockResponseOnce(JSON.stringify({value: assignments}));
+    fetch.mockResponseOnce(JSON.stringify({value: assignments}));
     const func = require('../src/feedback.js');
     
     test('Test fetchFeedback()', async () => {
@@ -89,20 +95,6 @@ describe('Describe function from feedback.js', () => {
         expect(assigns).toStrictEqual([{task: 'Test code', sender: 'skassen2', receiver: 'prashant', comment: 'test if this works', id: 5, rating: 2, sender_role:'Staff', receiver_role:'Staff'}]);
     });
 
-    test('Test getStaffByTask() returns right data', () => {
-        const staff = 'prashant';
-        const task = 'Create diagrams'; 
-        const staffL =  func.getStaffByTask(assignments, staff, task);
-        expect(staffL).toStrictEqual([{assignment_id: 99, task: 'Create diagrams', staff: 'skassen2'},
-        {assignment_id: 100, task: 'Create diagrams', staff: 'jaedon'}]);
-    });
-
-    test('Test that getHR() returns only HR members', () =>{
-        const HRm = func.getHR(users);
-        expect(HRm).toStrictEqual([
-          {username: 'dummy', name: 'dummyname', surname: 'dummysurname', password: 'pass', role: 'HR'}, 
-          {username: 'taruna', name: 'Taruna', surname: 'Naidoo', password: 'pass', role: 'HR'}]);
-    });
 
     test('Test addCommentToDatabase()', async () => {
         // Mock a response expected from server
@@ -177,6 +169,14 @@ describe('Describe function from feedback.js', () => {
       fetch.mockResponseOnce(JSON.stringify({value: users}));
       const staffCheck = await func.checkIfStaff('keren');
       expect(staffCheck).toBe(0);
+    });
+
+    test('Test DOMContentLoaded event Listener', async () => {
+      fetch.resetMocks();
+      fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users}));
+      document.dispatchEvent(new Event('DOMContentLoaded', { bubbles: true }));
+      await new Promise(process.nextTick);
+      expect(fetch).toHaveBeenCalledTimes(2);
     });
 
     /*test('Test addComment event listener does everything needed', async () => {

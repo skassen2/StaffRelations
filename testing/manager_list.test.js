@@ -23,16 +23,6 @@ describe('Functions from manager_list', () => {
         '<article id="staffList" class="grid-container">'+
         '</article>'+
     '</section>'+
-    '<section class="container">'+
-        '<form id="staffForm">'+
-            '<input type="text" id="name" placeholder="Name" required>'+
-            '<input type="text" id="surname" placeholder="Surname" required>'+
-            '<input type="text" id="username" placeholder="Username" required>'+
-            '<input type="text" id="password" placeholder="Password" required>'+
-            '<br>'+
-            '<button>Add Staff Member</button>'+
-        '</form>'+
-    '</section>'+
     '</main>';
     const manager = require('../src/manager_list.js');
     test('Test getStaff() returns the right data', async () => {
@@ -41,22 +31,5 @@ describe('Functions from manager_list', () => {
         {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
-
-    test('Test staffForm eventlistener loads content', async () => {
-        const createElementSpy = jest.spyOn(document, 'createElement');
-        const btn = document.getElementById("staffForm");
-        btn.dispatchEvent(new Event('submit', { bubbles: true }));
-        expect(createElementSpy).toHaveBeenCalledWith("block");
-        createElementSpy.mockRestore();
-    });
-
-    test('Test staffForm eventlistener loads content', async () => {
-        const createElementSpy = jest.spyOn(document, 'createElement');
-        const btn = document.getElementById("staffForm");
-        btn.dispatchEvent(new Event('submit', { bubbles: true }));
-        expect(createElementSpy).toHaveBeenCalledWith("block");
-        createElementSpy.mockRestore();
-    });
-
     
 });

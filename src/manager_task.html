@@ -12,20 +12,17 @@
 
     <header>
         <section class="container">
-            <h1>Staff Relations</h1>
-            <br>
-            <h2>Manager - Task List</h2>
+            <h1>Welcome to Your Task Board </h1>
         </section>
-        <img src="logo/logo1.png" id="logo" alt="Logo Image" width="135" height="130">
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html"><b>Logout</b></a></li>
+            </ul>
+        </nav>
+        <img src="images/logo1.png" id="logo" alt="Logo Image" width="120" height="125">
     </header>
 
     <main>
-        <section class="grid-container">
-            <article id="staffList" class="grid-container">
-            </article>
-        </section>
-
-        
         <section class="container">
             <form id="taskform">
                 <input type="text" id="task" placeholder="Task" required>
@@ -55,6 +52,11 @@
               <button id="genExcelFile">Download Staff Timesheet</button>
             </form>
           </section>
+
+          <section class="grid-container">
+            <article id="staffList" class="grid-container">
+            </article>
+        </section>
     </main> 
 
     <footer>

@@ -5,7 +5,7 @@ body {
     --color-error: #cc3333;
     --color-success: #4bb544;
     --border-raduis: 4px;
-    
+    background-color:  #edf5f4;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -15,22 +15,34 @@ body {
     width: 80%;
     margin: 0 auto;
     margin-bottom: 20px;
+    
+    align-items: center;
+    border-radius: 15px;
 }
 
+form {
+    margin: 0 auto;
+    background-color: #00957a90;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} 
 header {
     display: flex;
-    margin: 0;
     background-color: #009579;
     color: black;
-    padding: 20px 0;
-    padding-bottom: 0.5%;
     text-align: center;
     width: 100%;
+    height: 78px;
+    padding: 5px;
 }
-
 header h1 {
+    display: flex;
     margin: 0;
-    font-size: 32px;
+    padding-top: 25px;
+    font-size: 25px;
+    text-align: center;
+    padding-left: 108px;
 }
 
 header h2 {
@@ -44,37 +56,38 @@ header h2 {
 }
 main {
     padding: 20px 0;
+    background-color:  #edf5f4;
 }
 
 footer{
     display: flex;
-    font: 500 1rem 'Quicksand',sans-serif;
     background-color: var(--color-primary);
     color: black;
     position: fixed;
     padding: 0px 0px 0px 0px;
     width:100%;
-    height: 30px;
+    height: 20px;
+    font-size: 12px;
     bottom: 0;
     justify-content: center;
     align-items: center;
 }
 
 button {
-    background-color: var(--color-primary);
+    background-color: #414644;
     color: white;
     border: none;
-    padding: 10px 10px;
+    padding: 10px;
     margin-top: 1%;
     margin-bottom: 1%;
     margin-left: 0.5%;
     margin-right: 0.5%;
-    border-radius: var(--border-raduis);
+    border-radius: 5px;
     cursor: pointer;
   }
   
   button:hover {
-    background-color: var(--color-primary-dark);
+    background-color: black;
     transform: scale(1.2);
   }
   
@@ -119,4 +132,48 @@ input[type="text"] {
 
 input[type="text"]:focus {
     border-color: var(--color-primary);
+}
+
+/* Navigation bar and corresponding */
+.navbar{
+    display: flex-end;
+    height: 20px;
+    color: black;
+    padding-left: 550px;
+    gap:10px;
+}
+/* This is for the unordered list format */
+.navbar ul{
+    list-style: none;
+    padding: none;
+    margin: none;
+    overflow:hidden;
+    gap:10px;
+}
+/* This is for all items in the list of the unordered list */
+.navbar li{
+    padding:12px;
+    padding-right: 25px;
+    margin: none;
+    color:black;
+    float: left;
+    text-align: left;
+    justify-content: space-around;
+    align-items: center;
+}
+/* This is for all items in the navigation bar */
+.navbar a{ 
+    color: black;
+    text-decoration: none;
+    padding: none;
+    display: block;
+    text-align: center;
+    gap:10px;
+}
+.navbar a:hover{
+    transform: scale(1.3);
+}
+
+#staffForm{
+    padding: 15px;
 }

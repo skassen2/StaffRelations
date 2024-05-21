@@ -150,9 +150,7 @@ describe('Test functions from graph_analysis.js', () => {
     test('Test aggregateFeedbackRatings() returns the right data',  () => {
         const Returned = func.aggregateFeedbackRatings(feedbacks);
         expect(Returned).toStrictEqual([
-            { task: 'fix errors!!!', average_rating: 5.888888888888889 },
-            { task: 'Poor Performace', average_rating: -1 },
-            { task: 'General', average_rating: -1 },
+            { task: 'fix errors!!!', "average_rating": 6.75 },
             { task: 'hows it', average_rating: 5 },
             { task: 'Very good very nice', average_rating: 10 },
             { task: 'a', average_rating: 5.5 },

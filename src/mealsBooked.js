@@ -51,7 +51,7 @@ function renderMealList(filteredResults){
     // Create a heading for each meal booking
     const pageTitle = document.createElement("h1");
     pageTitle.classList.add("page-title");
-    pageTitle.textContent = "Meal Bookings Page";
+    pageTitle.textContent = "Welcome to the Meal Bookings Page";
     //console.log(pageTitle.textContent);
     heading.appendChild(pageTitle);
 

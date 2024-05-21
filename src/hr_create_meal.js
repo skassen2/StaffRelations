@@ -63,12 +63,12 @@ function renderMeals(meals) {
     mealList.appendChild(heading);
 
     // Create a container for meal items
-    const mealContainer = document.createElement("div");
+    const mealContainer = document.createElement("div"); //change divs!!!!
     mealContainer.classList.add("meal-container");
 
     meals.forEach(meal => {
         // Create a box for each meal
-        const mealBox = document.createElement("div");
+        const mealBox = document.createElement("div"); //change divs!!!!
         mealBox.classList.add("meal-box");
 
         // Create elements for meal details

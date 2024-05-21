@@ -78,7 +78,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
     // Create a heading for each meal booking
     const pageTitle = document.createElement("h1");
     pageTitle.classList.add("page-title");
-    pageTitle.textContent = "Car Wash Booking";
+    pageTitle.textContent = "Welcome to the Carwash Booking Page";
     //console.log(pageTitle.textContent);
     heading.appendChild(pageTitle);
 
@@ -92,7 +92,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
             CarBooking.innerHTML = `
                 <h3><u>${car.car_name}</u></h3>
                 <p><Strong>Number Plate: </Strong>${car.number_plate}</p>
-                <p><Strong>Your car is booked for </Strong>${myCarBooking.slot}</p>
+                <p><Strong>Your car is booked for: </Strong>${myCarBooking.slot}</p>
             `;
         }
 
