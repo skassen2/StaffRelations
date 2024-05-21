@@ -103,7 +103,7 @@ describe('Test staff_order_meals', () =>{
         expect(createElementSpy).toHaveBeenCalledWith("h1");
         expect(createElementSpy).toHaveBeenCalledWith("block");
         expect(document.getElementsByClassName("page-title").length).toBeGreaterThan(0);
-        expect(document.getElementsByClassName("page-title")[0].textContent).toBe("Meal Bookings Page");
+        expect(document.getElementsByClassName("page-title")[0].textContent).toBe("Welcome to the Meal Bookings Page");
         expect(document.getElementsByClassName("meal-container").length).toBeGreaterThan(0);
         createElementSpy.mockRestore();
     });
