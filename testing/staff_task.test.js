@@ -1,3 +1,7 @@
+//file receives 100% code coverage.
+//note however renderTasks() is not explicitly tested as it functions purely for front end set-up 
+//all functions called within it have been tested
+
 require('jest-fetch-mock').enableFetchMocks();
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
@@ -66,8 +70,8 @@ describe('Fetch Functions from staff_task.js', () => {
         const timesL = await func.fetchTimeSpent();
         expect(timesL).toStrictEqual(times);
     });
-    //mock returning assingments instead of times
-    test('Test logStopWatchTime() posts correct data to database ', () => {
+    
+    test('Test logStopWatchTime() posts correct data to database', () => {
         //set up elements needed for logStopWatch()
         const taskCard = document.createElement('article');
         taskCard.classList.add('staff-card');
@@ -82,10 +86,9 @@ describe('Fetch Functions from staff_task.js', () => {
         taskCard.appendChild(stopwatch);
         document.body.appendChild(taskCard);
         stopwatch.parentElement.querySelector('h2').textContent = 'test';
-        //fetch.mockClear();
         fetch.resetMocks();
         const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
-        fetch.mockResponseOnce(JSON.stringify({ value: times })).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 }).mockResponseOnce(JSON.stringify({ value: times })).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data =  {
             task: 'test',
             staff: 'skassen2',
@@ -99,9 +102,9 @@ describe('Fetch Functions from staff_task.js', () => {
         });
 
         return func.logStopwatchTime(stopwatch).then(response =>{
-            expect(fetch).toHaveBeenCalledTimes(2);
-            expect(fetch).toHaveBeenNthCalledWith(1,'/data-api/rest/Time');
-            expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Time/id/59', {
+            expect(fetch).toHaveBeenCalledTimes(3);
+            expect(fetch).toHaveBeenNthCalledWith(2,'/data-api/rest/Time');
+            expect(fetch).toHaveBeenNthCalledWith(3, '/data-api/rest/Time/id/59', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -112,44 +115,6 @@ describe('Fetch Functions from staff_task.js', () => {
         });
         
     });
-    
-});
-
-describe('Functions from staff_task.js', () => {
-    localStorage.setItem('username', 'skassen2' ); 
-    localStorage.setItem('role', 'Staff' );
-    localStorage.setItem('name', 'Shaneel' );
-    localStorage.setItem('surname', 'Kassen' );
-    
-    let assignments = [{assignment_id: 92, task: 'test', staff: 'jaedon'},
-    {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
-    {assignment_id: 94, task: 'test', staff: 'skassen2'}];
-    
-    let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
-        {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
-        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}
-        /*{task: 'test', staff: 'jaedon', total_time: 0, id: 60}*/];
-
-    let tasks = [{task_id: 16, manager: 'keren', task: 'test', description: 'ello', est_time: 400},
-    {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}];
-    
-    document.body.innerHTML = '<main>'+
-    '<section class="grid-container" id="tasksList"> <!-- Updated class name -->'+
-    '</section>'+
-    '<section class="container">'+
-        '<form id="manualtime">'+
-            '<select id="taskdrop" class="dropdown" required>'+
-                '<option value="" disabled selected>Select task</option>'+
-            '</select><br>'+
-            '<input type="number" id="time"  placeholder="Time spent on task in minutes" required min="1">'+
-            '<br>'+
-            '<button id="addManualTime">Add time</button>'+
-        '</form>'+
-    '</section>'+
-    '</main>';
-
-    fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}));
-    const func = require('../src/staff_task.js');
 
     //TEST FILTERBYNAME
     test('Test that filterTaskByName returns the right task name given a list of tasks', () => {
@@ -182,7 +147,7 @@ describe('Functions from staff_task.js', () => {
         expect(total).toStrictEqual([57, 24]);
     });
 
-    test('Test startStopWatch() alerts when it should', () => {
+    test('Test startStopWatch() alerts that only one timer can run at a time when it should', () => {
         
         const taskCard = document.createElement('article');
         taskCard.classList.add('staff-card');
@@ -208,7 +173,7 @@ describe('Functions from staff_task.js', () => {
         expect(stopwatch.dataset.intervalId).toBeDefined();
     });
 
-    test('Test stopStopWatch() alerts when it should', () => {
+    test('Test stopStopWatch() alerts that a timer must be started first when it should', () => {
         const taskCard = document.createElement('article');
         taskCard.classList.add('staff-card');
         const stopwatch = document.createElement('section');
@@ -231,7 +196,7 @@ describe('Functions from staff_task.js', () => {
         expect(stopwatch.dataset.intervalId).toBeUndefined();
     });
 
-    test('Test logStopWatchTime() returns the right alert when interval has iD ', () => {
+    test('Test logStopWatchTime() returns an alert that the timer must be stopped first when interval has iD', () => {
         const taskCard = document.createElement('article');
         taskCard.classList.add('staff-card');
         const stopwatch = document.createElement('section');
@@ -269,19 +234,54 @@ describe('Functions from staff_task.js', () => {
         expect(stopwatch.textContent).toMatch(/\d{2}:\d{2}:\d{2}/); 
     });
 
-    /*test('Test eventListener for submitting time manually', async () =>{
-        //set up testing values and mocks
-        const task=document.getElementById("taskdrop");
-        task.value = 'test';
-        const time=document.getElementById("time");
-        time.value = 60;
-        fetch.mockResponseOnce(JSON.stringify({value: times}));
+    test('Test logTimeInDateTimeLog() posts the correct data', async () => {
+        const data = {
+            task: 'Test',
+            staff: 'skassen2',
+            time_logged: 60,
+            log_date: '2024-12-04'
+        };
+        fetch.mockClear();
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        const endpoint = '/data-api/rest/DateTimeLog'; 
+        return func.logTimeInDateTimeLog('Test', 'skassen2', '2024-12-04', 60).then(response => {
+            expect(fetch).toHaveBeenCalledWith(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        });
+    });
+    
+    test('Test logTimeInDateTimeLog() throws error when needed', async () => {
+        fetch.resetMocks();
+        fetch.mockResolvedValueOnce({
+            ok: false,
+            status: 400
+        });
+        await expect(func.logTimeInDateTimeLog('Test', 'skassen2', '2024-12-04', 60)).rejects.toThrow('Failed to log time in DateTimeLog table.');
+    });
+
+    //test exceeding time limit
+    /*test('Test eventListener for submitting ', async () =>{
+        const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 }).mockResponseOnce(JSON.stringify({value: times})).mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
         const data={
-            task:task.value,
+            task: 'test',
             staff:'skassen2',
             total_time: 60,
         }
-
+        const taskdrop = document.getElementById('taskdrop');
+        const taskOption = document.createElement('option');
+        taskOption.value = 'test';
+        taskdrop.appendChild(taskOption);
+        taskdrop.value = 'test';
+        document.getElementById('time').value = 60;
+    
         Object.defineProperty(window, 'location', {
             value: {
               reload: jest.fn(),
@@ -291,68 +291,16 @@ describe('Functions from staff_task.js', () => {
         const Submit = document.getElementById('manualtime');
         const event = new Event('submit', { bubbles: true });
         Submit.dispatchEvent(event);
-        await Promise.resolve()
-        expect(fetch).toHaveBeenCalledTimes(2);
-        expect(fetch).toHaveBeenNthCalledWith(1,'/data-api/rest/Time');
-        expect(fetch).toHaveBeenNthCalledWith(2, '/data-api/rest/Time/id/59', {
+        await new Promise(process.nextTick);
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(3, '/data-api/rest/Time/id/59', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
         });
-        expect(window.location.reload).toHaveBeenCalled();      
+        expect(window.location.reload).toHaveBeenCalled();  
     });*/
 });
 
-/*describe('RenderTask()', () =>{
-    localStorage.setItem('username', 'skassen2' ); 
-    localStorage.setItem('role', 'Staff' );
-    localStorage.setItem('name', 'Shaneel' );
-    localStorage.setItem('surname', 'Kassen' );
-    
-    let assignments = [{assignment_id: 92, task: 'test', staff: 'jaedon'},
-    {assignment_id: 93, task: 'Task1', staff: 'jaedon'},
-    {assignment_id: 94, task: 'test', staff: 'skassen2'}];
-    
-    let times = [{task: 'test', staff: 'jaedon', total_time: 24, id: 57},
-        {task: 'Task1', staff: 'jaedon', total_time: 1, id: 58},
-        {task: 'test', staff: 'skassen2', total_time: 0, id: 59}];
-
-    let tasks = [{task_id: 16, manager: 'keren', task: 'test', description: 'ello', est_time: 400},
-    {task_id: 17, manager: 'keren', task: 'Task1', description: 'wanna cry', est_time: 30}];
-    
-    document.body.innerHTML = '<main>'+
-    '<section class="grid-container" id="tasksList"> <!-- Updated class name -->'+
-    '</section>'+
-    '<section class="container">'+
-        '<form id="manualtime">'+
-            '<select id="taskdrop" class="dropdown" required>'+
-                '<option value="" disabled selected>Select task</option>'+
-            '</select><br>'+
-            '<input type="number" id="time"  placeholder="Time spent on task in minutes" required min="1">'+
-            '<br>'+
-            '<button id="addManualTime">Add time</button>'+
-        '</form>'+
-    '</section>'+
-    '</main>';
-    test('Test renderTasks()', async () => {
-        fetch.mockResponseOnce(JSON.stringify({ value: assignments})).mockResponseOnce(JSON.stringify({ value: tasks})).mockResponseOnce(JSON.stringify({ value: times}));
-        const func = require('../src/staff_task.js');
-        document.createElement = jest.fn().mockReturnValue({
-            classList: {
-                add: jest.fn()
-            }
-        });
-        const element = document.getElementById('tasksList');
-        const appendChildSpy = jest.spyOn(element, 'appendChild');
-        return func.renderTasks().then(data => {
-            expect(document.createElement).toHaveBeenCalledWith('article');
-            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
-            // Clean up
-            document.createElement.mockRestore();
-            appendChildSpy.mockRestore();
-        });
-    });
-    
-});*/

@@ -4,48 +4,81 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    background-color: #edf5f4;
 }
 
 /* CSS for heading */
 header {
     display: flex;
-    margin: 0;
     background-color: #009579;
     color: black;
-    padding: 20px 0;
-    padding-bottom: 0.5%;
     text-align: center;
+    justify-content: space-evenly;
     width: 100%;
+    height: 78px;
+    padding: 5px;
+}
+
+header h1{
+    display: flex;
+    justify-content: left;
+    margin: 0;
+    padding-top: 25px;
+    font-size: 25px;
+    text-align: center;
+    padding-left: 108px;
+    padding-right: 0px;
 }
 
 .container {
-    max-width: 1200px;
+    width: 80%;
     margin: 0 auto;
+    margin-bottom: 20px;
 }
 
-.navbar {
-    padding: 0;
-}
 
-.navbar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+/* Navigation bar and corresponding */
+.navbar{
+    display: flex-end;
+    height: 20px;
+    color: black;
+    padding-left: 550px;
+    gap:10px;
 }
-
-.navbar ul li {
-    display: inline;
-    margin-right: 20px;
+/* This is for the unordered list format */
+.navbar ul{
+    list-style: none;
+    padding: none;
+    margin: none;
+    overflow:hidden;
+    gap:10px;
 }
-
-.navbar ul li a {
+/* This is for all items in the list of the unordered list */
+.navbar li{
+    padding:12px;
+    padding-right: 25px;
+    margin: none;
+    color:black;
+    float: left;
+    text-align: left;
+    justify-content: space-around;
+    align-items: center;
+}
+/* This is for all items in the navigation bar */
+.navbar a{ 
     color: black;
     text-decoration: none;
-    font-weight: bold;
+    padding: none;
+    display: block;
+    text-align: center;
+    gap:10px;
 }
-
+.navbar a:hover{
+    transform: scale(1.3);
+}
 main {
     padding: 20px;
+    background-color: #edf5f4;
 }
 
 /* CSS for meal bookings container */
@@ -73,16 +106,16 @@ main {
 /* CSS for bottom of the page */
 footer {
     display: flex;
-    font: 500 1rem 'Quicksand', sans-serif;
-     background-color: #009579;
+    background-color: #009579;
     color: black;
-    padding: 20px 0;
     position: fixed;
+    padding: 0px 0px 0px 0px;
+    width:100%;
+    height: 20px;
+    font-size: 12px;
     bottom: 0;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .logo {
@@ -90,7 +123,3 @@ footer {
     margin-right: 20px;
 }
 
-/* Add space between the meal cards and the footer */
-footer {
-    margin-top: 20px;
-}

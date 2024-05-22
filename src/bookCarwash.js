@@ -51,8 +51,8 @@ function filterCarAndCarwash(cars, carwash) {
     // Create a map from the carwash array for quick lookup
     const carwashMap = new Map();
     carwash.forEach(item => carwashMap.set(item.car_id, item.slot));
-
     // Filter and merge the cars array based on the carwashMap
+
     return cars
         .filter(car => carwashMap.has(car.car_id))  // Filter cars present in carwashMap
         .map(car => ({  // Merge fields
@@ -78,7 +78,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
     // Create a heading for each meal booking
     const pageTitle = document.createElement("h1");
     pageTitle.classList.add("page-title");
-    pageTitle.textContent = "Car Wash Booking";
+    pageTitle.textContent = "Welcome to the Carwash Booking Page";
     //console.log(pageTitle.textContent);
     heading.appendChild(pageTitle);
 
@@ -92,7 +92,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
             CarBooking.innerHTML = `
                 <h3><u>${car.car_name}</u></h3>
                 <p><Strong>Number Plate: </Strong>${car.number_plate}</p>
-                <p><Strong>Your car is booked for </Strong>${myCarBooking.slot}</p>
+                <p><Strong>Your car is booked for: </Strong>${myCarBooking.slot}</p>
             `;
         }
 
@@ -141,6 +141,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
 
 //Function allows users booking to be succesfully submitted and recorded in the car_wash table in the DB for a slot based on the button clicked
 carsList.addEventListener('click', async event => {
+    console.log('made it into event listener');
     if(event.target.id == slot1){
         // Book for wednesday
         try {
@@ -176,6 +177,7 @@ async function addCarwashBooking(carId, Slot) {
         })
     });
     const data = await response.json();
+    
     return data;
 
 }
@@ -191,16 +193,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         isBooked = isCarInCarwash(carwash, car[0].car_id);
         carBooking = getCarwashEntryById(carwash, car[0].car_id);
         renderCarsList(car, isBooked, carBooking);
-        console.log(cars);
-        console.log(carwash);
-        console.log(car);
-        console.log(isBooked);
-        console.log(wednesdayCount);
-        console.log(fridayCount);
     } catch (error) {
-        //console.error('Error:', error.message);
         alert(error.message);
     }
 });
 
-module.exports = {getAllCars, getAllCarwashBookings, filterCarAndCarwash, renderCarsList, getCarsByUsername, isCarInCarwash}
+module.exports = {getAllCars, getAllCarwashBookings, filterCarAndCarwash, renderCarsList, getCarsByUsername, isCarInCarwash, getCarwashEntryById, addCarwashBooking,countCarwashesBySlot}

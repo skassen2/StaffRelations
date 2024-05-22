@@ -28,7 +28,7 @@ form.addEventListener("submit", async (e) => {
             },
             body: JSON.stringify(mealData)
         });
-
+        
         if (response.ok) {
             alert("Meal created successfully!");
             // Clear the form fields after successful submission
@@ -63,12 +63,12 @@ function renderMeals(meals) {
     mealList.appendChild(heading);
 
     // Create a container for meal items
-    const mealContainer = document.createElement("div");
+    const mealContainer = document.createElement("div"); //change divs!!!!
     mealContainer.classList.add("meal-container");
 
     meals.forEach(meal => {
         // Create a box for each meal
-        const mealBox = document.createElement("div");
+        const mealBox = document.createElement("div"); //change divs!!!!
         mealBox.classList.add("meal-box");
 
         // Create elements for meal details
@@ -107,20 +107,11 @@ async function handleDOMContentLoaded() {
         const meals = await getAllMeals();
         renderMeals(meals);
     } catch (error) {
-        //console.log('There was an error')
         alert(error.message);
     }
 }
 document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
-/*document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const meals = await getAllMeals();
-        renderMeals(meals);
-    } catch (error) {
-        //console.error('Error:', error.message);
-        alert(error.message);
-    }
-});*/
+
 
 //export for testing
 module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}

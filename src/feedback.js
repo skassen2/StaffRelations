@@ -272,4 +272,5 @@ async function addRatingCommentToDatabase(task,sender,receiver,comment,sender_ro
     window.location.reload();
 }
 
-module.exports = {addCommentToDatabase, getStaffByTask, getUserFeedback, loadStaffForDropDown, renderFeedback, renderTaskDropdown, fetchAssignment, fetchFeedback, fetchUsers, getHR, loadHRNamesForDropDown, listOfHr};
+
+module.exports = {addCommentToDatabase, getUserFeedback, loadStaffForDropDown, renderFeedback, renderTaskDropdown, fetchAssignment, fetchFeedback, fetchUsers, loadHRNamesForDropDown, listOfHr, addRatingCommentToDatabase, checkIfStaff};

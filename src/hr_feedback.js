@@ -36,9 +36,9 @@ async function renderFeedback(){
     feedbackList.innerHTML = '';
     staffFeedback.forEach((row, index) => {
         let manager=getManagerWhoAssignedTask(row.task,data1);
-        if(manager==undefined){
+        /*if(manager==undefined){
             manager="N/A";
-        }
+        }*/
         const task = document.createElement('block');
         task.classList.add('staff-card');
         task.innerHTML = `
@@ -156,42 +156,7 @@ async function getExcelFeedback() {
 // create new Excel file
 downloadExcel.addEventListener('submit', async e => {
     e.preventDefault();
-    /*const getExcelFeedbackdata = await getExcelFeedback();
-    // prep data for Excel
-    const data = Object.keys(getExcelFeedbackdata).map(key => ({
-        'task':getExcelFeedbackdata[key].task,
-        'sender':getExcelFeedbackdata[key].sender,
-        'receiver':getExcelFeedbackdata[key].receiver,
-        'comment':getExcelFeedbackdata[key].comment,
-        'rating':getExcelFeedbackdata[key].rating
-    }));
-    //create worksheet
-    const worksheet = XLSX.utils.json_to_sheet(data, {
-        header: ['task', 'sender','receiver','comment','rating']
-    });
-    //create workbook & add worksheet to it
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Staff Ratings');
-
-    //convert workbook to buffer - buffer is needed to create actual Excel file in browser
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-
-    // create blob and URL for downloading
-    const blob = new Blob([excelBuffer], { type: EXCEL_TYPE });
-    const url = window.URL.createObjectURL(blob);
-
-    //download setup
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'staff_ratings_'+new Date().toDateString()+'.xlsx';
-    document.body.appendChild(a);
-    a.click();
-
-    //clean up since a unique url is generated for each click
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);*/
-
+    
     const getExcelFeedbackdata = await getExcelFeedback();
     // Prep data for Excel
     const data = Object.keys(getExcelFeedbackdata).map(key => ({
@@ -369,4 +334,4 @@ document.getElementById('genExcelTime').addEventListener('click', async e => {
     document.body.removeChild(a);
 });
 
-module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks};
+module.exports = {addCommentToDatabase, getUserFeedback, renderFeedback, fetchAssignment, fetchFeedback, fetchUsers, loadAllStaffDropDown, getManagerWhoAssignedTask, fetchTasks, getExcelFeedback};

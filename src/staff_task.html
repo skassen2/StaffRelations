@@ -10,17 +10,18 @@
 <body>
     <header>
         <section class="container">
-            <h1>Staff Relations</h1>
-            <br>
-            <h2>Welcome, <span id="username"></span></h2> 
+            <h1>Welcome to Your Task Board </h1>
         </section>
-        <img src="logo/logo1.png" id="logo" alt="Logo Image" width="135" height="130">
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html"><b>Logout</b></a></li>
+            </ul>
+        </nav>
+    <img src="images/logo1.png" id="logo" alt="Logo Image" width="120" height="125">
     </header>
     <main>
-        <section class="grid-container" id="tasksList"> <!-- Updated class name -->
-        </section>
 
-        <section class="container">
+        <section class="container" id="addTime">
             <form id="manualtime">
                 <select id="taskdrop" class="dropdown" required>
                     <option value="" disabled selected>Select task</option>
@@ -30,6 +31,8 @@
                 <br>
                 <button id="addManualTime">Add time</button>
             </form>
+        </section>
+        <section class="grid-container" id="tasksList"> <!-- Updated class name -->
         </section>
     </main>
     <footer>

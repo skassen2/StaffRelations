@@ -49,7 +49,7 @@ function renderCarsList(filteredResults){
     // Create a heading for each meal booking
     const pageTitle = document.createElement("h1");
     pageTitle.classList.add("page-title");
-    pageTitle.textContent = "Cars Booked for Car Wash";
+    pageTitle.textContent = "Welcome to the Booked Cars for Carwash Page";
     //console.log(pageTitle.textContent);
     heading.appendChild(pageTitle);
 
@@ -76,10 +76,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const cars = await getAllCars();
         const carwash = await getAllCarwashBookings();
-        let filteredResults = filterCarAndCarwash(cars, carwash)
+        let filteredResults = filterCarAndCarwash(cars, carwash);
         renderCarsList(filteredResults);
     } catch (error) {
-        //console.error('Error:', error.message);
         alert(error.message);
     }
 });

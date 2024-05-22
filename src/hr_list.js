@@ -42,8 +42,6 @@ staffForm.addEventListener('submit', event => {
         <h2>${name} ${surname}</h2>
         <p><strong>Username:</strong> ${username}</p>
         <p><strong>Role:</strong> ${role}</p>
-        <button class="btn" id="changePermissions_${index}">Change Permissions</button>
-        <button class="btn" id="removeAccess_${index}">Remove Access</button>
         <button class="btn-remove delete" data-index="${index}">Delete</button>
     `;
     staffList.appendChild(staffMember);
@@ -53,12 +51,11 @@ staffForm.addEventListener('submit', event => {
 //where the deleting happens
 staffList.addEventListener('click', async event => {
     const index = event.target.dataset.index;
-    const personToDelete=usernameAndRole[index][0];
-    console.log(personToDelete); 
+    
+    const personToDelete=usernameAndRole[index][0]; 
     
     //get id of rows in database that needs to be deleted from every table
     if(usernameAndRole[index][1]=="Manager"){
-        console.log("ok");
         //get managers tasks
         const managersTasks=[]
         let dataTasks1=await fetchTasks();
@@ -321,4 +318,4 @@ async function fetchMealOredrs() {
 
 
 //export fucntions for testing
-module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers};
+module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers, fetchMealOredrs};

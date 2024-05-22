@@ -23,16 +23,6 @@ describe('Functions from manager_list', () => {
         '<article id="staffList" class="grid-container">'+
         '</article>'+
     '</section>'+
-    '<section class="container">'+
-        '<form id="staffForm">'+
-            '<input type="text" id="name" placeholder="Name" required>'+
-            '<input type="text" id="surname" placeholder="Surname" required>'+
-            '<input type="text" id="username" placeholder="Username" required>'+
-            '<input type="text" id="password" placeholder="Password" required>'+
-            '<br>'+
-            '<button>Add Staff Member</button>'+
-        '</form>'+
-    '</section>'+
     '</main>';
     const manager = require('../src/manager_list.js');
     test('Test getStaff() returns the right data', async () => {
@@ -41,20 +31,5 @@ describe('Functions from manager_list', () => {
         {username: 'prashant', name: 'Prashant', surname: 'Kessa', password: 'pass', role: 'Staff'},
         {username: 'skassen2', name: 'Shaneel', surname: 'Kassen', password: 'ekse', role: 'Staff'}]);
     });
-
-    //error recieved because of appendchild test removed for now
-    /*test('Test renderStaffList(): document.createElement() has been called', async () =>{
-        document.createElement = jest.fn().mockReturnValue({
-            classList: {
-                add: jest.fn()
-            }
-        });
-        return manager.renderStaffList().then(data => {
-            expect(document.createElement).toHaveBeenCalledWith('block');
-            expect(element.classList.add).toHaveBeenCalledWith('staff-card');
-            // Clean up
-            document.createElement.mockRestore();
-        });
-     
-    });*/
+    
 });

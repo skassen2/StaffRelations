@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
     try {
         const tasks = await getTasksFromDatabase();
         const taskNames = [...new Set(tasks.map(item => item.task))];
@@ -56,7 +55,6 @@ function aggregateTaskTimes(data) {
             }
         }
     });
-
     return Object.keys(staffMap).map(staff => ({
         staff: staff,
         total_time: staffMap[staff]
@@ -161,7 +159,7 @@ function aggregateFeedbackRatings(data) {
             }
         }
     });
-
+   
     return Object.keys(taskMap).map(task => ({
         task: task,
         average_rating: taskMap[task].reduce((a, b) => a + b, 0) / taskMap[task].length
@@ -219,3 +217,4 @@ function renderFeedbackGraph(feedback) {
 
 
 
+module.exports = {getFeedbackFromDatabase, getTasksFromDatabase, renderFeedbackGraph, renderTaskGraph, aggregateFeedbackRatings, aggregateTaskTimes, populateFeedbackDropdown, populateTaskDropdown};
