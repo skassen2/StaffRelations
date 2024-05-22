@@ -140,7 +140,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: 200px; /* Add space between the meal cards and the footer */
+    
 }
 
 .meal-box {
@@ -165,4 +165,26 @@ footer {
 /* Add space between the meal cards and the footer */
 footer {
     margin-top: 20px;
+}
+
+button {
+    background-color:  #414644;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color:#414644;
+    transform: scale(1.2);
+}
+
+button:active {
+    transform: scale(0.98);
 }
