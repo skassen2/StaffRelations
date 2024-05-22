@@ -63,12 +63,12 @@ function renderMeals(meals) {
     mealList.appendChild(heading);
 
     // Create a container for meal items
-    const mealContainer = document.createElement("div"); //change divs!!!!
+    const mealContainer = document.createElement("section"); //change divs!!!!
     mealContainer.classList.add("meal-container");
 
     meals.forEach(meal => {
         // Create a box for each meal
-        const mealBox = document.createElement("div"); //change divs!!!!
+        const mealBox = document.createElement("section"); //change divs!!!!
         mealBox.classList.add("meal-box");
 
         // Create elements for meal details
@@ -111,6 +111,50 @@ async function handleDOMContentLoaded() {
     }
 }
 document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
+
+//this function handles the delete
+const resetbutton=document.getElementById('resetMeals');
+resetbutton.addEventListener("click", async event=>{
+    const orders=await fetchMealOrders();
+    const menu=await fetchMealMenu();
+    //delete orders
+    const orderIds=[];
+    for(const obj of orders){
+        orderIds.push(obj.order_id);
+    }
+    for(const id of orderIds){
+        const endpoint = '/data-api/rest/Meal_orders/order_id';
+        const response = await fetch(`${endpoint}/${id}`, {
+        method: "DELETE"
+        });
+    }
+    //delete menu
+    const menuIds=[];
+    for(const obj of menu){
+        menuIds.push(obj.meal_id);
+    }
+    for(const id of menuIds){
+        const endpoint = '/data-api/rest/Meal_menu/meal_id';
+        const response = await fetch(`${endpoint}/${id}`, {
+        method: "DELETE"
+        });
+    }
+
+    window.location.reload();
+
+});
+async function fetchMealOrders() {
+    const endpoint = `/data-api/rest/Meal_orders`;
+    const response = await fetch(endpoint);
+    const tasks = await response.json();
+    return tasks.value;
+}
+async function fetchMealMenu() {
+    const endpoint = `/data-api/rest/Meal_menu`;
+    const response = await fetch(endpoint);
+    const tasks = await response.json();
+    return tasks.value;
+}
 
 
 //export for testing

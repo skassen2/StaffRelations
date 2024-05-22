@@ -29,13 +29,32 @@
         <!-- add new staff -->
         <section class="container">
             <form id="staffForm">
+                <h2>Create User</h2>
                 <input type="text" id="name" placeholder="Name" required>
                 <input type="text" id="surname" placeholder="Surname" required>
-                <input type="text" id="role" placeholder="Role" required>
+                <select id="role" name="role" class="dropdown" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="HR">HR</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Manager">Manager</option>
+                  </select> 
                 <input type="text" id="username" placeholder="Username" required>
                 <input type="text" id="password" placeholder="Password" required>
                 <br>
                 <button>Add Staff Member</button>
+            </form>
+        </section>
+        <br>
+        <section class="container">
+            <form id="addCarForm">
+                <h2>Add Car</h2>
+                <select id="staffMember" class="dropdown" required>
+                    <option value="" disabled selected>Staff Member</option>
+                </select>
+                <input type="text" id="car" placeholder="Car Name" required>
+                <input type="text" id="numberplate" placeholder="Number Plate" required>
+                <br>
+                <button>Add car</button>
             </form>
         </section>
     </main>
