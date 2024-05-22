@@ -118,3 +118,25 @@ footer {
     margin-right: 20px;
 }
 
+button {
+    background-color: #414644;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: black;
+    transform: scale(1.2);
+  }
+  
+  button:active {
+    transform: scale(0.98);
+  }
+

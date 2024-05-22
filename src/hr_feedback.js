@@ -36,9 +36,9 @@ async function renderFeedback(){
     feedbackList.innerHTML = '';
     staffFeedback.forEach((row, index) => {
         let manager=getManagerWhoAssignedTask(row.task,data1);
-        /*if(manager==undefined){
+        if(manager==undefined){
             manager="N/A";
-        }*/
+        }
         const task = document.createElement('block');
         task.classList.add('staff-card');
         task.innerHTML = `
@@ -279,7 +279,7 @@ async function loadJustStaffDropDown() {
 loadJustStaffDropDown();
 document.getElementById('genExcelTime').addEventListener('click', async e => {
     e.preventDefault();
-    console.log("Button clicked");
+    //console.log("Button clicked");
     const staffMember = document.getElementById("staffSelection1").value;
     if (!staffMember) {
         // Display tooltip if staff member is not selected

@@ -83,4 +83,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+//reset car wash bookings
+const resetButton=document.getElementById("resetCarWash");
+resetButton.addEventListener("click", async event=>{
+    event.preventDefault();
+    const data=await getAllCarwashBookings();
+    //array of ids to delete
+    const todelet=[];
+    data.forEach(obj=>{
+        todelet.push(obj.car_id);
+    });
+    
+    //actual deleting happens here
+    for(const id of todelet){
+        const endpoint = '/data-api/rest/Car_wash/car_id';
+        const response = await fetch(`${endpoint}/${id}`, {
+        method: "DELETE"
+        });
+    }
+    window.location.reload();
+});
+
 module.exports = {getAllCars, getAllCarwashBookings, filterCarAndCarwash, renderCarsList}

@@ -141,7 +141,7 @@ function renderCarsList(filteredResults, isBooked, myCarBooking){
 
 //Function allows users booking to be succesfully submitted and recorded in the car_wash table in the DB for a slot based on the button clicked
 carsList.addEventListener('click', async event => {
-    console.log('made it into event listener');
+    //console.log('made it into event listener');
     if(event.target.id == slot1){
         // Book for wednesday
         try {
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         carBooking = getCarwashEntryById(carwash, car[0].car_id);
         renderCarsList(car, isBooked, carBooking);
     } catch (error) {
-        alert(error.message);
+        alert("Your car is not on the system, contact HR to add if you would like to add it.");
     }
 });
 

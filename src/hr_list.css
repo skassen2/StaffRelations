@@ -134,6 +134,20 @@ input[type="text"]:focus {
     border-color: var(--color-primary);
 }
 
+.dropdown{
+    width: 50%; 
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    background: #eeeeee;
+}
+.dropdown:focus {
+    border-color: var(--color-primary);
+}
+
 /* Navigation bar and corresponding */
 .navbar{
     display: flex-end;

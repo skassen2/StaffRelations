@@ -176,7 +176,7 @@ assignment.addEventListener('submit', async event => {
     let d=result.value;
     
     const check=existsAssignment(d,task,staff);
-    console.log(check);
+    //console.log(check);
     if(check==1){
         const data={
             task:task,
@@ -240,7 +240,7 @@ async function loadJustStaffDropDown() {
 loadJustStaffDropDown();
 document.getElementById('genExcelFile').addEventListener('click', async e => {
     e.preventDefault();
-    console.log("Button clicked");
+    //console.log("Button clicked");
     const staffMember = document.getElementById("staffSelection").value;
     if (!staffMember) {
         // Display tooltip if staff member is not selected
