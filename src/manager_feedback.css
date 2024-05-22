@@ -38,6 +38,9 @@ header h1 {
     text-align: center;
     padding-left: 108px;
     padding-right: 0px;
+    white-space: nowrap; /* Prevents the text from wrapping */
+    overflow: hidden; /* Hides overflow text */
+    text-overflow: ellipsis; /* Adds ellipsis if text overflows */
 }
 
 #logo{

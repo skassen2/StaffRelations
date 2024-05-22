@@ -30,7 +30,7 @@ describe('Test functions from BookCarwash.js', () => {
     '<img src="images/logo1.png" id="logo" alt="Logo Image" width="120" height="125">'+
     '</header>'+
     '<main>'+
-    '<section id="carsList" class="container"></section>'+
+    '<section id="carsList" class="container"><button id="resetCarWash">Reset Car Wash</button></section>'+
     '</main>';
 
     const cars = [
@@ -96,10 +96,26 @@ describe('Test functions from BookCarwash.js', () => {
 
     test('Test that DOMContentLoaded event listener loads content and throws error when needed', async () => {
         fetch.resetMocks();
-        fetch.mockRejectOnce(new Error('Failed to fetch'));
+        fetch.mockRejectOnce(new Error({error: 'Failed to fetch'}));
         const butn = document;
         const event = new Event('DOMContentLoaded', { bubbles: true });
         butn.dispatchEvent(event);
-        //note that error occurs where alert is not called in testing environment.
+        expect(fetch).toHaveBeenCalled();
+    });
+
+    test('Test that resetCarWash event listener deletes all car wash bookings', async () => {
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: carsBooked}));
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
+            },
+        });
+        const btn = document.getElementById("resetCarWash");
+        const event = new Event('click', { bubbles: true });
+        btn.dispatchEvent(event);
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(1+carsBooked.length);
+        expect(window.location.reload).toHaveBeenCalled();
     });
 });

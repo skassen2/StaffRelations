@@ -31,7 +31,7 @@ describe('Test Functions from hr_create_meal.js', () => {
         '<input type="url" id="mealImageUrl" name="mealImageUrl" required><br>'+
         '<button type="submit">Create Meal</button>'+
         '</form>'+
-        '<section id="mealList" class="container"></section>'+
+        '<section id="mealList" class="container"></section><button id="resetMeals">Reset All Meals</button>'+
         '</main>';
 
     const meals = [
@@ -39,13 +39,27 @@ describe('Test Functions from hr_create_meal.js', () => {
         {meal_id: 2, meal_name: 'MealTest', description: 'Tester Meal', created_by: 'taruna', meal_image_url: 'https://promova.com/content/fast_food_names_d368a9810d.png'},
         {meal_id: 27, meal_name: 'Chicken Wrap', description: 'Grilled chicken, lettuce and spicy mayo in a toasted wrap', created_by: 'taruna', meal_image_url: 'https://www.eatingwell.com/thmb/k05OqmTGG6mpCHDOGA…do-wrap-3171-0a492188ea344e8aa5de503829c7399b.jpg'}
     ];
+    const orders = [
+        {order_id: 23, meal_id: 28, username: 'skassen2', order_date: '2024-05-06T12:11:22.020'},
+        {order_id: 24, meal_id: 1, username: 'prashant', order_date: '2024-05-06T12:19:56.687'},
+        {order_id: 25, meal_id: 28, username: 'prashant', order_date: '2024-05-06T12:19:58.473'}
+    ];
+
     fetch.mockResponseOnce(JSON.stringify({value: meals}));
     const func = require('../src/hr_create_meal.js');
 
     test('Test that getMeals() returns the right data', async () =>{
+        fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({value: meals}));
         const m = await func.getAllMeals();
         expect(m).toStrictEqual(meals)
+    });
+
+    test('Test that fetchMealOrders() returns the right data', async () =>{
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: orders}));
+        const o = await func.fetchMealOrders();
+        expect(o).toStrictEqual(orders)
     });
 
     test('Event listener returns alert when a field is empty ', async () => {
@@ -104,7 +118,7 @@ describe('Test Functions from hr_create_meal.js', () => {
     });
 
     test('test handleDOMContentLoaded for document', async () =>{
-        //fetch.resetMocks();
+        fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({value: meals}));
         func.handleDOMContentLoaded();
         await Promise.resolve();
@@ -114,12 +128,28 @@ describe('Test Functions from hr_create_meal.js', () => {
 
     //if lines are covered then it is cathing errors
     test('test eventListener for document throws error when needed', async () =>{
-        //fetch.resetMocks();
+        fetch.resetMocks();
         fetch.mockResponseOnce(JSON.stringify({error: {message: "error"}}), { status: 500});
         func.handleDOMContentLoaded();
         await Promise.resolve();
         expect(fetch).toHaveBeenCalled();
 
+    });
+
+    test('Test that resetMeals event listener deletes all meals', async () => {
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify({value: orders})).mockResponseOnce(JSON.stringify({value: meals}));
+        Object.defineProperty(window, 'location', {
+            value: {
+              reload: jest.fn(),
+            },
+        });
+        const btn = document.getElementById("resetMeals");
+        const event = new Event('click', { bubbles: true });
+        btn.dispatchEvent(event);
+        await new Promise(process.nextTick); 
+        expect(fetch).toHaveBeenCalledTimes(2+meals.length+orders.length);
+        expect(window.location.reload).toHaveBeenCalled();
     });
 
 });

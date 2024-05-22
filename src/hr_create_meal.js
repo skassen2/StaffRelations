@@ -63,12 +63,12 @@ function renderMeals(meals) {
     mealList.appendChild(heading);
 
     // Create a container for meal items
-    const mealContainer = document.createElement("section"); //change divs!!!!
+    const mealContainer = document.createElement("section"); 
     mealContainer.classList.add("meal-container");
 
     meals.forEach(meal => {
         // Create a box for each meal
-        const mealBox = document.createElement("section"); //change divs!!!!
+        const mealBox = document.createElement("section"); 
         mealBox.classList.add("meal-box");
 
         // Create elements for meal details
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
 const resetbutton=document.getElementById('resetMeals');
 resetbutton.addEventListener("click", async event=>{
     const orders=await fetchMealOrders();
-    const menu=await fetchMealMenu();
+    const menu=await getAllMeals();
     //delete orders
     const orderIds=[];
     for(const obj of orders){
@@ -149,13 +149,8 @@ async function fetchMealOrders() {
     const tasks = await response.json();
     return tasks.value;
 }
-async function fetchMealMenu() {
-    const endpoint = `/data-api/rest/Meal_menu`;
-    const response = await fetch(endpoint);
-    const tasks = await response.json();
-    return tasks.value;
-}
+
 
 
 //export for testing
-module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded}
+module.exports = {renderMeals, getAllMeals, handleDOMContentLoaded, fetchMealOrders}
