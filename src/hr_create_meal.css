@@ -86,10 +86,9 @@ main {
 form {
     max-width: 600px;
     margin: 0 auto;
-    background-color: #00957a90;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding-bottom: 0%;
+    
 }
 
 label {
@@ -179,4 +178,14 @@ button:hover {
 
 button:active {
     transform: scale(0.98);
+}
+
+#formCont{
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #00957a90;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
