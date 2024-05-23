@@ -140,6 +140,7 @@ describe('Test functions from BookCarwash.js', () => {
         global.alert.mockClear();
     });
 
+    //event not being dispatched
     /*test('Test that carsList event listener books car for slot on wednesday', async () => {
         func.car = [ {car_id: 7, car_name: 'Jeep Wrangler', number_plate: 'TAR125GP', username: 'taruna'}];
         const mockResponse = { status: 201, body: { message: 'Data posted successfully' } };
@@ -151,8 +152,8 @@ describe('Test functions from BookCarwash.js', () => {
         '<button class="btn" id="Wednesday">Wednesday</button>'+
         '<button class="btn" id="Friday">Friday</button>'+
         '</block></section></section></main>';
-        const wednesdayButton = document.getElementById('Wednesday');
-        wednesdayButton.click();
+        const btn = document.getElementById('Wednesday');
+        btn.dispatchEvent(new Event('click', { bubbles: true }));
         await new Promise(process.nextTick);
         expect(global.alert).toHaveBeenCalledWith('Car wash booked successfully!');
     });*/

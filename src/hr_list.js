@@ -84,7 +84,6 @@ addCarForm.addEventListener('submit',async event=>{
         window.location.reload();
     } else {
         alert('Error adding car, try again');
-        //console.log(data);
     }
 
 });
@@ -132,7 +131,7 @@ staffList.addEventListener('click', async event => {
                 timeId.push(obj.id);
             }
         }
-        //console.log("time",timeId);
+        
 
         const assignmentId=[]
         let dataAssignment=await fetchAssignment();
@@ -141,7 +140,7 @@ staffList.addEventListener('click', async event => {
                 assignmentId.push(obj.assignment_id);
             }
         }
-        //console.log("Assignment",assignmentId);
+        
 
         const tasks=[]
         let dataTasks=await fetchTasks();
@@ -150,7 +149,7 @@ staffList.addEventListener('click', async event => {
                 tasks.push(obj.task_id);
             }
         }
-        //console.log("tasks",tasks);
+        
 
         const feedback=[]
         let dataFeedback=await fetchFeedback();
@@ -159,7 +158,7 @@ staffList.addEventListener('click', async event => {
                 feedback.push(obj.id);
             }
         }
-        //console.log("feedback",feedback);
+       
 
         let dataMealOrders=await fetchMealOredrs();
         const orderIDs=[];
@@ -168,7 +167,7 @@ staffList.addEventListener('click', async event => {
                 orderIDs.push(obj.order_id);
             }
         }
-        //console.log(orderIDs,"food orders");
+        
 
         let StaffCars=await fetchStaffCars();
         const carId=[];
@@ -177,7 +176,7 @@ staffList.addEventListener('click', async event => {
                 carId.push(obj.car_id);
             }
         }
-        //console.log(carId,"carwash orders");
+        
 
         let DateTimeLogdata=await fetchDateTimeLog();
         const DateTimeLogIDs=[];
@@ -186,7 +185,7 @@ staffList.addEventListener('click', async event => {
                 DateTimeLogIDs.push(obj.id);
             }
         }
-        //console.log(DateTimeLogIDs,"DateTime log info ids fro manager");
+        
 
         //do deleting
         //delete from time
@@ -306,7 +305,7 @@ staffList.addEventListener('click', async event => {
                 carId.push(obj.car_id);
             }
         }
-        //console.log(carId,"carwash orders");
+       
 
         let DateTimeLogdata=await fetchDateTimeLog();
         const DateTimeLogIDs=[];
@@ -315,7 +314,7 @@ staffList.addEventListener('click', async event => {
                 DateTimeLogIDs.push(obj.id);
             }
         }
-        //console.log(DateTimeLogIDs,"DateTime log info ids fro staff");
+       
 
         //do deleting
         //delete from time
@@ -468,4 +467,4 @@ async function fetchDateTimeLog(){
 
 
 //export fucntions for testing
-module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers, fetchMealOredrs};
+module.exports = {getStaffManager, renderStaffList, fetchAssignment, fetchFeedback, fetchTasks, fetchTime, fetchUsers, fetchMealOredrs, fetchDateTimeLog, fetchStaffCars};

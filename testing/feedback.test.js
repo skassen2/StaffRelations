@@ -179,26 +179,11 @@ describe('Describe function from feedback.js', () => {
       expect(fetch).toHaveBeenCalledTimes(2);
     });
 
-    /*test('Test addComment event listener does everything needed', async () => {
+    /*test('Test addComment event listener qorks for first click', async () => {
       fetch.resetMocks();
+      const mockResponse = { status: 200, body: { message: 'Data posted successfully' } };
+      fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
       fetch.mockResponseOnce(JSON.stringify({value: feedbacks})).mockResponseOnce(JSON.stringify({value: users}));
-      document.body.innerHTML = '<main>'+
-      '<section class="grid-container">'+
-        '<article id="allfeedback" class="grid-container">'+
-        '</article>'+
-      '</section>'+
-      '<section class="container">'+
-        '<form id="addComment">'+
-          '<select id="tasksDrop" class="dropdown" value="fix errors!!!" required>'+
-            '<option value="" disabled selected>Select task</option>'+
-          '</select>'+
-          '<br><button id="add">Next</button>'+
-        '</form>'+
-      '</section>'+
-      '</main>';
-
-      const loadHRspy = jest.spyOn(func, 'loadHRNamesForDropDown');
-      const loadStaffspy = jest.spyOn(func, 'loadStaffForDropDown');
       const form=document.getElementById("addComment");
       form.dispatchEvent(new Event('submit', { bubbles: true }));
       await new Promise(process.nextTick);
