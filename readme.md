@@ -30,7 +30,6 @@ This repo is used as a starter for a _very basic_ HTML web application using no 
 ## Coverage Details
 - Note clicking on badges will take you to the last coverage workflow where you may see the test summary under **run tests and generate badges**
 ### **Lines:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-lines.svg"></a>
-### **Lines:** ![Lines](./coverage/badge-lines.svg)(https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555)
-### **Branches:** ![Branches](./coverage/badge-branches.svg) 
-### **Functions:** ![Functions](./coverage/badge-functions.svg) 
-### **Statements:** ![Statements](./coverage/badge-statements.svg)  
+### **Branches:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-branches.svg"></a>
+### **Functions:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-functions.svg"></a>
+### **Statements:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-statements.svg"></a>
