@@ -24,8 +24,9 @@ This repo is used as a starter for a _very basic_ HTML web application using no 
 - The [**src**](src) folder contains all relevant js, html and css files for the project.
 - The [**testing**](testing) folder contains all relevant js files for tests.
 - The [**coverage**](coverage) folder includes all relevent files generated from testing.
-- The [**swa-db-connections**](swa-db-connections) folder contains the database configuration. 
+- The [**swa-db-connections**](swa-db-connections) folder contains the database configuration.
 
+## Coverage Details
 ### **Lines:** ![Lines](./coverage/badge-lines.svg) 
 ### **Branches:** ![Branches](./coverage/badge-branches.svg) 
 ### **Functions:** ![Functions](./coverage/badge-functions.svg) 
