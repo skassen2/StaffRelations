@@ -18,6 +18,7 @@ This repo is used as a starter for a _very basic_ HTML web application using no 
 
 ## Local Setup
 - This repo has a dev container. This means if you open it inside a [GitHub Codespace](https://github.com/features/codespaces), or using [VS Code with the remote containers extension](https://code.visualstudio.com/docs/remote/containers), it will be opened inside a container with all the dependencies already installed.
+- To install dependencies independently use the following commands: **npm install exceljs**, **npm install xlsx**, **npm install --save-dev jest**, **npm install --save-dev jest-fetch-mock**
 - In order to run the application locally use the following command: **swa start ./src --data-api-location swa-db-connections**
 - In order to run tests locally use the following command: **npm test**
 
