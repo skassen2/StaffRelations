@@ -29,7 +29,7 @@ This repo is used as a starter for a _very basic_ HTML web application using no 
 - The [**swa-db-connections**](swa-db-connections) folder contains the database configuration.
 
 ## Coverage Details
-- Note clicking on badges will take you to the last coverage workflow where you may see the test summary under **run tests and generate badges**
+- Note clicking on badges will take you to the last coverage workflow where you may see the test summary under **run tests and generate badges**. This summary is also included in the documentation submitted.
 ### **Lines:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-lines.svg"></a>
 ### **Branches:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-branches.svg"></a>
 ### **Functions:** <a href="https://github.com/skassen2/StaffRelations/actions/runs/9206474377/job/25324405555"><img src="./coverage/badge-functions.svg"></a>
